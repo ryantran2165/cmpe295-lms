@@ -14,7 +14,7 @@ app.use(cookieParser());
 // import routes here
 
 // Backend runs on Port 3000
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 app.listen(port, () => {
     console.log("Backend is running at port:", port);
