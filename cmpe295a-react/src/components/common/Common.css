@@ -1,0 +1,82 @@
+.backgroundDecoration {
+    position: absolute; 
+    top: 0; 
+    right: 0; 
+    bottom: 0; 
+    left: 0;
+    background-color: #88BDBC;
+    overflow: auto;
+}
+
+.footer {
+    position: fixed;
+    display: block;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: auto;
+    width: 100%;
+    padding-top: 40px;
+    background: #254e58;
+    color: aliceblue;
+    text-align: center;
+}
+
+.loginForm {
+    width: 30%;
+    display: block;
+    padding: 16px;
+    background-color: whitesmoke;
+    margin-left: auto;
+    margin-right: 80px;
+    margin-bottom: auto;
+    margin-top: 30px;
+    position:absolute;
+    top:300px;
+    right: 600px;
+    border-radius: 15px;
+}
+
+.signupForm {
+    width: 30%;
+    display: block;
+    padding: 16px;
+    background-color: whitesmoke;
+    margin-left: auto;
+    margin-bottom: auto;
+    margin-top: 30px;
+    margin-right: 80px;
+    position:absolute;
+    top:200px;
+    right: 580px;
+    border-radius: 15px;
+    
+}
+
+.headerText {
+    text-align: left;
+    padding-top: 20%;
+    padding-right: 50%;
+    margin-left: 100px;
+    height: 100%;
+    color: #0d6e80;
+    font-size: xxx-large;
+    font-family: fantasy;
+}
+
+.navbarLanding{
+    background: #254e58;
+    z-index: 1;
+}
+
+.buttons{
+
+    position: fixed;
+    top: 45px;
+    right: 300px;
+    z-index: 2;
+
+}
+.formButtons{
+    width: 50%;
+}
