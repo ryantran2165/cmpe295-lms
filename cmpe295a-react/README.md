@@ -1,3 +1,13 @@
+Please install two pre-requisite packages using below commands which are needed for canvas implementations
+
+1. npm install react-sketch-canvas (For ReactSketchCanvas)
+2. npm install react-canvas-draw --save (For CanvasDraw)
+
+If you encounter peer-dependency errors while installing above packages, run the below command first and then install required packages
+
+- npm config set legacy-peer-deps true
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
