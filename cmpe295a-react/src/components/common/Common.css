@@ -77,6 +77,45 @@
     z-index: 2;
 
 }
+
+.canvasbuttons{
+
+    display: inline-block;
+    vertical-align: top;
+    position: fixed;
+    top: 350px;
+    right: 550px;
+    z-index: 2;
+
+}
+
 .formButtons{
     width: 50%;
+}
+
+.canvasSpace {
+    width: 40%;
+    height: 65%;
+    display: block;
+    padding: 16px;
+    background-color: whitesmoke;
+    margin-left: auto;
+    margin-bottom: auto;
+    margin-top: 30px;
+    margin-right: 80px;
+    position:absolute;
+    top:150px;
+    right: 510px;
+    border-radius: 15px;
+}
+
+
+.brushcontrols{
+
+    display: inline-block;
+    position: fixed;
+    top: 720px;
+    right: 850px;
+    z-index: 2;
+
 }

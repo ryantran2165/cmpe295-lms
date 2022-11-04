@@ -1,8 +1,9 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
 import LandingPage from "./components/common/Landing-page";
 import SignupForm from "./components/user/Signup";
 import LoginForm from "./components/user/Login";
+import ReactCanvas from "./components/common/ReactCanvas";
+import ReactSketch from "./components/common/ReactSketch";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 function App() {
@@ -18,6 +19,12 @@ function App() {
 
                     <Route path="signup" 
                         element={<SignupForm />} />
+
+                    <Route path="reactsketch" 
+                        element={<ReactSketch />} />
+
+                    <Route path="reactcanvas" 
+                        element={<ReactCanvas />} />    
                 </Routes>
             </BrowserRouter>
         );
