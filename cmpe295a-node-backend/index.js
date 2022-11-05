@@ -17,7 +17,6 @@ app.use(cookieParser());
 const port = process.env.PORT || 3001;
 
 // Connect to mongoose then start server
-
 mongoose
 .connect("mongodb+srv://parmeet54:295mastersGrading@cluster1.2cwsgoy.mongodb.net/?retryWrites=true&w=majority")
 .then(() => {
