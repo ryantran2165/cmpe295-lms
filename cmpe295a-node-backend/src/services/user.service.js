@@ -37,13 +37,22 @@ exports.login = async(userReqData, result) => {
 
         const validate = await user.isValid(password);
 
+        // Data to send upon login
+        userData = {
+            username,
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            role: user.role
+        }
+
         // Wrong password
         if(!validate){
             result(null, {status:false, message:"Wrong password", user:{username}});
         }
         // Valid password
         else{
-            result(null, {status:true, message:"login successful", user:{username}});
+            result(null, {status:true, message:"Login successful", userData});
         }
     }
     catch(err){
