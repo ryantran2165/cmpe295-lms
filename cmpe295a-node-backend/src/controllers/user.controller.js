@@ -12,7 +12,6 @@ exports.signup = (req, res) => {
         }
         else{
             console.log(result);
-            console.log("\nUser created: ", req.body.username);
             res.send(result);
         }
     })
