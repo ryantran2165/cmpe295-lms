@@ -12,6 +12,8 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 // import routes here
+const userRoutes = require('./src/routes/user.route');
+app.use("/api/v1/users", userRoutes);
 
 // Backend runs on Port 3001
 const port = process.env.PORT || 3001;
@@ -27,3 +29,5 @@ mongoose
 .catch(err => {
   console.error("Failed connection to MongoDB: ", err);
 })
+
+module.exports = app;
