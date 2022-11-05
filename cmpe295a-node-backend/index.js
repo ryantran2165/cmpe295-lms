@@ -16,6 +16,15 @@ app.use(cookieParser());
 // Backend runs on Port 3001
 const port = process.env.PORT || 3001;
 
-app.listen(port, () => {
-    console.log("Backend is running at port:", port);
-  });
+// Connect to mongoose then start server
+
+mongoose
+.connect("mongodb+srv://parmeet54:295mastersGrading@cluster1.2cwsgoy.mongodb.net/?retryWrites=true&w=majority")
+.then(() => {
+  app.listen(port, () => {
+      console.log("Backend is running at port:", port);
+    });
+  })
+.catch(err => {
+  console.error("Failed connection to MongoDB: ", err);
+})
