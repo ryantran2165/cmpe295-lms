@@ -47,7 +47,7 @@
     margin-top: 30px;
     margin-right: 80px;
     position:absolute;
-    top:140px;
+    top:200px;
     right: 580px;
     border-radius: 15px;
     
@@ -117,26 +117,5 @@
     top: 720px;
     right: 850px;
     z-index: 2;
-
-}
-
-.usernameText{
-   color: #88BDBC;
-   font-family: monospace;
-   padding-left: 18px;
-   overflow: auto;
-}
-
-.profileCard{
-    padding: 16px;
-    margin-left: auto;
-    margin-bottom: auto;
-    margin-top: 30px;
-    margin-right: 80px;
-    position:absolute;
-    top:120px;
-    right: 10px;
-    border-radius: 15px;
-    width: 25%;
 
 }
