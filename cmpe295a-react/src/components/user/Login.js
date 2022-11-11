@@ -11,25 +11,28 @@ function LoginForm() {
   const[username, setUsername] = useState('');
   const[password, setPassword] = useState('');
 
+
  {/*install axios package version 1.0.0 since latest is having problems */}
   const handleLogin = async() => {
-
-    axios.post('http://localhost:3001/api/v1/users/login', {
-      username: username,
-      password: password
-    })
-    .then(function (response) {
-      if(response.data.status === true)
-       history("/Home", {state:{userName:response.data.userData.username,
-                                email:response.data.userData.email, 
-                                role:response.data.userData.role,
-                                firstName:response.data.userData.firstName,
-                                lastName:response.data.userData.lastName}});
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-
+        axios.post('http://localhost:3001/api/v1/users/login', {
+          username: username,
+          password: password
+        })
+        .then(function (response) {
+          if(response.data.status === true)
+          history("/Home", {state:{userName:response.data.userData.username,
+                                    email:response.data.userData.email, 
+                                    role:response.data.userData.role,
+                                    firstName:response.data.userData.firstName,
+                                    lastName:response.data.userData.lastName}});
+          
+          else{
+            alert("Username and password does not match!!");
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     
   };
 

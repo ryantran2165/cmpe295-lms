@@ -15,27 +15,29 @@ function SignupForm() {
   const[password, setPassword] = useState('');
   const[uname, setUname] = useState('');
   const[role, setRole] = useState('');
+  
 
   const handleRegister = async() => {
-
-    axios.post('http://localhost:3001/api/v1/users/signup', {
-      username: uname,
-      firstName: fname,
-      lastName: lname,
-      email: email,
-      password: password,
-      role: role
-    })
-    .then(function (response) {
-      if(response.data.status === true){
-       alert("Hello " + response.data.user.username + ", your registration is successful!");
-       history("/Login");
-      }
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-
+            axios.post('http://localhost:3001/api/v1/users/signup', {
+              username: uname,
+              firstName: fname,
+              lastName: lname,
+              email: email,
+              password: password,
+              role: role
+            })
+            .then(function (response) {
+              if(response.data.status === true){
+              alert("Hello " + response.data.user.username + ", your registration is successful!");
+              history("/Login");
+              }
+              else{
+                alert("User with this username already exists!!");
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
   };
 
   const handleCancel = () => {
