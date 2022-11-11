@@ -5,9 +5,9 @@ import LoginForm from "./components/user/Login";
 import ReactCanvas from "./components/common/ReactCanvas";
 import ReactSketch from "./components/common/ReactSketch";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import HomePage from "./components/user/Home";
 
 function App() {
-  console.log("hi app.js");
         return(
           <BrowserRouter>
                 <Routes>
@@ -19,6 +19,9 @@ function App() {
 
                     <Route path="signup" 
                         element={<SignupForm />} />
+                    
+                    <Route path="home" 
+                        element={<HomePage />} /> 
 
                     <Route path="reactsketch" 
                         element={<ReactSketch />} />

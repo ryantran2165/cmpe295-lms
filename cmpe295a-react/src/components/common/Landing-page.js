@@ -1,9 +1,9 @@
 import React from 'react';
 import Header from './Header';
+import styles from './Common.css';
 
 
 function LandingPage () {
-    console.log("hi landing-page");
     return (
      <>
      <Header />

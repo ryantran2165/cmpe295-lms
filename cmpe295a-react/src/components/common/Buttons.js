@@ -7,22 +7,18 @@ import { useNavigate } from "react-router-dom";
 function SignupButton () {
   const history = useNavigate();
   const handleLoginClick = () => {
-    console.log("hi login");
      history("Login");
   };
 
   const handleSignupClick = () => {
-    console.log("hi signup");
     history("Signup");
   };
 
   const handleCanvasClick = () => {
-    console.log("hi canvas");
     history("ReactCanvas");
   };
 
   const handleSketchClick = () => {
-    console.log("hi sketch");
     history("ReactSketch");
   };
 
