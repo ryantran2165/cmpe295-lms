@@ -1,15 +1,12 @@
 import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
-import styles from './Common.css';
 import logo from './logo.svg';
 import SignupButton from './Buttons';
-import SignupForm from '../user/Signup';
-import LoginForm from '../user/Login';
+
 
 function Header () {
 
-    console.log("hi header");
     return(
         <>
             <div className="backgroundDecoration">

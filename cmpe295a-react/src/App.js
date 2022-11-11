@@ -4,10 +4,11 @@ import SignupForm from "./components/user/Signup";
 import LoginForm from "./components/user/Login";
 import ReactCanvas from "./components/common/ReactCanvas";
 import ReactSketch from "./components/common/ReactSketch";
+import HomePage from "./components/user/Home";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 function App() {
-  console.log("hi app.js");
+
         return(
           <BrowserRouter>
                 <Routes>
@@ -24,7 +25,10 @@ function App() {
                         element={<ReactSketch />} />
 
                     <Route path="reactcanvas" 
-                        element={<ReactCanvas />} />    
+                        element={<ReactCanvas />} />  
+
+                     <Route path="home" 
+                        element={<HomePage />} />      
                 </Routes>
             </BrowserRouter>
         );

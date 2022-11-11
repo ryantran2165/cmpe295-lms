@@ -2,7 +2,7 @@ import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import logo from '../common/logo.svg';
-import LandingPage from './Landing-page';
+
 
 export default function SimpleNavbar () {
 
