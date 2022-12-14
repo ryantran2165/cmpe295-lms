@@ -13,7 +13,13 @@ function LoginForm() {
 
 
  {/*install axios package version 1.0.0 since latest is having problems */}
-  const handleLogin = async() => {
+  const handleLogin = async(event) => {
+    if(username.trim().length === 0 || password.trim().length === 0 ){
+      event.preventDefault();
+      event.stopPropagation();
+      alert("One or more form fields are empty, please fill out !");
+    }
+    else{
         axios.post('http://localhost:3001/api/v1/users/login', {
           username: username,
           password: password
@@ -33,6 +39,7 @@ function LoginForm() {
         .catch(function (error) {
           console.log(error);
         });
+      }
     
   };
 

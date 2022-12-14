@@ -36,6 +36,7 @@
     top:300px;
     right: 600px;
     border-radius: 15px;
+    z-index: 1;
 }
 
 .signupForm {
@@ -51,6 +52,7 @@
     top:140px;
     right: 580px;
     border-radius: 15px;
+    z-index: 1;
     
 }
 

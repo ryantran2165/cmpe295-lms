@@ -17,27 +17,51 @@ function SignupForm() {
   const[role, setRole] = useState('');
   
 
-  const handleRegister = async() => {
-            axios.post('http://localhost:3001/api/v1/users/signup', {
-              username: uname,
-              firstName: fname,
-              lastName: lname,
-              email: email,
-              password: password,
-              role: role
-            })
-            .then(function (response) {
-              if(response.data.status === true){
-              alert("Hello " + response.data.user.username + ", your registration is successful!");
-              history("/Login");
-              }
-              else{
-                alert("User with this username already exists!!");
-              }
-            })
-            .catch(function (error) {
-              console.log(error);
-            });
+  const handleRegister = async(event) => {
+    var atPosition = email.lastIndexOf("@");
+    var dotPosition = email.lastIndexOf(".");
+    if(fname.trim().length === 0 || email.trim().length === 0 || password.trim().length === 0 || uname.trim().length === 0 || password.trim().length === 0){
+         event.preventDefault();
+         event.stopPropagation();
+         console.log("role: ",role);
+         alert("One or more form fields are empty, please fill out !");
+    }
+    else if (!( atPosition < dotPosition && atPosition > 0 && email.indexOf("@@") == -1 && dotPosition > 2 && email.length - dotPosition > 2)){
+         event.preventDefault();
+         event.stopPropagation();
+         console.log("role: ",role);
+         alert("Invalid email !");
+    }
+    else if(role !== "student" && role !== "teacher" ){
+         event.preventDefault();
+         event.stopPropagation();
+         console.log("role: ",role);
+         alert("Please select your correct role !");
+    }
+    else{
+          console.log("Form submitted successfully !");
+          console.log("role: ",role);
+          axios.post('http://localhost:3001/api/v1/users/signup', {
+            username: uname,
+            firstName: fname,
+            lastName: lname,
+            email: email,
+            password: password,
+            role: role
+          })
+          .then(function (response) {
+            if(response.data.status === true){
+            alert("Hello " + response.data.user.username + ", your registration is successful!");
+            history("/Login");
+            }
+            else{
+              alert("User with this username already exists!!");
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+        }
   };
 
   const handleCancel = () => {
@@ -70,6 +94,7 @@ function SignupForm() {
   };
 
   const handleRoleChange = (event) => {
+    console.log("Role from select", event.target.value);
     setRole(event.target.value);
   };
 
@@ -105,13 +130,13 @@ function SignupForm() {
 
                       <Form.Group className="mb-3" controlId="formBasicPassword">
                         <Form.Label>Password</Form.Label>
-                        <Form.Control type="password" placeholder="Enter Password" name="password" value={password} onChange={handlePasswordChange}/>
+                        <Form.Control  type="password" placeholder="Enter Password" name="password" value={password} onChange={handlePasswordChange}/>
                       </Form.Group>
 
                       <Form.Group className="mb-3" controlId="formBasicRole">
                         <Form.Label>Role</Form.Label>
                         <Form.Select aria-label="Select your role" name="role" value={role} onChange={handleRoleChange}>
-                          <option>Select Role</option>
+                          <option value="noRole">Select</option>
                           <option value="student">Student</option>
                           <option value="teacher">Teacher</option>
                        </Form.Select>
