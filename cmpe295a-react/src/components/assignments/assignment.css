@@ -1,0 +1,57 @@
+@media all and (min-width: 992px){
+
+  a {
+      text-decoration: none;
+      display: inline-block;
+      padding: 8px 16px;
+    }
+    
+    a:hover {
+      background-color: green;
+      color: white;
+    }
+    
+    .previous {
+      background-color: #0dcaf0;
+      color: white;
+      margin-right: 10px;
+      border-radius: 10px;
+    }
+    
+    .next {
+      background-color: #0dcaf0;
+      color: white;
+      border-radius: 10px;
+      
+    }
+  }
+
+  @media all and (min-width: 1200px){
+
+    a {
+        text-decoration: none;
+        display: inline-block;
+        padding: 8px 16px;
+      }
+      
+      a:hover {
+        background-color: green;
+        color: white;
+      }
+      
+      .previous {
+        background-color: #0dcaf0;
+        color: white;
+        margin-right: 10px;
+        border-radius: 10px;
+      }
+      
+      .next {
+        background-color: #0dcaf0;
+        color: white;
+        border-radius: 10px;
+        
+      }
+    }
+
+  

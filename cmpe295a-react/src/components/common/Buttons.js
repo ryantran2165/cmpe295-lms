@@ -19,7 +19,7 @@ function SignupButton () {
   };
 
   const handleSketchClick = () => {
-    history("ReactSketch");
+    history("QAPage");
   };
 
     return (
@@ -27,7 +27,7 @@ function SignupButton () {
         <ButtonToolbar className='mb-3'>
           <Button style={{ marginRight: 50, width: 100}} variant = "outline-info" onClick={handleLoginClick}>Login</Button>
           <Button style={{ marginRight: 50, width: 100}} variant = "outline-info" onClick={handleSignupClick}>New User</Button>
-          <Button style={{ marginRight: 50, width: 100}} variant = "outline-info" onClick={handleSketchClick}>React-Sketch</Button>
+          <Button style={{ marginRight: 50, width: 100}} variant = "outline-info" onClick={handleSketchClick}>QAPage</Button>
           <Button style={{ marginRight: 50, width: 100}} variant = "outline-info" onClick={handleCanvasClick}>React-Canvas</Button>
         </ButtonToolbar>
       </div>

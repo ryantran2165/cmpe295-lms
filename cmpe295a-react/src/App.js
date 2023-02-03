@@ -6,6 +6,9 @@ import ReactCanvas from "./components/common/ReactCanvas";
 import ReactSketch from "./components/common/ReactSketch";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomePage from "./components/user/Home";
+import QAPage from "./components/assignments/QAPage";
+import CourseHome from "./components/dashboard/CourseHome";
+import UserDashBoard from "./components/dashboard/UserDashBoard";
 
 function App() {
         return(
@@ -21,10 +24,16 @@ function App() {
                         element={<SignupForm />} />
                     
                     <Route path="home" 
-                        element={<HomePage />} /> 
+                        element={<UserDashBoard />} /> 
 
-                    <Route path="reactsketch" 
-                        element={<ReactSketch />} />
+                    <Route path="qapage" 
+                        element={<QAPage />} />
+                    
+                    <Route path="coursehome" 
+                        element={<CourseHome />} />
+
+                    <Route path="userdashboard" 
+                        element={<UserDashBoard />} />
 
                     <Route path="reactcanvas" 
                         element={<ReactCanvas />} />    
