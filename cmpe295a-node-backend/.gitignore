@@ -9,4 +9,4 @@
 
 # misc
 .DS_Store
-.env
+/src/.env
