@@ -13,7 +13,10 @@ app.use(cookieParser());
 
 // import routes here
 const userRoutes = require('./src/routes/user.route');
+const uploadRoute = require('./src/routes/upload.route')
+
 app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/upload", uploadRoute);
 
 // Backend runs on Port 3001
 const port = process.env.PORT || 3001;
