@@ -23,7 +23,7 @@ const uploadFile = () => multer({
 
 exports.upload = (req, res, next) => {
     
-    const uploadSingle = uploadFile().single('file-upload');
+    const uploadSingle = uploadFile().single('fileUpload');
 
     uploadSingle(req, res, err => {
 
