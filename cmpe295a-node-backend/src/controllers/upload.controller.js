@@ -5,9 +5,9 @@ require("dotenv").config();
 
 
 const s3 = new aws.S3({
-    accessKeyId: process.env.S3_ACCESS_KEY || "AKIA6ETDMY3MZKX3DXCY",
-    secretAccessKey: process.env.S3_SECRET_KEY || "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",
-    region: process.env.S3_BUCKET_REGION || "us-west-1",
+    accessKeyId: process.env.S3_ACCESS_KEY,
+    secretAccessKey: process.env.S3_SECRET_KEY,
+    region: process.env.S3_BUCKET_REGION,
 })
 
 const uploadFile = () => multer({
@@ -23,7 +23,7 @@ const uploadFile = () => multer({
 
 exports.upload = (req, res, next) => {
     
-    const uploadSingle = uploadFile().single('file');
+    const uploadSingle = uploadFile().single('file-upload');
 
     uploadSingle(req, res, err => {
 
