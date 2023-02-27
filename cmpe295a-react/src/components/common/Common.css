@@ -88,7 +88,7 @@ https://freefrontend.com/css-login-forms/
     
     .registerForm {
         display: block;
-        overflow: scroll;
+        /*overflow: scroll;*/
         position: fixed;
         left: 7.5em;
         height: 33.125em;
@@ -566,7 +566,7 @@ https://freefrontend.com/css-login-forms/
 
 .registerForm {
     display: block;
-    overflow: scroll;
+    /*overflow: scroll;*/
     position: fixed;
     left: 23.125em;
     height: 33.125em;
@@ -1071,7 +1071,7 @@ https://freefrontend.com/css-login-forms/
 
 .registerForm {
     display: block;
-    overflow: scroll;
+    /*overflow: scroll;*/
     position: fixed;
     left: 37.5em;
     height: 33.125em;
