@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import SimpleNavbar from '../common/Simple-Navbar';
-import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
+import Header from '../common/Header';
+import UserHeader from '../common/UserHeader';
 import {useNavigate} from 'react-router-dom';
+import axios from 'axios';
 
 function LoginForm() {
   const history = useNavigate();
@@ -14,9 +13,9 @@ function LoginForm() {
 
  {/*install axios package version 1.0.0 since latest is having problems */}
   const handleLogin = async(event) => {
+    event.preventDefault();
+    event.stopPropagation();
     if(username.trim().length === 0 || password.trim().length === 0 ){
-      event.preventDefault();
-      event.stopPropagation();
       alert("One or more form fields are empty, please fill out !");
     }
     else{
@@ -26,7 +25,7 @@ function LoginForm() {
         })
         .then(function (response) {
           if(response.data.status === true)
-          history("/Home", {state:{userName:response.data.userData.username,
+          history("/userdashboard", {state:{userName:response.data.userData.username,
                                     email:response.data.userData.email, 
                                     role:response.data.userData.role,
                                     firstName:response.data.userData.firstName,
@@ -62,26 +61,15 @@ function LoginForm() {
     {/*
     form code reference https://react-bootstrap.github.io/forms/overview/ 
     */}
-    <div className="backgroundDecoration">
-                <SimpleNavbar />
-                <div className='signupForm'>
-                    <Form>
-                      <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Label>Username</Form.Label>
-                        <Form.Control type="email" name="username" placeholder="Enter user name" value = {username} onChange={handleUnameChange} />
-                      </Form.Group>
-
-                      <Form.Group className="mb-3" controlId="formBasicPassword">
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control type="password" name="password" placeholder="Enter Password" value = {password} onChange={handlePasswordChange} />
-                      </Form.Group>
-                      <ButtonToolbar className='mb-3'>
-                        <Button className='formButtons' variant = "outline-success" onClick={handleLogin}>Login</Button>
-                        <Button className='formButtons' variant = "outline-secondary" onClick={handleCancel}>Cancel</Button>
-                      </ButtonToolbar>
-                    </Form>
-                </div>
-                <div className='footer'>All rights reserved © 2022</div>
+     <div className="backgroundDecoration">
+                <Header/>
+                <div className="loginFormHeading"><h1>Login</h1></div>
+                    <form className="loginForm" onSubmit={handleLogin}>
+                        <input type="text" name="username" placeholder="Username" value = {username} onChange={handleUnameChange} />
+                        <input type="password" name="password" placeholder="Password" value = {password} onChange={handlePasswordChange} />
+                        <input type="submit" id='button1' value="Login"/>
+                        <input type="reset" id='button2' value="Cancel" onClick={handleCancel}/>
+                    </form>
     </div>
     </>
   )

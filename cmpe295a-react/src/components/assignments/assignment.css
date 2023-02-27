@@ -1,56 +1,130 @@
-@media all and (min-width: 992px){
+@media all and (min-width: 768px) and (max-width: 991px){
+/*Previous and next button reference
 
-  a {
+https://www.w3schools.com/howto/howto_css_next_prev.asp
+
+*/
+
+  .navButtons  {
+    position: absolute;
+    top: 20.3125em;
+    right: 28.125em;
+  }
+  
+  .navButtons a {
+      display: inline;
       text-decoration: none;
-      display: inline-block;
-      padding: 8px 16px;
+      padding: 0.5em 1em 0.5em 0.5em ;
     }
     
-    a:hover {
-      background-color: green;
-      color: white;
+   .navButtons a:hover {
+      color: #fafad2;
+      background-color: #86a8e7;
     }
     
     .previous {
-      background-color: #0dcaf0;
-      color: white;
-      margin-right: 10px;
-      border-radius: 10px;
+      position: absolute;
+      top: 9.375em;
+      left: 4.375em;
+      color: #fafad2;
+      background-color: #7f7fd5;
+      margin-left: -8.75em;
+      border-radius: 0.625em;
     }
     
     .next {
-      background-color: #0dcaf0;
-      color: white;
-      border-radius: 10px;
-      
+      position: absolute;
+      top: 9.375em;
+      left: 4.375em;
+      color: #fafad2;
+      background-color: #7f7fd5;
+      border-radius: 0.625em;
     }
   }
 
-  @media all and (min-width: 1200px){
 
-    a {
+@media all and (min-width: 992px) and (max-width: 1199px){
+ /*Previous and next button reference
+
+https://www.w3schools.com/howto/howto_css_next_prev.asp
+
+*/
+
+    .navButtons  {
+      position: absolute;
+      top: 12.1875em;
+      left: 23.75em;
+    }
+    .navButtons a {
+        display: inline;
         text-decoration: none;
-        display: inline-block;
-        padding: 8px 16px;
+        padding: 0.5em 1em 0.5em 0.5em;
       }
       
-      a:hover {
-        background-color: green;
-        color: white;
+     .navButtons a:hover {
+      color: #fafad2;
+      background-color: #86a8e7;
       }
       
       .previous {
-        background-color: #0dcaf0;
-        color: white;
-        margin-right: 10px;
-        border-radius: 10px;
+        margin-left: -8.75em;
+        border-radius: 0.625em;
+        position: absolute;
+        top: 9.375em;
+        left: 4.375em;
+        color: #fafad2;
+        background-color: #7f7fd5;
       }
       
       .next {
-        background-color: #0dcaf0;
-        color: white;
-        border-radius: 10px;
-        
+        border-radius: 0.625em;
+        position: absolute;
+        top: 9.375em;
+        left: 4.375em;
+        color: #fafad2;
+        background-color: #7f7fd5;  
+      }
+    }
+
+@media all and (min-width: 1200px){
+/*Previous and next button reference
+
+https://www.w3schools.com/howto/howto_css_next_prev.asp
+
+*/
+    .navButtons  {
+      position: absolute;
+      top: 12.1875em;
+      left: 49.375em;
+    }
+   .navButtons a {
+        display: inline;
+        text-decoration: none;
+        padding: 0.5em 1em 0.5em 0.5em;
+      }
+      
+     .navButtons a:hover {
+        color: #fafad2;
+        background-color: #86a8e7;
+      }
+      
+      .previous {
+        margin-left: -8.75em;
+        border-radius: 0.625em;
+        position: absolute;
+        top: 9.375em;
+        left: 4.375em;
+        color: #fafad2;
+        background-color: #7f7fd5;
+      }
+      
+      .next {
+        border-radius: 0.625em;
+        position: absolute;
+        top: 9.375em;
+        left: 4.375em;
+        color: #fafad2;
+        background-color: #7f7fd5;
       }
     }
 

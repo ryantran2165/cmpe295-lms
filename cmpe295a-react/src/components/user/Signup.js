@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form';
 import SimpleNavbar from '../common/Simple-Navbar';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import {useNavigate} from 'react-router-dom';
+import Header from '../common/Header';
 
 function SignupForm() {
   
@@ -18,6 +19,8 @@ function SignupForm() {
   
 
   const handleRegister = async(event) => {
+    event.preventDefault();
+    event.stopPropagation();
     var atPosition = email.lastIndexOf("@");
     var dotPosition = email.lastIndexOf(".");
     if(fname.trim().length === 0 || email.trim().length === 0 || password.trim().length === 0 || uname.trim().length === 0 || password.trim().length === 0){
@@ -100,55 +103,23 @@ function SignupForm() {
 
   return (
     <>
-    {/*
-    form code reference
-    https://react-bootstrap.github.io/forms/overview/
-    */}
         <div className="backgroundDecoration">
-               <SimpleNavbar />
-                <div className='signupForm'>
-                <Form>
-                      <Form.Group className="mb-3" controlId="formFirstName">
-                        <Form.Label>First Name</Form.Label>
-                        <Form.Control type="text" placeholder="Enter first name" name="fname" value={fname} onChange={handleFnameChange} />
-                      </Form.Group>
-
-                      <Form.Group className="mb-3" controlId="formLastName">
-                        <Form.Label>Last Name</Form.Label>
-                        <Form.Control type="text" placeholder="Enter last name" name="lname" value={lname} onChange={handleLnameChange} />
-                      </Form.Group>
-
-                      <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Label>Email address</Form.Label>
-                        <Form.Control type="email" placeholder="Enter email" name="email" value={email} onChange={handleEmailChange} />
-                      </Form.Group>
-
-                      <Form.Group className="mb-3" controlId="formBasicUname">
-                        <Form.Label>User Name</Form.Label>
-                        <Form.Control type="text" placeholder="Enter username" name="uname" value={uname} onChange={handleUnameChange} />
-                      </Form.Group>
-
-                      <Form.Group className="mb-3" controlId="formBasicPassword">
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control  type="password" placeholder="Enter Password" name="password" value={password} onChange={handlePasswordChange}/>
-                      </Form.Group>
-
-                      <Form.Group className="mb-3" controlId="formBasicRole">
-                        <Form.Label>Role</Form.Label>
-                        <Form.Select aria-label="Select your role" name="role" value={role} onChange={handleRoleChange}>
-                          <option value="noRole">Select</option>
+               <Header />
+               <div className="registerFormHeading"><h1>Register</h1></div>
+                <form onSubmit={handleRegister} className="registerForm">
+                      <input type="text" placeholder="First name" name="fname" value={fname} onChange={handleFnameChange} />
+                      <input type="text" placeholder="Last name" name="lname" value={lname} onChange={handleLnameChange} />
+                      <input type="email" placeholder="Email" name="email" value={email} onChange={handleEmailChange} />
+                      <input type="text" placeholder="Username" name="uname" value={uname} onChange={handleUnameChange} />
+                      <input  type="password" placeholder="Password" name="password" value={password} onChange={handlePasswordChange}/>
+                      <select name="role" value={role} onChange={handleRoleChange}>
+                          <option value="noRole">Role</option>
                           <option value="student">Student</option>
                           <option value="teacher">Teacher</option>
-                       </Form.Select>
-                      </Form.Group>
-
-                      <ButtonToolbar className='mb-3'>
-                        <Button className='formButtons' variant = "outline-success" onClick={handleRegister}>Register</Button>
-                        <Button className='formButtons' variant = "outline-secondary" onClick={handleCancel}>Cancel</Button>
-                      </ButtonToolbar>
-                    </Form>
-                 </div>
-                 <div className='footer'>All rights reserved © 2022</div>
+                       </select>
+                       <input type="submit" id='button1' value="Register"/>
+                       <input type="reset" id='button2' value="Cancel" onClick={handleCancel}/>
+                    </form>
         </div>
     </>
   )

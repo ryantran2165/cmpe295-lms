@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<svg xmlnsRdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlnsCc="http://creativecommons.org/ns#" xmlnsDc="http://purl.org/dc/elements/1.1/" xmlnsSvg="http://www.w3.org/2000/svg" id="svg2" viewBox="0 0 64 64" version="1.1">
+  <g id="layer1" transform="translate(0 -988.36)">
+    <g id="g3068">
+      <path id="rect2818" d="m2 1005.4h60v43l-60 0.0001 2e-7 -43z" fill="#6dc5dd"/>
+      <path id="rect2820" d="m4 1003.4h28v43h-28v-43z" fill="#e0e0e0"/>
+      <path id="rect2822" d="m32 1003.4 21-11v43l-21 11v-43z" fill="#f2f2f2"/>
+      <path id="path2826" fill="#2ea99c" d="m36 1048.4h26v-32.647l-9-4.4v24l-21 11 4 2z"/>
+      <path id="path2828" fill="#2ea99c" d="m4 1046.4 2 2 26-2h-28z"/>
+    </g>
+  </g>
+  <metadata>
+    <rdfRDF>
+      <ccWork>
+        <dcFormat>image/svg+xml</dcFormat>
+        <dcType rdfResource="http://purl.org/dc/dcmitype/StillImage"/>
+        <ccLicense rdfResource="http://creativecommons.org/licenses/publicdomain/"/>
+        <dcPublisher>
+          <ccAgent rdfAbout="http://openclipart.org/">
+            <dcTitle>Openclipart</dcTitle>
+          </ccAgent>
+        </dcPublisher>
+        <dcTitle>book open</dcTitle>
+        <dcDate>2013-08-31T21:56:19</dcDate>
+        <dcDescription>book open</dcDescription>
+        <dcSource>http://openclipart.org/detail/182789/book-open-by-crisg-182789</dcSource>
+        <dcCreator>
+          <ccAgent>
+            <dcTitle>crisg</dcTitle>
+          </ccAgent>
+        </dcCreator>
+        <dcSubject>
+          <rdfBag>
+            <rdfLi>book</rdfLi>
+            <rdfLi>browse</rdfLi>
+            <rdfLi>clip art</rdfLi>
+            <rdfLi>icon</rdfLi>
+            <rdfLi>libro</rdfLi>
+            <rdfLi>open book</rdfLi>
+            <rdfLi>study</rdfLi>
+          </rdfBag>
+        </dcSubject>
+      </ccWork>
+      <ccLicense rdfAbout="http://creativecommons.org/licenses/publicdomain/">
+        <ccPermits rdfResource="http://creativecommons.org/ns#Reproduction"/>
+        <ccPermits rdfResource="http://creativecommons.org/ns#Distribution"/>
+        <ccPermits rdfResource="http://creativecommons.org/ns#DerivativeWorks"/>
+      </ccLicense>
+    </rdfRDF>
+  </metadata>
+</svg>

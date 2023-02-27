@@ -2,33 +2,14 @@ import React, {useState} from 'react';
 import SimpleNavbarText from '../common/Simple-Navbar-Text';
 import {BrowserRouter, useLocation} from 'react-router-dom';
 import Card from './Card';
-import { FaRegUserCircle } from "react-icons/fa";
-import Button from 'react-bootstrap/Button';
-import UserProfile from '../user/UserProfile';
+import { FaUserGraduate, FaUserTie, FaBars } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser } from "@fortawesome/free-solid-svg-icons";
+
+
 
 
 {/* Responsive card grid code reference from
 https://www.quackit.com/css/grid/tutorial/create_a_responsive_grid.cfm  */}
-
-{/*install below packages begore using font awesome icon
-   https://fontawesome.com/v5/docs/web/use-with/react
-
-    npm i --save @fortawesome/fontawesome-svg-core
-    npm install --save @fortawesome/free-solid-svg-icons
-    npm install --save @fortawesome/react-fontawesome
-    npm i --save @fortawesome/free-solid-svg-icons
-    npm i --save @fortawesome/free-regular-svg-icons
-    npm i --save @fortawesome/react-fontawesome@latest
-
-
-
-
-   
-
-*/}
 
 
 function CourseHome() {
@@ -80,11 +61,12 @@ function CourseHome() {
                 <div id="accountDetails" className="sidenavOverlay">
                     <a className="closebtn" onClick={closeNav}>&times;</a>
                     <p className="profileDetails">
-                    {/*<FontAwesomeIcon icon="user" />*/}
                     {user.userName}<br/>
                     {user.firstName}<br/>
                     {user.lastName}<br/>
                     {user.email}<br/>
+                    {user.role === "student" && <FaUserGraduate />}
+                    {user.role === "teacher" && <FaUserTie />}
                     {user.role}<br/>
                     </p>
                     
@@ -95,6 +77,13 @@ function CourseHome() {
                     <a href="#">Services</a>
                     <a href="#">Clients</a>
                     <a href="#">Contact</a>
+                </div>
+                <div className="sidenavSections">
+                    <a href="#">Home</a>
+                    <a href="#">Assignments</a>
+                    <a href="#">Files</a>
+                    <a href="#">Grades</a>
+                    <a href="#">Quizzes</a>
                 </div>
                 <div className="main">
                     <p>Inside course home</p>
