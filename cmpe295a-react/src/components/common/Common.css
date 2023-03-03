@@ -18,7 +18,7 @@
         background: linear-gradient(to top right, #7f7fd5, #86a8e7 , #91eae4);
         display: flex;
         justify-content: center;
-        align-items: center;
+        align-items:start;
         flex-wrap: wrap; 
         background-repeat: no-repeat;
     }
@@ -156,6 +156,21 @@ https://freefrontend.com/css-login-forms/
       }
       input[type="submit"]:hover {
         background-color: #86a8e7;
+      }
+
+      input[type="button"] {
+        cursor: pointer;
+        color: #fafad2;
+        background-color: #7f7fd5;
+        border-radius: 0.3125em;
+        padding: 0.75em 1.25em;
+        font-size: 1em;
+        width: 100%;
+        border: none;
+        transition: all 0.4s ease-in-out;
+      }
+      input[type="button"]:hover {
+        background-color: #700cbc;
       }
         
       input[type="reset"] {
@@ -405,7 +420,12 @@ https://freefrontend.com/css-login-forms/
         border-radius: 0.625em;
     }
   /*QA page styles end*/  
-      
+  #getCourses{
+    position: absolute;
+    left: 43%;
+    top: 40%;
+    display: block;
+    }
 
 }
 
@@ -430,7 +450,7 @@ https://freefrontend.com/css-login-forms/
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
-        align-items: center;
+        align-items: start;
         background-repeat: no-repeat;
     }
 
@@ -610,6 +630,21 @@ https://freefrontend.com/css-login-forms/
       }
       input[type="password"]:focus, input[type="email"]:focus {
         border: 0.0625em solid #700cbc;
+      }
+
+      input[type="button"] {
+        cursor: pointer;
+        color: #fafad2;
+        background-color: #7f7fd5;
+        border-radius: 0.3125em;
+        padding: 0.75em 1.25em;
+        font-size: 1em;
+        width: 100%;
+        border: none;
+        transition: all 0.4s ease-in-out;
+      }
+      input[type="button"]:hover {
+        background-color: #700cbc;
       }
 
       input[type="submit"] {
@@ -908,7 +943,12 @@ https://freefrontend.com/css-login-forms/
         border-radius: 0.625em;
     }
   /*QA page styles end*/  
-      
+  #getCourses{
+    position: absolute;
+    left: 43%;
+    top: 40%;
+    display: block;
+    }
 
     
 
@@ -935,7 +975,7 @@ https://freefrontend.com/css-login-forms/
         background: linear-gradient(to top right, #7f7fd5, #86a8e7 , #91eae4);
         display: flex;
         justify-content: center;
-        align-items: center;
+        align-items: start;
         flex-wrap: wrap;
 	    background-repeat: no-repeat;   
     }
@@ -1114,7 +1154,7 @@ https://freefrontend.com/css-login-forms/
       input[type="password"]:focus, input[type="email"]:focus {
         border: 0.0625em solid #700cbc;
       }
-      input[type="submit"] {
+      input[type="submit"],input[type="button"] {
         cursor: pointer;
         color: #fafad2;
         background-color: #7f7fd5;
@@ -1125,8 +1165,23 @@ https://freefrontend.com/css-login-forms/
         border: none;
         transition: all 0.4s ease-in-out;
       }
-      input[type="submit"]:hover {
+      input[type="submit"]:hover, input[type="button"]:hover {
         background-color: #86a8e7;
+      }
+
+      input[type="button"] {
+        cursor: pointer;
+        color: #fafad2;
+        background-color: #7f7fd5;
+        border-radius: 0.3125em;
+        padding: 0.75em 1.25em;
+        font-size: 1em;
+        width: 100%;
+        border: none;
+        transition: all 0.4s ease-in-out;
+      }
+      input[type="button"]:hover {
+        background-color: #700cbc;
       }
         
       input[type="reset"] {
@@ -1434,6 +1489,12 @@ https://freefrontend.com/css-login-forms/
         width: 50%;
     }
 
+    #getCourses{
+        position: absolute;
+        left: 43%;
+        top: 40%;
+        display: block;
+    }
       
 
 

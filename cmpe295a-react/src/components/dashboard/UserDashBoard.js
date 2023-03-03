@@ -1,10 +1,8 @@
-import React, {useState, useRef, createRef} from 'react';
-import SimpleNavbarText from '../common/Simple-Navbar-Text';
+import React, {useState,useRef} from 'react';
 import {useLocation} from 'react-router-dom';
-import Card from './Card';
-import { FaRegUserCircle } from "react-icons/fa";
 import UserHeader from '../common/UserHeader';
 import Book from '../common/images/book.svg';
+import axios from 'axios';
 
 
 {/* Responsive card grid code reference from
@@ -12,7 +10,12 @@ https://www.quackit.com/css/grid/tutorial/create_a_responsive_grid.cfm  */}
 
 
 function UserDashBoard() {
+    const accountOverlay = useRef(null);
+    const settingsOverlay = useRef(null);
+    const getCoursesButton = useRef(null);
+    const courseCards = useRef(null);
     const location = useLocation();
+    const [courseList, setCourseList] = useState([]);
     const [user, setUser] = useState({
                 firstName: location.state.firstName,
                 lastName: location.state.lastName,
@@ -21,8 +24,19 @@ function UserDashBoard() {
                 role: location.state.role
         });
 
-    const accountOverlay = useRef(null);
-    const settingsOverlay = useRef(null);
+    const getCourses = () =>{
+        axios.get('http://localhost:3001/api/v1/courses/')
+        .then(function (response) {
+            setCourseList(response.data);
+            getCoursesButton.current.style.display = 'none';
+            courseCards.current.style.display = 'contents';
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+    }
+
+    
 
     const closeAccountOverlay = () => {
         accountOverlay.current.style.display = 'none';
@@ -40,33 +54,11 @@ function UserDashBoard() {
         settingsOverlay.current.style.display = 'block';
         console.log("open setting");
     }
-
-        const courses = [  
-            {  
-               'courseId': 1,   
-               'courseName': 'CMPE 202',   
-               'courseDes': 'Software Systems Engineering'  
-            },  
-            {  
-                'courseId': 2,   
-                'courseName': 'CMPE 281',   
-                'courseDes': 'Cloud technologies'
-            },  
-            {  
-                'courseId': 3,   
-                'courseName': 'CMPE 277',   
-                'courseDes': 'Smartphone Application Development'
-            },  
-            {  
-                'courseId': 4,   
-                'courseName': 'CMPE 255',   
-                'courseDes': 'Data Mining'
-            }
-        ];  
     return (
      <>
         <div className="backgroundDecoration">
                     <UserHeader user={user}/>
+                    <span id="getCourses" ref={getCoursesButton}><input type="button" value="See current courses" onClick={getCourses}/></span>
                     {/*<div className="leftnav">
                         <a onClick={openAccountOverlay}>Account</a>
                         <a href='/userdashboard'>Dashboard</a>
@@ -90,14 +82,18 @@ function UserDashBoard() {
 
                     Book image from freesvg.org
                     */}
+                    <span style={{display:'none'}} ref={courseCards}>
                     {
-                        courses.map((course,index) => 
-                        <div className="card">
-                            <img src={Book} alt="Image"/>
-                            <a href='#'><h1>{course.courseName}</h1></a>
-                            <a href='#'><p>{course.courseDes}</p></a>
-                        </div>
-                    )}
+                        courseList.map((course,index) => 
+                            <div className="card">
+                                <img src={Book} alt="Image"/>
+                                <a href='#'><h1>{course.name}</h1></a>
+                                <a href='#'><p>{course._id}</p></a>
+                            </div>
+                        )
+                        
+                    }
+                    </span>
         </div>
      </>
     )
