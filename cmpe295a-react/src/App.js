@@ -23,20 +23,23 @@ function App() {
                     <Route path="signup" 
                         element={<SignupForm />} />
                     
-                    <Route path="home" 
+                    <Route path="userdashboard" 
                         element={<UserDashBoard />} /> 
 
                     <Route path="qapage" 
                         element={<QAPage />} />
+
+                    {/*<Route path="qapage2" 
+                        element={<QAPage2 />} />*/}
                     
                     <Route path="coursehome" 
                         element={<CourseHome />} />
 
-                    <Route path="userdashboard" 
-                        element={<UserDashBoard />} />
-
                     <Route path="reactcanvas" 
                         element={<ReactCanvas />} />    
+
+                    <Route path="reactsketch" 
+                        element={<ReactSketch />} /> 
                 </Routes>
             </BrowserRouter>
         );

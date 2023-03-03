@@ -5,9 +5,9 @@ import styles from './Common.css';
 
 function LandingPage () {
     return (
-     <>
-     <Header />
-     </>
+     <div className='backgroundDecoration'>
+        <Header/>
+     </div>
     )
 }
 

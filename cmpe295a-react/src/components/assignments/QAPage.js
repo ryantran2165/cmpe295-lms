@@ -4,6 +4,7 @@ import React,{Component} from 'react';
 import { ReactSketchCanvas } from 'react-sketch-canvas';
 import Form from 'react-bootstrap/Form';
 import Styles from './assignment.css'
+import UserHeader from '../common/UserHeader';
 
 
 {/*
@@ -28,21 +29,21 @@ class QAPage extends Component {
         pencolor : "#e66465",
         pentype : 2,
         erasertype: 12,
-        width : 600,
+        width : 700,
         height : 500
     };
    
    render(){
         return (
             <div className="backgroundDecoration">
-                <SimpleNavbar />
-                    <div className='navButtons'>
-                        <a href="#" class="previous">&laquo; Previous</a>
-                        <a href="#" class="next">Next &raquo;</a>
-                    </div> 
-                    <div className='questionArea'>
-                        <p style={{ padding: 50}}>Q1.You will se sample Questions here</p>
-                    </div>
+                <UserHeader/>
+                        <div className='questionArea'>
+                            <p style={{ padding: 50}}>Q1.You will se sample Questions here</p>
+                        </div>
+                        <div className='navButtons'>
+                            <a href="#" className="previous">&#8249;Previous</a><br/>
+                            <a href="#" className="next">Next&#8250;</a>
+                        </div>
                     <div className='canvasSpace'>
                         <ReactSketchCanvas
                             ref={canvasDraw => (this.answerCanvas = canvasDraw)}
@@ -67,7 +68,7 @@ class QAPage extends Component {
                                 });}}>Export</Button><br/>
                         </div>
                         <div className='brushcontrols'>
-                            <span style={{marginRight: 30}}> <input type="color" value={this.state.pencolor} onChange={e =>this.setState({ pencolor: e.target.value })}/> Pen color  </span>
+                            <span style={{marginRight: 100}}> <input type="color" value={this.state.pencolor} onChange={e =>this.setState({ pencolor: e.target.value })}/> Pen color  </span>
                             <span style={{marginRight: 10}}> <input type="range" min="1" max="12" value={this.state.pentype}  onChange={e =>this.setState({ pentype: parseInt(e.target.value, 10) })}/> Pen type </span>
                         </div>
                     </div>

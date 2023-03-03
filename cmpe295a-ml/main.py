@@ -1,6 +1,4 @@
 import cv2
-import numpy as np
-from PIL import Image
 
 
 def intersects(a, b):
@@ -40,14 +38,14 @@ def filter_rects(rects, min_area, max_area):
         w = x2 - x1
         h = y2 - y1
         a = w * h
-        if a < min_area or a > max_area or w > 2 * h or h > 3 * w:
+        if a < min_area or a > max_area:
             continue
-        filtered.append([x1, y1, x2, y2])
+        filtered.append((x1, y1, x2, y2))
     return filtered
 
 
 def main():
-    name = 'thin'
+    name = 'smallest_even_multiple'
 
     img = cv2.imread(f'{name}.jpg')
 
@@ -67,25 +65,27 @@ def main():
     cv2.drawContours(canny, contours, -1, (255, 255, 255), 5)
     cv2.imwrite(f'{name}_contours.jpg', canny)
 
-    # min_area = 0
-    # max_area = 10000
-
     # Bounding boxes
     rects = []
     for contour in contours:
         x, y, w, h = cv2.boundingRect(contour)
-        # a = w * h
-        # if a < min_area or a > max_area or w > 2 * h or h > 3 * w:
-        #     continue
         x1 = x
         y1 = y
         x2 = x + w
         y2 = y + h
         rects.append((x1, y1, x2, y2))
 
+    # Min area relative to max area found
+    max_a = 0
+    for x1, y1, x2, y2 in rects:
+        a = (x2 - x1) * (y2 - y1)
+        max_a = max(max_a, a)
+    min_area = max_a * 0.005
+    max_area = 100000
+
     # Merge intersecting rectangles, filter, and sort by horizontal position
     merge_all(rects)
-    # rects = filter_rects(rects, min_area, max_area)
+    rects = filter_rects(rects, min_area, max_area)
     rects.sort(key=lambda rect: rect[0])
 
     # Draw bounding boxes
