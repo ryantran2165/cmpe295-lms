@@ -37,6 +37,6 @@ const assgSchema = new Schema({
 
 });
 
-const assgModel = mongoose.model('assgignments', assgSchema);
+const assgModel = mongoose.model('assignments', assgSchema);
 
 module.exports = assgModel;
