@@ -2,15 +2,15 @@ const userModel = require('../models/user.model');
 
 // Signup
 exports.signup = async(userReqData, result) => {
-    const username = userReqData.username;
-    const email = userReqData.email;
+    const username = userReqData.username.toLowerCase();
+    const email = userReqData.email.toLowerCase();
     const password = userReqData.password;
     const firstName = userReqData.firstName;
     const lastName = userReqData.lastName;
     const role = userReqData.role;
 
     try {
-        await userModel.create({
+        const newUser = await userModel.create({
             username,
             email,
             password,
@@ -19,8 +19,10 @@ exports.signup = async(userReqData, result) => {
             role
         });
 
+        const _id = newUser._id;
+
         // User signup successful
-        result(null, {status: true, message:"User Created", user:{username, email, role}});
+        result(null, {status: true, message:"User Created", user:{ _id, username, email,firstName, lastName, role}});
     }
     catch(err){
         result(null, {status: false, message:"User already exists", user:{username, email}}, err);
@@ -39,6 +41,7 @@ exports.login = async(userReqData, result) => {
 
         // Data to send upon login
         userData = {
+            _id: user._id,
             username,
             email: user.email,
             firstName: user.firstName,
