@@ -14,33 +14,11 @@ function Header () {
     return(
         <>
             <div className="header">
-                {/*<Navbar sticky='top' className='navbarLanding' expand="lg">
-                    <Container>
-                    <Navbar.Brand href="/">
-                        <img
-                        alt="logo"
-                        src={logo}
-                        width="100"
-                        height="100"
-                        className="d-inline-block align-top"
-                        />{' '}
-                    </Navbar.Brand>
-                    </Container>
-                </Navbar>
-                 <Container>
-                        <SignupButton />
-                    </Container>
-                <div className='headerText'>
-                  <p>Welcome to LMS</p>
-                </div>
-    <div className='footer'>All rights reserved © 2022</div>*/}
                 <a href='/' style={{ textDecoration: 'none' }}><div className='logo'><h1>LMS</h1></div></a>
                 <div className='landingHeaderNav'>
                     <a href="/">Home</a>
-                    <a href="#">About</a>
                     <a href="/signup">Register</a>
                     <a href="/login">Login</a>
-                    <a href="/qapage">QAPage</a>
                     {/*<a href="/reactsketch">Sketch</a>
                     <a href="/qapage">QAPage2</a>*/}
                 </div>

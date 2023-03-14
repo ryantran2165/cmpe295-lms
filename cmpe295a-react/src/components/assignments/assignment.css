@@ -40,6 +40,165 @@ https://www.w3schools.com/howto/howto_css_next_prev.asp
       background-color: #7f7fd5;
       border-radius: 0.625em;
     }
+
+    .questionSection p {
+      margin-bottom: 0.625em;
+      margin: 0;
+    }
+
+    .answerArea {
+      border: 0.0625em solid #bdbbbb;
+      padding: 0.625em;
+      border-radius: 0.3125em;
+      margin-right: 7em;
+      height: 36.375em;
+    }
+
+    .assignment-box{
+      position: absolute;
+      top:20%;
+      left: 15%;
+      box-shadow: 0em 0.125em 0.3125em #00000033;
+      border-radius: 0.3125em;
+      padding: 2.25em;
+      background-color: #fff;
+      border: 0.0625em solid #bdbbbb;
+    }
+
+    .assignment-box-head{
+      display: flex;
+      margin-bottom: 0.625em;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .assignment-box-head h2{
+      margin: 0;
+    }
+
+    .navigationButtons {
+      justify-content: flex-end;
+      display: flex;
+      align-items: center;
+    }
+    
+    .previousButton,
+    .nextButton {
+      margin-left: 0.625em;
+      border: none;
+      padding: 0.625em;
+      border-radius: 0.3125em;
+      transition: background-color 0.4s ease-in-out;
+      cursor: pointer;
+      color: #fff;
+      background-color: #7f7fd5;
+    }
+    
+    .previousButton[disabled],
+    .nextButton[disabled] {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+    
+    .previousButton:hover,
+    .nextButton:hover {
+      background-color: #888686;
+    }
+
+    .upload-box{
+      position: absolute;
+      bottom:-40%;
+      left: 30%;
+      box-shadow: 0em 0.125em 0.3125em #00000033;
+      border-radius: 0.3125em;
+      padding: 2.25em;
+      background-color: #fff;
+      border: 0.0625em solid #bdbbbb;
+    }
+
+     /*Assignment and quiz list styles start*/
+
+
+     .list-area-header {
+      justify-content: space-between;
+      display: flex;
+      margin-bottom: 0.625em;
+     }
+    
+     .list-area-header h4 {
+      margin: 0;
+     }
+
+     .list-area-header p {
+      margin-left: 7em;
+     }
+
+     .item-list {
+      color: #333;
+      padding: 1.25em;
+      /*background: linear-gradient(to bottom right, #7f7fd5, #86a8e7, #91eae4);*/
+      border-radius: 0.625em;
+      font-family: Arial, sans-serif;
+    }
+    
+    .item-list ul {
+      margin: 0;
+      list-style: none;
+      padding: 0;
+    }
+    
+    .item-list li {
+      display: block;
+      box-shadow: 0em 0.125em 0.3125em #00000033;
+      margin-bottom: 1.25em;
+      padding: 1.25em;
+      background-color: #fff;
+      border-radius: 0.3125em;
+    }
+    
+    .list-details p {
+      margin: 0;
+      margin-bottom: 0.625em;
+    }
+    
+    .list-details a {
+      text-decoration: none;
+      transition: background-color 0.3s ease-in-out;
+      display: inline-block;
+      color: #fff !important;
+      background-color: #747272;
+      padding: 0.3125em 0.625em;
+    }
+    
+    .list-details a:hover {
+      background-color: #555454;
+    }
+    
+    #backButton{
+      position: relative;
+      top: -3em;
+      left: -1em;
+    }
+
+    .courseinfo-list {
+      color: #282828;
+      padding: 1.25em;
+      background: snow;
+      border-radius: 0.625em;
+      font-family: Arial, sans-serif;
+      margin-left: 5em;
+    }
+
+    .courseinfo-list li {
+      display: block;
+      box-shadow: 0em 0.125em 0.3125em #00000033;
+      margin-bottom: 1.25em;
+      padding: 1.25em;
+      background: linear-gradient(to top, #7f7fd5, #86a8e7, #91eae4);
+      border-radius: 0.3125em;
+    }
+
+     /*Assignment and quiz list styles end*/
   }
 
 
@@ -84,6 +243,162 @@ https://www.w3schools.com/howto/howto_css_next_prev.asp
         color: #fafad2;
         background-color: #7f7fd5;  
       }
+
+      .questionSection p {
+        margin-bottom: 0.625em;
+        margin: 0;
+      }
+
+      .answerArea {
+        border: 0.0625em solid #bdbbbb;
+        padding: 0.625em;
+        border-radius: 0.3125em;
+        margin-right: 7em;
+        height: 36.375em;
+      }
+
+      .assignment-box{
+        box-shadow: 0em 0.125em 0.3125em #00000033;
+        border-radius: 0.3125em;
+        padding: 2.25em;
+        background-color: #fff;
+        border: 0.0625em solid #bdbbbb;
+      }
+
+      .assignment-box-head{
+        display: flex;
+        margin-bottom: 0.625em;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .assignment-box-head h2{
+        margin: 0;
+      }
+
+      .navigationButtons {
+        justify-content: flex-end;
+        display: flex;
+        align-items: center;
+      }
+      
+      .previousButton,
+      .nextButton {
+        margin-left: 0.625em;
+        border: none;
+        padding: 0.625em;
+        border-radius: 0.3125em;
+        transition: background-color 0.4s ease-in-out;
+        cursor: pointer;
+        color: #fff;
+        background-color: #7f7fd5;
+      }
+      
+      .previousButton[disabled],
+      .nextButton[disabled] {
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
+      
+      .previousButton:hover,
+      .nextButton:hover {
+        background-color: #888686;
+      }
+
+      .upload-box{
+        position: absolute;
+        bottom:-40%;
+        left: 30%;
+        box-shadow: 0em 0.125em 0.3125em #00000033;
+        border-radius: 0.3125em;
+        padding: 2.25em;
+        background-color: #fff;
+        border: 0.0625em solid #bdbbbb;
+      }
+
+       /*Assignment and quiz list styles start*/
+
+
+       .list-area-header {
+        justify-content: space-between;
+        display: flex;
+        margin-bottom: 0.625em;
+       }
+      
+       .list-area-header h2 {
+        margin: 0;
+       }
+
+       .list-area-header p {
+        margin-left: 7em;
+       }
+
+       .item-list {
+        color: #333;
+        padding: 1.25em;
+       /* background: linear-gradient(to bottom right, #7f7fd5, #86a8e7, #91eae4);*/
+        border-radius: 0.625em;
+        font-family: Arial, sans-serif;
+      }
+      
+      .item-list ul {
+        margin: 0;
+        list-style: none;
+        padding: 0;
+      }
+      
+      .item-list li {
+        display: block;
+        box-shadow: 0em 0.125em 0.3125em #00000033;
+        margin-bottom: 1.25em;
+        padding: 1.25em;
+        background-color: #fff;
+        border-radius: 0.3125em;
+      }
+      
+      .list-details p {
+        margin: 0;
+        margin-bottom: 0.625em;
+      }
+      
+      .list-details a {
+        text-decoration: none;
+        transition: background-color 0.3s ease-in-out;
+        display: inline-block;
+        color: #fff !important;
+        background-color: #747272;
+        padding: 0.3125em 0.625em;
+      }
+      
+      .list-details a:hover {
+        background-color: #555454;
+      }
+      
+      #backButton{
+        position: relative;
+        top: -3em;
+        left: 19em;
+      }
+
+      .courseinfo-list {
+        color: #282828;
+        padding: 1.25em;
+        background: snow;
+        border-radius: 0.625em;
+        font-family: Arial, sans-serif;
+        margin-left: 5em;
+      }
+
+      .courseinfo-list li {
+        display: block;
+        box-shadow: 0em 0.125em 0.3125em #00000033;
+        margin-bottom: 1.25em;
+        padding: 1.25em;
+        background: linear-gradient(to top, #7f7fd5, #86a8e7, #91eae4);
+        border-radius: 0.3125em;
+      }
+
+       /*Assignment and quiz list styles end*/
     }
 
 @media all and (min-width: 1200px){
@@ -126,6 +441,168 @@ https://www.w3schools.com/howto/howto_css_next_prev.asp
         color: #fafad2;
         background-color: #7f7fd5;
       }
+
+      /*QA Page styles start*/
+
+      .questionSection p {
+        margin-bottom: 0.625em;
+        margin: 0;
+      }
+
+      .answerArea {
+        border: 0.0625em solid #bdbbbb;
+        padding: 0.625em;
+        border-radius: 0.3125em;
+        margin-right: 7em;
+        height: 36.375em;
+      }
+
+      .assignment-box{
+        box-shadow: 0em 0.125em 0.3125em #00000033;
+        border-radius: 0.3125em;
+        padding: 2.25em;
+        background-color: #fff;
+        border: 0.0625em solid #bdbbbb;
+      }
+
+      .assignment-box-head{
+        display: flex;
+        margin-bottom: 0.625em;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .assignment-box-head h2{
+        margin: 0;
+      }
+
+      .navigationButtons {
+        justify-content: flex-end;
+        display: flex;
+        align-items: center;
+      }
+      
+      .previousButton,
+      .nextButton {
+        margin-left: 0.625em;
+        border: none;
+        padding: 0.625em;
+        border-radius: 0.3125em;
+        transition: background-color 0.4s ease-in-out;
+        cursor: pointer;
+        color: #fff;
+        background-color: #7f7fd5;
+      }
+      
+      .previousButton[disabled],
+      .nextButton[disabled] {
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
+      
+      .previousButton:hover,
+      .nextButton:hover {
+        background-color: #888686;
+      }
+
+      .upload-box{
+        position: absolute;
+        top:130%;
+        left: 30%;
+        box-shadow: 0em 0.125em 0.3125em #00000033;
+        border-radius: 0.3125em;
+        padding: 2.25em;
+        background-color: #fff;
+        border: 0.0625em solid #bdbbbb;
+      }
+
+       /*QA Page styles end*/
+
+       /*Assignment and quiz list styles start*/
+
+
+       .list-area-header {
+        justify-content: space-between;
+        display: flex;
+        margin-bottom: 0.625em;
+       }
+      
+       .list-area-header h4 {
+        margin: 0;
+       }
+
+       .list-area-header p {
+        margin-left: 7em;
+       }
+
+       .item-list {
+        color: #282828;
+        padding: 1.25em;
+        /*background: linear-gradient(to bottom right, #7f7fd5, #86a8e7, #91eae4);*/
+        border-radius: 0.625em;
+        font-family: Arial, sans-serif;
+      }
+
+      .courseinfo-list {
+        color: #282828;
+        padding: 1.25em;
+        background: snow;
+        border-radius: 0.625em;
+        font-family: Arial, sans-serif;
+        margin-left: 5em;
+      }
+      
+      .item-list ul, .courseinfo-list ul {
+        margin: 0;
+        list-style: none;
+        padding: 0;
+      }
+      
+      .item-list li {
+        display: block;
+        box-shadow: 0em 0.125em 0.3125em #00000033;
+        margin-bottom: 1.25em;
+        padding: 1.25em;
+        background-color: #fff;
+        border-radius: 0.3125em;
+      }
+
+      .courseinfo-list li {
+        display: block;
+        box-shadow: 0em 0.125em 0.3125em #00000033;
+        margin-bottom: 1.25em;
+        padding: 1.25em;
+        background: linear-gradient(to top, #7f7fd5, #86a8e7, #91eae4);
+        border-radius: 0.3125em;
+      }
+      
+      .list-details p {
+        margin: 0;
+        margin-bottom: 0.625em;
+      }
+
+      .list-details a {
+        text-decoration: none;
+        transition: background-color 0.3s ease-in-out;
+        display: inline-block;
+        color: #fff !important;
+        background-color: #747272;
+        padding: 0.3125em 0.625em;
+      }
+      
+      .list-details a:hover {
+        background-color: #555454;
+      }
+
+      #backButton{
+        position: relative;
+        top: -3em;
+        left: 21em;
+      }
+      
+
+
+       /*Assignment and quiz list styles end*/
     }
 
   

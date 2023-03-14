@@ -9,10 +9,11 @@
     reference for scrolling gradient
     https://codepen.io/MadeByMike/pen/eKPZZz
     */
+
     .backgroundDecoration {
         background-size: 100%;
         padding: 5.625em;
-        overflow: scroll;
+        overflow: auto;
         height: 200vh;
         width: auto;
         background: linear-gradient(to top right, #7f7fd5, #86a8e7 , #91eae4);
@@ -88,7 +89,7 @@ https://freefrontend.com/css-login-forms/
     
     .registerForm {
         display: block;
-        /*overflow: scroll;*/
+        overflow: scroll;
         position: fixed;
         left: 7.5em;
         height: 33.125em;
@@ -115,7 +116,7 @@ https://freefrontend.com/css-login-forms/
         top: 8.75em;
         color: #700cbc;
     }
-     input[type="password"], input[type="text"], input[type="email"] {
+     input[type="password"], input[type="text"], input[type="email"], input[type="date"] {
         border-radius: 0.375em;
         border: 0.0625em solid #bdbaba;
         margin-bottom: 1.25em;
@@ -140,7 +141,7 @@ https://freefrontend.com/css-login-forms/
     select:focus{
         border: 0.0625em solid #700cbc;
     }
-      input[type="password"]:focus, input[type="email"]:focus {
+      input[type="password"]:focus, input[type="email"]:focus, input[type="date"]:focus {
         border: 0.0625em solid #700cbc;
       }
       input[type="submit"] {
@@ -261,7 +262,7 @@ https://freefrontend.com/css-login-forms/
   .card h1 {
     color: #700cbc;
     font-size: 1.5em;
-    margin-bottom: 1.25em;
+    margin: 0.5em 1em 1.25em 1em;
   }
 
   .card p {
@@ -292,22 +293,22 @@ https://freefrontend.com/css-login-forms/
      */
 
      .leftnav {
-        background-color: #ffffffc6;
-        width: 6.25em;
-        height: 100%;
-        position: fixed;
+        /*background-color: #ffffffc6;*/
+       /* width: 7.25em;*/
+       /* height: 100%;*/
+        position: absolute;
         left: 0;
-        top: 0;
+        top: 5em;
         z-index: 1;
         overflow: scroll;
-        box-shadow: 0 0.3125em 0.4375em 0 #00000043, 0 0.375em 1.3125em 0 #00000043, 0 0.3125em 1.1875em 0 #00000043;
-        padding-top: 1.25em;
+        /*box-shadow: 0 0.3125em 0.4375em 0 #00000043, 0 0.375em 1.3125em 0 #00000043, 0 0.3125em 1.1875em 0 #00000043;*/
+        padding: 1.25em;
       }
       
       .leftnav a {
         display: block;
-        color: #6395f2 !important;
-        text-decoration: none;
+        color: #ffffff !important;
+        text-decoration: underline #ffffff  !important;
         font-size: 0.9375em;
         padding: 0.375em 0.5em 0.375em 1em;
       }
@@ -427,6 +428,130 @@ https://freefrontend.com/css-login-forms/
     display: block;
     }
 
+    #createCourse{
+        position: absolute;
+        left: 44%;
+        top: 50%;
+        display: block;
+    }
+
+    .createCourseFormHeading{
+        position: fixed;
+        left: 16em;
+        top: 8.75em;
+        color: #700cbc;
+    }
+
+    .createNewAssignmentForm {
+        display: block;
+        overflow: scroll;
+        position: fixed;
+        left: 7.5em;
+        height: 29.125em;
+        top: 13.625em;
+        width: 33.125em;
+        align-items: center;
+        border-radius: 0.625em;
+        flex-direction: column;
+        background-color: #ffffffb2;
+        box-shadow: 0 0.3125em 0.4375em 0 #00000043, 0 0.375em 1.3125em 0 #00000043, 0 0.3125em 1.1875em 0 #00000043;
+        padding: 1.875em;
+    }
+
+    .createNewQuizForm {
+        display: block;
+        /*overflow: scroll;*/
+        position: fixed;
+        left: 7.5em;
+        height: 20.125em;
+        top: 13.625em;
+        width: 36.25em;
+        align-items: center;
+        border-radius: 0.625em;
+        flex-direction: column;
+        background-color: #ffffffb2;
+        box-shadow: 0 0.3125em 0.4375em 0 #00000043, 0 0.375em 1.3125em 0 #00000043, 0 0.3125em 1.1875em 0 #00000043;
+        padding: 1.875em;
+    }
+
+    .createQuizFormHeading{
+        position: fixed;
+        left: 16em;
+        top: 8.75em;
+        color: #700cbc;
+    }
+
+    .listBackground{
+        background-size: 100%;
+        padding: 5.625em;
+        overflow: auto;
+        height: 100vh;
+        width: auto;
+        /*background: linear-gradient(to top right, #7f7fd5, #86a8e7 , #91eae4);*/
+        display: flex;
+        justify-content: center;
+        align-items:start;
+        flex-wrap: wrap; 
+        background-repeat: no-repeat;
+    }
+      
+    #getAssignments{
+        position: absolute;
+        left: 43%;
+        top: 29%;
+        display: block;
+    }
+
+    #createAssignment{
+        position: absolute;
+        left: 45%;
+        top: 44%;
+        display: block;
+    }
+
+     /*polaroid design for user profile start*/
+
+     .profile-details {
+        background-image:  linear-gradient(to  top right,#86a8e7, #91eae4) ;
+        /*transform: translateY(100%);
+        transition: transform 0.4s ease-out;*/
+        width: 100%;
+        text-align: center;
+        padding: 1.25em;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        box-sizing: border-box;
+        
+      }
+      
+     /* .profile:hover .profile-details {
+        transform: translateY(0);
+      }*/
+      
+      .profile-details h2 {
+        margin-top: 0;
+      }
+      
+      .profile-details p {
+        margin-bottom: 0.3125em;
+      }
+              
+      .profile {
+        position: relative;
+        top:22em;
+        right: 5em;
+        margin: 1.25em auto;
+        background-color: white;
+        width: 300px;
+        height: 400px;
+        overflow: hidden;
+        z-index: 9999;
+        box-shadow: 0.125em 0.125em 0.3125em #00000039;
+      }
+
+      /*polaroid design for user profile end*/
+
 }
 
 @media all and (min-width: 992px) and (max-width: 1199px){
@@ -440,10 +565,12 @@ https://freefrontend.com/css-login-forms/
     reference for scrolling gradient
     https://codepen.io/MadeByMike/pen/eKPZZz
     */
+
+
     .backgroundDecoration {
         background-size: 100%;
         padding: 5.625em;
-        overflow: scroll;
+        overflow: auto;
         height: 200vh;
         width: auto;
         background: linear-gradient(to top right, #7f7fd5, #86a8e7 , #91eae4);
@@ -531,6 +658,7 @@ https://freefrontend.com/css-login-forms/
   }
     
     .introText{
+        display: block;
         position: fixed;
         bottom: 7.5em;
         left: 4.375em;
@@ -617,7 +745,7 @@ https://freefrontend.com/css-login-forms/
     }
 
 
-    input[type="password"], input[type="text"], input[type="email"] {
+    input[type="password"], input[type="text"], input[type="email"], input[type="date"] {
         
         border-radius: 0.375em;
         border: 0.0625em solid #bdbaba;
@@ -628,7 +756,7 @@ https://freefrontend.com/css-login-forms/
         transition: all 0.4s ease-in-out;
         box-sizing: border-box;
       }
-      input[type="password"]:focus, input[type="email"]:focus {
+      input[type="password"]:focus, input[type="email"]:focus, input[type="date"]:focus {
         border: 0.0625em solid #700cbc;
       }
 
@@ -735,7 +863,7 @@ https://freefrontend.com/css-login-forms/
     .card h1 {
         color: #700cbc;
         font-size: 1.5em;
-        margin-bottom: 1.25em;
+        margin: 0.5em 1em 1.25em 1em;
       }
 
     .card p {
@@ -766,22 +894,22 @@ https://freefrontend.com/css-login-forms/
      */
 
      .leftnav {
-        background-color: #ffffffc6;
-        width: 6.25em;
-        height: 100%;
-        position: fixed;
+        /*background-color: #ffffffc6;*/
+       /* width: 7.25em;*/
+        /*height: 100%;*/
+        position: absolute;
         left: 0;
-        top: 0;
+        top: 5em;
         z-index: 1;
         overflow: scroll;
-        box-shadow: 0 0.3125em 0.4375em 0 #00000043, 0 0.375em 1.3125em 0 #00000043, 0 0.3125em 1.1875em 0 #00000043;
-        padding-top: 1.25em;
+        /*box-shadow: 0 0.3125em 0.4375em 0 #00000043, 0 0.375em 1.3125em 0 #00000043, 0 0.3125em 1.1875em 0 #00000043;*/
+        padding: 1.25em;
       }
       
       .leftnav a {
         display: block;
-        color: #6395f2 !important;
-        text-decoration: none;
+        color: #ffffff !important;
+        text-decoration: underline #ffffff  !important;
         font-size: 0.9375em;
         padding: 0.375em 0.5em 0.375em 1em;
       }
@@ -950,6 +1078,130 @@ https://freefrontend.com/css-login-forms/
     display: block;
     }
 
+    #createCourse{
+        position: absolute;
+        left: 44%;
+        top: 50%;
+        display: block;
+    }
+    
+    .createCourseFormHeading{
+        position: fixed;
+        left: 30.875em;
+        top: 8.75em;
+        color: #700cbc;
+    }
+
+    .createNewAssignmentForm {
+        display: block;
+        /*overflow: scroll;*/
+        position: fixed;
+        left: 23.125em;
+        height: 29.125em;
+        top: 13.625em;
+        width: 33.75em;
+        align-items: center;
+        border-radius: 0.625em;
+        flex-direction: column;
+        background-color: #ffffffb2;
+        box-shadow: 0 0.3125em 0.4375em 0 #00000043, 0 0.375em 1.3125em 0 #00000043, 0 0.3125em 1.1875em 0 #00000043;
+        padding: 1.875em;
+        
+    }
+
+    .createNewQuizForm {
+        display: block;
+        /*overflow: scroll;*/
+        position: fixed;
+        left: 23.125em;
+        height: 20.125em;
+        top: 13.625em;
+        width: 36.25em;
+        align-items: center;
+        border-radius: 0.625em;
+        flex-direction: column;
+        background-color: #ffffffb2;
+        box-shadow: 0 0.3125em 0.4375em 0 #00000043, 0 0.375em 1.3125em 0 #00000043, 0 0.3125em 1.1875em 0 #00000043;
+        padding: 1.875em;
+    }
+
+    .createQuizFormHeading{
+        position: fixed;
+        left: 30.875em;
+        top: 8.75em;
+        color: #700cbc;
+    }
+
+    .listBackground{
+        background-size: 100%;
+        padding: 5.625em;
+        overflow: auto;
+        height: 100vh;
+        width: auto;
+        /*background: linear-gradient(to top right, #7f7fd5, #86a8e7 , #91eae4);*/
+        display: flex;
+        justify-content: center;
+        align-items:start;
+        flex-wrap: wrap; 
+        background-repeat: no-repeat;
+    }
+      
+    #getAssignments{
+        position: absolute;
+        left: 43%;
+        top: 29%;
+        display: block;
+    }
+
+    #createAssignment{
+        position: absolute;
+        left: 45%;
+        top: 44%;
+        display: block;
+    }
+
+     /*polaroid design for user profile start*/
+
+     .profile-details {
+        background-image:  linear-gradient(to  top right,#86a8e7, #91eae4) ;
+        /*transform: translateY(100%);
+        transition: transform 0.4s ease-out;*/
+        width: 100%;
+        text-align: center;
+        padding: 1.25em;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        box-sizing: border-box;
+        
+      }
+      
+      /*.profile:hover .profile-details {
+        transform: translateY(0);
+      }*/
+      
+      .profile-details h2 {
+        margin-top: 0;
+      }
+      
+      .profile-details p {
+        margin-bottom: 0.3125em;
+      }
+              
+      .profile {
+        position: relative;
+        top: 22em;
+        right: 5em;
+        margin: 1.25em auto;
+        background-color: white;
+        width: 300px;
+        height: 400px;
+        overflow: hidden;
+        z-index: 9999;
+        box-shadow: 0.125em 0.125em 0.3125em #00000039;
+      }
+
+      /*polaroid design for user profile end*/
     
 
 }
@@ -969,7 +1221,7 @@ https://freefrontend.com/css-login-forms/
         
         background-size: 100%;
         padding: 5.625em;
-        overflow: scroll;
+        overflow: auto;
         height: 150vh;
         width: auto;
         background: linear-gradient(to top right, #7f7fd5, #86a8e7 , #91eae4);
@@ -1056,6 +1308,7 @@ https://freefrontend.com/css-login-forms/
   }
     
     .introText{
+        display: block;
         position: fixed;
         bottom: 7.5em;
         left: 4.375em;
@@ -1141,7 +1394,7 @@ https://freefrontend.com/css-login-forms/
     }
 
 
-    input[type="password"], input[type="text"], input[type="email"] {
+    input[type="password"], input[type="text"], input[type="email"], input[type="date"] {
         border-radius: 0.375em;
         border: 0.0625em solid #bdbaba;
         margin-bottom: 1.25em;
@@ -1151,7 +1404,7 @@ https://freefrontend.com/css-login-forms/
         transition: all 0.4s ease-in-out;
         box-sizing: border-box;
       }
-      input[type="password"]:focus, input[type="email"]:focus {
+      input[type="password"]:focus, input[type="email"]:focus, input[type="date"]:focus {
         border: 0.0625em solid #700cbc;
       }
       input[type="submit"],input[type="button"] {
@@ -1265,7 +1518,7 @@ https://freefrontend.com/css-login-forms/
   .card h1 {
     color: #700cbc;
     font-size: 1.5em;
-    margin-bottom: 1.25em;
+    margin: 0.5em 1em 1.25em 1em;
   }
 
   .card p {
@@ -1296,22 +1549,22 @@ https://freefrontend.com/css-login-forms/
      */
 
      .leftnav {
-        background-color: #ffffffc6;
-        width: 6.25em;
-        height: 100%;
-        position: fixed;
+        /*background-color: #ffffffc6;*/
+        /*width: 7.25em;*/
+        /*height: 100%;*/
+        position: absolute;
         left: 0;
-        top: 0;
-        z-index: 1;
+        top: 5.5em;
+        z-index: 0;
         overflow: scroll;
-        box-shadow: 0 0.3125em 0.4375em 0 #00000043, 0 0.375em 1.3125em 0 #00000043, 0 0.3125em 1.1875em 0 #00000043;
-        padding-top: 1.25em;
+        /*box-shadow: 0 0.3125em 0.4375em 0 #00000043, 0 0.375em 1.3125em 0 #00000043, 0 0.3125em 1.1875em 0 #00000043;*/
+        padding: 1.25em;
       }
       
       .leftnav a {
         display: block;
-        color: #6395f2 !important;
-        text-decoration: none;
+        color: #ffffff !important;
+        text-decoration: underline #ffffff  !important;
         font-size: 0.9375em;
         padding: 0.375em 0.5em 0.375em 1em;
       }
@@ -1404,11 +1657,11 @@ https://freefrontend.com/css-login-forms/
     .canvasbuttons{
         display: inline-block;
         vertical-align: top;
-        position: absolute;
-        top: 5.1875em;
-        left: 46.4375em;
+        position: relative;
+        top: -400px;
+        right: -1011px;
         overflow: scroll;
-        width: 60%;
+        width: 14%;
         z-index: 2;
     }
 
@@ -1430,9 +1683,9 @@ https://freefrontend.com/css-login-forms/
     }
     .brushcontrols{
         display: inline-block;
-        position: absolute;
-        bottom: 1.25em;
-        right: 14.6875em;
+        position: relative;
+        bottom: -1.75em;
+        right: -18.3125em;
         overflow: auto;
         z-index: 2;
 
@@ -1495,8 +1748,166 @@ https://freefrontend.com/css-login-forms/
         top: 40%;
         display: block;
     }
-      
 
+    #createCourse{
+        position: absolute;
+        left: 44%;
+        top: 50%;
+        display: block;
+    }
+
+    .createCourseFormHeading{
+        position: fixed;
+        left: 44em;
+        top: 8.75em;
+        color: #700cbc;
+    }
+
+    .homeInfo{
+        position: absolute;
+        left: 23em;
+        top: 6.5em;
+        padding: 1em;
+        font-size: 1em;
+        color: snow;
+        width: auto;
+        height: auto;
+        display: none;
+    }
+
+    .assignmentInfo{
+        position: absolute;
+        left: 23em;
+        top: 6.5em;
+        padding: 1em;
+        font-size: 1em;
+        color: snow;
+        width: auto;
+        height: auto;
+        display: none;
+    }
+
+    .quizInfo{
+        position: absolute;
+        left: 23em;
+        top: 6.5em;
+        padding: 1em;
+        font-size: 1em;
+        color: snow;
+        width: auto;
+        height: auto;
+        display: none;
+    }
+
+    .createNewAssignmentForm {
+        display: block;
+        /*overflow: scroll;*/
+        position: fixed;
+        left: 37.5em;
+        height: 29.125em;
+        top: 13.625em;
+        width: 36.25em;
+        align-items: center;
+        border-radius: 0.625em;
+        flex-direction: column;
+        background-color: #ffffffb2;
+        box-shadow: 0 0.3125em 0.4375em 0 #00000043, 0 0.375em 1.3125em 0 #00000043, 0 0.3125em 1.1875em 0 #00000043;
+        padding: 1.875em;
+    }
+
+    .createNewQuizForm {
+        display: block;
+        /*overflow: scroll;*/
+        position: fixed;
+        left: 37.5em;
+        height: 20.125em;
+        top: 13.625em;
+        width: 36.25em;
+        align-items: center;
+        border-radius: 0.625em;
+        flex-direction: column;
+        background-color: #ffffffb2;
+        box-shadow: 0 0.3125em 0.4375em 0 #00000043, 0 0.375em 1.3125em 0 #00000043, 0 0.3125em 1.1875em 0 #00000043;
+        padding: 1.875em;
+    }
+
+    .listBackground{
+        background-size: 100%;
+        padding: 5.625em;
+        overflow: auto;
+        height: 100vh;
+        width: auto;
+        /*background: linear-gradient(to top right, #7f7fd5, #86a8e7 , #91eae4);*/
+        display: flex;
+        justify-content: center;
+        align-items:start;
+        flex-wrap: wrap; 
+        background-repeat: no-repeat;
+    }
+      
+    #getAssignments{
+        position: absolute;
+        left: 93%;
+        top: 29%;
+        display: block;
+    }
+
+    #createAssignment{
+        position: absolute;
+        left: 102%;
+        top: 44%;
+        display: block;
+    }
+
+    .createQuizFormHeading{
+        position: fixed;
+        left: 46em;
+        top: 8.75em;
+        color: #700cbc;
+    }
+
+    /*polaroid design for user profile start*/
+
+    .profile-details {
+        background-image:  linear-gradient(to  top right,#86a8e7, #91eae4) ;
+        /*transform: translateY(100%);
+        transition: transform 0.4s ease-out;*/
+        width: 100%;
+        text-align: center;
+        padding: 1.25em;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        box-sizing: border-box;
+        
+      }
+      
+      /*.profile:hover .profile-details {
+        transform: translateY(0);
+      }*/
+      
+      .profile-details h2 {
+        margin-top: 0;
+      }
+      
+      .profile-details p {
+        margin-bottom: 0.3125em;
+      }
+              
+      .profile {
+        position: absolute;
+        top:22em;
+        right: 5em;
+        margin: 1.25em auto;
+        background-color: white;
+        width: 300px;
+        height: 400px;
+        overflow: hidden;
+        z-index: 9999;
+        box-shadow: 0.125em 0.125em 0.3125em #00000039;
+      }
+
+      /*polaroid design for user profile end*/
 
 
 }

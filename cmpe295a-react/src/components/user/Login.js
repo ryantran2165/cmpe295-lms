@@ -29,7 +29,8 @@ function LoginForm() {
                                     email:response.data.userData.email, 
                                     role:response.data.userData.role,
                                     firstName:response.data.userData.firstName,
-                                    lastName:response.data.userData.lastName}});
+                                    lastName:response.data.userData.lastName,
+                                    userId:response.data.userData._id}});
           
           else{
             alert("Username and password does not match!!");
@@ -45,6 +46,7 @@ function LoginForm() {
   const handleCancel = () => {
     setUsername('');
     setPassword('');
+    history("/");
   };
 
   const handleUnameChange = (event) => {

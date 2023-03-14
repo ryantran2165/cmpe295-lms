@@ -74,6 +74,7 @@ function SignupForm() {
     setLname('');
     setUname('');
     setRole('');
+    history("/");
   };
 
   const handleEmailChange = (event) => {

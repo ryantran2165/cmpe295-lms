@@ -1,5 +1,5 @@
 import React, {useState,useRef} from 'react';
-import {useLocation} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import UserHeader from '../common/UserHeader';
 import Book from '../common/images/book.svg';
 import axios from 'axios';
@@ -10,18 +10,23 @@ https://www.quackit.com/css/grid/tutorial/create_a_responsive_grid.cfm  */}
 
 
 function UserDashBoard() {
-    const accountOverlay = useRef(null);
-    const settingsOverlay = useRef(null);
+
+    const[cname, setCname] = useState('');
+    const[cdes, setCdes] = useState('');
     const getCoursesButton = useRef(null);
+    const createCourseButton = useRef(null);
+    const createCourseForm = useRef(null);
     const courseCards = useRef(null);
     const location = useLocation();
+    const [currentCourse, setCurrentCourse] = useState();
     const [courseList, setCourseList] = useState([]);
     const [user, setUser] = useState({
                 firstName: location.state.firstName,
                 lastName: location.state.lastName,
                 userName: location.state.userName,
                 email: location.state.email,
-                role: location.state.role
+                role: location.state.role,
+                userId:location.state.userId
         });
 
     const getCourses = () =>{
@@ -29,6 +34,8 @@ function UserDashBoard() {
         .then(function (response) {
             setCourseList(response.data);
             getCoursesButton.current.style.display = 'none';
+            if(user.role ==='teacher')
+                createCourseButton.current.style.display='none';
             courseCards.current.style.display = 'contents';
           })
           .catch(function (error) {
@@ -36,47 +43,82 @@ function UserDashBoard() {
           });
     }
 
-    
+    const showCreateCourseForm = () =>{
+        createCourseForm.current.style.display='block';
+        getCoursesButton.current.style.display='none';
+        if(user.role ==='teacher')
+            createCourseButton.current.style.display='none';
+    }
 
-    const closeAccountOverlay = () => {
-        accountOverlay.current.style.display = 'none';
-        console.log("close  account");
+    const createCourse = async(event) =>{
+        event.preventDefault();
+        event.stopPropagation();
+        if(cname.trim().length === 0 || cdes.trim().length === 0 ){
+          alert("One or more form fields are empty, please fill out !");
+        }
+        else{
+            axios.post('http://localhost:3001/api/v1/courses/', {
+              name: cname,
+              instructor: user.userId
+            })
+            .then(function (response) {
+              if(response.data.status === true)
+              {
+                createCourseForm.current.style.display='none';
+                getCoursesButton.current.style.display='block';
+                if(user.role ==='teacher')
+                  createCourseButton.current.style.display='block';
+                alert("New course created successfully");
+              }
+              
+              else{
+                alert("Course creation failed! ");
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+          }
     }
-    const openAccountOverlay = () => {
-        accountOverlay.current.style.display = 'block';
-        console.log("open account");
+
+    const handleCancel = () => {
+        setCname('');
+        setCdes('');
+        createCourseForm.current.style.display='none';
+        getCoursesButton.current.style.display='block';
+        createCourseButton.current.style.display='block';
+      };
+    
+      const handleCnameChange = (event) => {
+        setCname(event.target.value);
+      };
+    
+      const handleCdesChange = (event) => {
+        setCdes(event.target.value);
+      };
+
+     const history = useNavigate();
+
+      const gotoCourse = (course_name,course_id,course_instructor_firstName,course_instructor_lastName,course_instructor_email) =>{
+        history("/CourseHome",{state:{userName:user.userName,
+            email:user.email, 
+            role:user.role,
+            firstName:user.firstName,
+            lastName:user.lastName,
+            userId: user.userId,
+            cname:course_name,
+            cid:course_id,
+            instructorFname:course_instructor_firstName,
+            instructorLname:course_instructor_lastName,
+            instructorEmail:course_instructor_email}});
     }
-    const closeSettingsOverlay = () => {
-        settingsOverlay.current.style.display = 'none';
-        console.log("close setting");
-    }
-    const openSettingsOverlay = () => {
-        settingsOverlay.current.style.display = 'block';
-        console.log("open setting");
-    }
+
     return (
      <>
         <div className="backgroundDecoration">
                     <UserHeader user={user}/>
-                    <span id="getCourses" ref={getCoursesButton}><input type="button" value="See current courses" onClick={getCourses}/></span>
-                    {/*<div className="leftnav">
-                        <a onClick={openAccountOverlay}>Account</a>
-                        <a href='/userdashboard'>Dashboard</a>
-                        <a onClick={openSettingsOverlay}>Settings</a>
-                        <a href='/'>Home</a>
-                    </div>
-                    <div  className="leftnavOverlay" ref={accountOverlay}>
-                        <a className="crossmark" onClick={closeAccountOverlay}>&times;</a>
-                            <FaRegUserCircle size={70}/> 
-                        <p>Name: {user.firstName} {user.lastName}<br/>
-                        Username: {user.userName}<br/>
-                        Role: {user.role}<br/>
-                        Email: {user.email}<br/></p>
-                    </div>
-                    <div  className="leftnavOverlay" ref={settingsOverlay}>
-                        <a className="crossmark" onClick={closeSettingsOverlay}>&times;</a>
-                        <FaRegUserCircle/>
-                    </div>*/}
+                    <span id="getCourses" ref={getCoursesButton}><input type="button" value="See Current Courses" onClick={getCourses}/></span>
+                    {user.role === 'teacher' && <span id="createCourse" ref={createCourseButton}><input type="button" value="Create Course" onClick={showCreateCourseForm}/></span>}
                     {/*looping array of objects code reference from
                     https://www.javatpoint.com/loop-array-in-reactjs
 
@@ -87,12 +129,21 @@ function UserDashBoard() {
                         courseList.map((course,index) => 
                             <div className="card">
                                 <img src={Book} alt="Image"/>
-                                <a href='#'><h1>{course.name}</h1></a>
-                                <a href='#'><p>{course._id}</p></a>
+                                <a href='' onClick={()=>gotoCourse(course.name,course._id,course.instructor.firstName,course.instructor.lastName,course.instructor.email)}><h1>{course.name}</h1></a>
+                                <a href='' onClick={()=>gotoCourse(course.name,course._id,course.instructor.firstName,course.instructor.lastName,course.instructor.email)}><p>{course._id}</p></a>
                             </div>
                         )
                         
                     }
+                    </span>
+                    <span style={{display:'none'}} ref={createCourseForm} className="createCourse">
+                        <div className="createCourseFormHeading"><h1>Add New Course</h1></div>
+                        <form className="loginForm" onSubmit={createCourse}>
+                            <input type="text" name="cname" placeholder="Course name" value = {cname} onChange={handleCnameChange} />
+                            <input type="text" name="cdes" placeholder="Course Decsription" value = {cdes} onChange={handleCdesChange} />
+                            <input type="submit" id='button1' value="Create"/>
+                            <input type="reset" id='button2' value="Cancel" onClick={handleCancel}/>
+                        </form>
                     </span>
         </div>
      </>

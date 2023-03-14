@@ -1,14 +1,8 @@
 import React, {useState} from 'react';
-import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button';
-import logo from './logo.svg';
-import SignupButton from './Buttons';
-import styles from './Common.css';
 import UserProfile from '../user/UserProfile';
 import { FaRegUserCircle } from "react-icons/fa";
 import {useNavigate} from 'react-router-dom';
-import computer from './images/children-computer.svg';
-import callout from './images/nicubunu_Callout_rounded_rectangle_center.svg';
+
 
 
 
@@ -24,7 +18,8 @@ function UserHeader (user) {
             email:user.user.email, 
             role:user.user.role,
             firstName:user.user.firstName,
-            lastName:user.user.lastName}});
+            lastName:user.user.lastName,
+            userId: user.user.userId}});
     }
 
     return(

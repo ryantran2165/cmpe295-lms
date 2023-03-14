@@ -5,8 +5,7 @@ import LoginForm from "./components/user/Login";
 import ReactCanvas from "./components/common/ReactCanvas";
 import ReactSketch from "./components/common/ReactSketch";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import HomePage from "./components/user/Home";
-import QAPage from "./components/assignments/QAPage";
+import QAPage2 from "./components/assignments/QAPage2";
 import CourseHome from "./components/dashboard/CourseHome";
 import UserDashBoard from "./components/dashboard/UserDashBoard";
 
@@ -26,11 +25,8 @@ function App() {
                     <Route path="userdashboard" 
                         element={<UserDashBoard />} /> 
 
-                    <Route path="qapage" 
-                        element={<QAPage />} />
-
-                    {/*<Route path="qapage2" 
-                        element={<QAPage2 />} />*/}
+                    <Route path="qapage2" 
+                        element={<QAPage2 />} />
                     
                     <Route path="coursehome" 
                         element={<CourseHome />} />
