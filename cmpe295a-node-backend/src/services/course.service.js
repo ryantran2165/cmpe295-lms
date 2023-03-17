@@ -27,7 +27,7 @@ exports.createCourse = async (reqData, result) => {
 exports.getAll = async (result) => {
 
     try{
-        const courses = await courseModel.find().populate('instructor');
+        const courses = await courseModel.find().populate('instructor').populate('students');
         result(null, courses);
     }
     catch(err){
@@ -44,6 +44,18 @@ exports.getInstrCourses = async (instructorID, result) => {
     }
     catch(err){
         result(null, err);
+    }
+}
+
+// Enroll
+exports.enroll = async(courseID, student, result) => {
+
+    try{
+        await courseModel.findByIdAndUpdate(courseID, {$push: {students: student}})
+        result(null, {status: true, message: "Student Enrolled"});
+    }
+    catch(err){
+        result(null, {status: false, message: "Could not enroll student in course", err});
     }
 }
 

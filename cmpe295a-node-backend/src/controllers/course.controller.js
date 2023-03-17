@@ -52,4 +52,24 @@ exports.getInstrCourses = (req, res) => {
     })
 }
 
+// Student Enroll
+exports.enroll = (req,res) => {
+    console.log("\nSTUDENT: ", req.body.student, " ENROLLING INTO COURSE: ", req.params.courseID);
+
+    courseService.enroll(req.params.courseID, req.body.student, (err, result) => {
+        if(err){
+            console.log(err);
+            res.status(400).send(result);
+        }
+        if(result.status == true){
+            console.log(result);
+            res.status(200).send(result);
+        }
+        else{
+            console.log("Already Enrolled");
+            res.status(404).send(result);
+        }
+    })
+}
+
 // Get Student Courses

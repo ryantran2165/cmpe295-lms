@@ -13,6 +13,9 @@ router.get('/', courseController.getAll);
 // Get Instructor Courses   GET
 router.get('/byinstructor/:instructorID', courseController.getInstrCourses);
 
+// Enroll Course            PUT
+router.put('/enroll/:courseID', courseController.enroll);
+
 // Get Student Courses      GET
 // router.get('/bystudent/:student_ID', courseController.getStudentCourses);
 
