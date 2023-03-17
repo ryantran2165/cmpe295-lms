@@ -10,10 +10,10 @@ router.post('/', assgController.createAssg);
 // Get All              GET
 router.get('/', assgController.getAll);
 
-// Get Course Assgs     GET
-//router.get('/bycourse/:course_ID', assgController.getCourseAssgs);
-
 // Get Assignment       GET
-//router.get('/:assg_ID', assgController.getAssg);
+router.get('/:assgID', assgController.getAssignment);
+
+// Get Course Assgs     GET
+router.get('/bycourse/:courseID', assgController.getCourseAssgs);
 
 module.exports = router;

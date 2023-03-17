@@ -1,3 +1,4 @@
+const assgModel = require('../models/assg.model');
 const AssgModel = require('../models/assg.model');
 
 // Create Assignment
@@ -44,5 +45,25 @@ exports.getAll = async (result) => {
 }
 
 // Get Assignment
+exports.getAssignment = async(assgID , result) => {
+
+    try{
+        const assignment = await assgModel.findById(assgID);
+        result(null, assignment);
+    }
+    catch(err){
+        result(null, err);
+    }
+}
 
 // Get Course Assignments
+exports.getCourseAssgs = async(courseID , result) => {
+
+    try{
+        const assignments = await assgModel.find({course: courseID});
+        result(null, assignments);
+    }
+    catch(err){
+        result(null, err);
+    }
+}
