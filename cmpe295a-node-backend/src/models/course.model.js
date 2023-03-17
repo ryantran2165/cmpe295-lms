@@ -16,6 +16,9 @@ const courseSchema = new Schema({
     },
     students:{
         type: Array,
+    },
+    description: {
+        type: String,
     }
 })
 

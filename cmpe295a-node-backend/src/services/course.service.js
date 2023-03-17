@@ -6,12 +6,14 @@ exports.createCourse = async (reqData, result) => {
     const name = reqData.name
     const instructor = reqData.instructor;
     const students = reqData.students;
+    const description = reqData.description;
 
     try{
         await courseModel.create({
             name, 
             instructor,
-            students
+            students,
+            description
         });
 
         result(null, {status: true, payload:reqData, message: "Course Created"});
