@@ -37,5 +37,19 @@ exports.getAll = (req, res) => {
 }
 
 // Get Instructor Courses
+exports.getInstrCourses = (req, res) => {
+    console.log("\nGET INSTRUCTOR COURSES FOR: ", req.params.instructorID);
+
+    courseService.getInstrCourses(req.params.instructorID, (err, result) => {
+        if(err){
+            console.log(err);
+            res.status(400).send(result)
+        }
+        else{
+            console.log(result);
+            res.status(200).send(result);
+        }
+    })
+}
 
 // Get Student Courses

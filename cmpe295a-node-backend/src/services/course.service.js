@@ -36,5 +36,15 @@ exports.getAll = async (result) => {
 }
 
 // Get Instructor Courses
+exports.getInstrCourses = async (instructorID, result) => {
+
+    try{
+        const courses = await courseModel.find({instructor: instructorID})
+        result(null, courses);
+    }
+    catch(err){
+        result(null, err);
+    }
+}
 
 // Get Student Courses

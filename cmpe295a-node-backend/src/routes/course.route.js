@@ -11,7 +11,7 @@ router.post('/', courseController.createCourse);
 router.get('/', courseController.getAll);
 
 // Get Instructor Courses   GET
-// router.get('/byinstructor/:instructor_ID', courseController.getInstrCourses);
+router.get('/byinstructor/:instructorID', courseController.getInstrCourses);
 
 // Get Student Courses      GET
 // router.get('/bystudent/:student_ID', courseController.getStudentCourses);
