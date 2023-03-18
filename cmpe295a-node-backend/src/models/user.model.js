@@ -30,7 +30,11 @@ const userSchema = new Schema({
     role:{
         type: String,
         required: true
-    }
+    },
+    courses:[{ 
+        type : mongoose.Schema.Types.ObjectId, 
+        ref: 'courses' 
+    }]
 });
 
 // Hash the password

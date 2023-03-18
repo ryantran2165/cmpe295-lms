@@ -16,7 +16,7 @@ exports.signup = async(userReqData, result) => {
             password,
             firstName,
             lastName,
-            role
+            role,
         });
 
         const _id = newUser._id;
@@ -35,7 +35,7 @@ exports.login = async(userReqData, result) => {
     const password = userReqData.password;
 
     try{
-        const user = await userModel.findOne({username:username});
+        const user = await userModel.findOne({username:username}).populate('courses');
 
         const validate = await user.isValid(password);
 
@@ -46,7 +46,8 @@ exports.login = async(userReqData, result) => {
             email: user.email,
             firstName: user.firstName,
             lastName: user.lastName,
-            role: user.role
+            role: user.role,
+            courses: user.courses
         }
 
         // Wrong password

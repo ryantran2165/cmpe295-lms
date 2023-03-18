@@ -1,5 +1,5 @@
 const courseModel = require('../models/course.model');
-
+const userModel = require('../models/user.model');
 // Create Course
 exports.createCourse = async (reqData, result) => {
 
@@ -51,7 +51,8 @@ exports.getInstrCourses = async (instructorID, result) => {
 exports.enroll = async(courseID, student, result) => {
 
     try{
-        await courseModel.findByIdAndUpdate(courseID, {$push: {students: student}})
+        await courseModel.findByIdAndUpdate(courseID, {$push: {students: student}}); // Add student to course
+        await userModel.findByIdAndUpdate(student, {$push: {courses: courseID}}); // Add course to student
         result(null, {status: true, message: "Student Enrolled"});
     }
     catch(err){
