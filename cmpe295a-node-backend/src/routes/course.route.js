@@ -17,6 +17,6 @@ router.get('/byinstructor/:instructorID', courseController.getInstrCourses);
 router.put('/enroll/:courseID', courseController.enroll);
 
 // Get Student Courses      GET
-// router.get('/bystudent/:student_ID', courseController.getStudentCourses);
+router.get('/bystudent/:studentID', courseController.getStudentCourses);
 
 module.exports = router;

@@ -39,7 +39,7 @@ exports.getAll = async (result) => {
 exports.getInstrCourses = async (instructorID, result) => {
 
     try{
-        const courses = await courseModel.find({instructor: instructorID})
+        const courses = await courseModel.find({instructor: instructorID}).populate('instructor').populate('students');
         result(null, courses);
     }
     catch(err){
@@ -61,3 +61,19 @@ exports.enroll = async(courseID, student, result) => {
 }
 
 // Get Student Courses
+exports.getStudentCourses = async (studentID, result) => {
+
+    try{
+        const coursesData = await userModel.findById(studentID).populate({
+            path : 'courses',
+            // populate : {
+            //   path : 'instructor'
+            // }
+          });
+        stuCourses = coursesData.courses;
+        result(null, stuCourses);
+    }
+    catch(err){
+        result(null, err);
+    }
+}

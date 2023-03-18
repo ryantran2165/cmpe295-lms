@@ -73,3 +73,17 @@ exports.enroll = (req,res) => {
 }
 
 // Get Student Courses
+exports.getStudentCourses = (req, res) => {
+    console.log("\nGET STUDENT COURSES FOR: ", req.params.studentID);
+
+    courseService.getStudentCourses(req.params.studentID, (err, result) => {
+        if(err){
+            console.log(err);
+            res.status(400).send(result)
+        }
+        else{
+            console.log(result);
+            res.status(200).send(result);
+        }
+    })
+}
