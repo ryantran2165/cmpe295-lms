@@ -21,7 +21,11 @@ const quizSchema = new Schema({
         // type: Date,
         type: String,
         required: true,
-    }
+    },
+    questions:{
+        type: Array,
+        required: true,
+    },
 })
 
 const quizModel = mongoose.model("quizzes", quizSchema);

@@ -7,6 +7,7 @@ exports.createQuiz = async (reqData, result) => {
     const course = reqData.course;
     const points = reqData.points;
     const dueDate = reqData.dueDate;
+    const questions = reqData.questions;
 
     try{
 
@@ -14,13 +15,14 @@ exports.createQuiz = async (reqData, result) => {
             name,
             course,
             points,
-            dueDate
+            dueDate,
+            questions
         });
 
         result(null,  {status: true, payload:reqData, message: "Quiz Created"})
     }
     catch(err){
-        result(null,  {status: true, message: "Quiz Exists"}, err);
+        result(null,  {status: false, message: "Quiz not created", error: err}, err);
     }
 }
 
@@ -36,3 +38,12 @@ exports.getAll = async (result) => {
 }
 
 // Get Course Quizzes
+exports.getCourseQuizzes = async (courseID, result) => {
+    try{
+        const quizzes = await quizModel.find({course: courseID}).populate("course");
+        result(null, quizzes);
+    }
+    catch(err){
+        result(null, err);
+    }
+}

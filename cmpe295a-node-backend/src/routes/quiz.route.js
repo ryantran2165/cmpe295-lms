@@ -11,6 +11,6 @@ router.post('/', quizController.createQuiz);
 router.get('/', quizController.getAll);
 
 // Get Course Quizzes      GET
-// router.get('/bycourse/:course_ID', quizController.getCourseQuizzes);
+router.get('/bycourse/:courseID', quizController.getCourseQuizzes);
 
 module.exports = router;

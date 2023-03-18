@@ -14,7 +14,7 @@ exports.createQuiz = (req, res) => {
             res.status(200).send(result);
         }
         else{
-            console.log("Quiz already exists");
+            console.log("Error creating quiz");
             res.status(404).send(result);
         }
     })
@@ -37,3 +37,17 @@ exports.getAll = (req, res) => {
 }
 
 // Get Course Quizzes     
+exports.getCourseQuizzes = (req, res) => {
+    console.log("\nGET COURSE QUIZZES FOR: ", req.params.courseID);
+
+    quizService.getCourseQuizzes(req.params.courseID, (err, result) => {
+        if(err){
+            console.log(err);
+            res.status(400).send(result);
+        }
+        else{
+            console.log(result);
+            res.status(200).send(result);
+        }
+    })
+}
