@@ -67,3 +67,19 @@ exports.getCourseAssgs = (req, res) => {
         }
     })
 }
+
+// Submit Assignment
+exports.submitAssg = (req, res) => {
+    console.log("\nSUBMITTING FOR ASSIGNMENT: ", req.params.assgID);
+
+    assgService.submitAssg(req.params.assgID, req, (err, result) =>{
+        if(err){
+            console.log(err);
+            res.status(400).send(result);
+        }
+        else{
+            console.log(result);
+            res.status(200).send(result);
+        }
+    })
+}

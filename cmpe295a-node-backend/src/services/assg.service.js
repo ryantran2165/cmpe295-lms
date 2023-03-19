@@ -1,5 +1,6 @@
 const assgModel = require('../models/assg.model');
-const AssgModel = require('../models/assg.model');
+const assgSubmissionModel = require('../models/assgSubmission.model');
+const s3 = require('../s3/upload');
 
 // Create Assignment
 exports.createAssg = async (reqData, result) => {
@@ -13,7 +14,7 @@ exports.createAssg = async (reqData, result) => {
     const instructions = reqData.instructions;
 
     try{
-        await AssgModel.create({
+        await assgModel.create({
             name,
             course,
             points,
@@ -36,7 +37,7 @@ exports.createAssg = async (reqData, result) => {
 exports.getAll = async (result) => {
 
     try{
-        const assgs = await AssgModel.find().populate('course');
+        const assgs = await assgModel.find().populate('course');
         result(null, assgs);
     }
     catch(err){
@@ -65,5 +66,32 @@ exports.getCourseAssgs = async(courseID , result) => {
     }
     catch(err){
         result(null, err);
+    }
+}
+
+// Submit Assignment
+exports.submitAssg = async(assignment, req, result) => {
+
+    const { student, answer, score, dateSubmitted } = req.body;
+
+    // S3 File
+    const fileURL = await req.file.location;
+    console.log(req.file.location)
+
+    try{
+        
+       await assgSubmissionModel.create({ 
+            assignment, 
+            student, 
+            fileURL, 
+            answer, 
+            score,
+            dateSubmitted 
+        });
+
+        result(null, {status: true, payload:req.body, file: fileURL, message: "Assignment Submitted"});
+    }
+    catch(err){
+        result(null, {status: false, message:"Error Submitting", err});
     }
 }
