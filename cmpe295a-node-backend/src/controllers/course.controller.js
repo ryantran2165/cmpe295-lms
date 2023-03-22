@@ -66,7 +66,7 @@ exports.enroll = (req,res) => {
             res.status(200).send(result);
         }
         else{
-            console.log("Already Enrolled");
+            console.log(result);
             res.status(404).send(result);
         }
     })

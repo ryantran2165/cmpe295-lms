@@ -33,7 +33,7 @@ const userSchema = new Schema({
     },
     courses:[{ 
         type : mongoose.Schema.Types.ObjectId, 
-        ref: 'courses' 
+        ref: 'courses'
     }]
 });
 

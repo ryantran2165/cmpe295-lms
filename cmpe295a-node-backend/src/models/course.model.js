@@ -16,7 +16,7 @@ const courseSchema = new Schema({
     },
     students:[{ 
         type : mongoose.Schema.Types.ObjectId, 
-        ref: 'user' 
+        ref: 'user'
     }],
 
     description: {

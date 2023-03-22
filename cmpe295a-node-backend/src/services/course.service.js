@@ -9,12 +9,14 @@ exports.createCourse = async (reqData, result) => {
     const description = reqData.description;
 
     try{
-        await courseModel.create({
+        course = await courseModel.create({
             name, 
             instructor,
             students,
             description
         });
+
+        await userModel.findByIdAndUpdate(instructor, {$push: {courses: course._id}}); // Add course to instructor's courses list
 
         result(null, {status: true, payload:reqData, message: "Course Created"});
     }
@@ -51,9 +53,17 @@ exports.getInstrCourses = async (instructorID, result) => {
 exports.enroll = async(courseID, student, result) => {
 
     try{
-        await courseModel.findByIdAndUpdate(courseID, {$push: {students: student}}); // Add student to course
-        await userModel.findByIdAndUpdate(student, {$push: {courses: courseID}}); // Add course to student
-        result(null, {status: true, message: "Student Enrolled"});
+
+        courseToEnroll = await courseModel.findById(courseID);
+        
+        if(courseToEnroll.students.includes(student)){
+            result(null, {status: false, message: "Error: Student already Enrolled"});
+        }
+        else{
+            await courseModel.findByIdAndUpdate(courseID, {$push: {students: student}}); // Add student to course
+            await userModel.findByIdAndUpdate(student, {$push: {courses: courseID}}); // Add course to student
+            result(null, {status: true, message: "Student Enrolled"});
+        }
     }
     catch(err){
         result(null, {status: false, message: "Could not enroll student in course", err});
@@ -64,14 +74,9 @@ exports.enroll = async(courseID, student, result) => {
 exports.getStudentCourses = async (studentID, result) => {
 
     try{
-        const coursesData = await userModel.findById(studentID).populate({
-            path : 'courses',
-            // populate : {
-            //   path : 'instructor'
-            // }
-          });
-        stuCourses = coursesData.courses;
-        result(null, stuCourses);
+
+        courses = await courseModel.find({'students': studentID}).populate('instructor');
+        result(null, courses);
     }
     catch(err){
         result(null, err);
