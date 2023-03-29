@@ -33,7 +33,7 @@ function QuizPage() {
   const[name, setName] = useState('');
   const[points, setPoints] = useState('');
   const[dueDate, setDuedate] = useState('');
-  const [quizQuestions, setQuizQuestions] = useState([{ question: "", points: "", solution: ""}]);
+  const [quizQuestions, setQuizQuestions] = useState([{ question: "", points: "", solution: "", testcases: [{testCaseInput: "", testCaseOutput: ""}]}]);
   const [quizList, setQuizList] = useState([]);
   const [quizQuestionsList, setQuizQuestionsList] = useState([]);
   
@@ -61,10 +61,10 @@ function QuizPage() {
     setName('');
     setPoints('');
     setDuedate('');
-    setQuizQuestions([{ question: "", points: "", solution: ""}]);
+    setQuizQuestions([{ question: "", points: "", solution: "", testcases: [{testCaseInput: "", testCaseOutput: ""}]}]);
     getAssignmentsButton.current.style.display = 'contents';
     createAssignmentForm.current.style.display = 'none';
-    if(user.user.role ==='teacher')
+    if(user.role ==='teacher')
     createAssignmentButton.current.style.display='contents';
     currentAssignments.current.style.display = 'none';
   };
@@ -72,7 +72,7 @@ function QuizPage() {
   const backHome = () => {
     getAssignmentsButton.current.style.display = 'contents';
     createAssignmentForm.current.style.display = 'none';
-    if(user.user.role ==='teacher')
+    if(user.role ==='teacher')
     createAssignmentButton.current.style.display='contents';
     currentAssignments.current.style.display = 'none';
   };
@@ -96,13 +96,34 @@ function QuizPage() {
   }
 
 var addQuestion = () => {
-    setQuizQuestions([...quizQuestions, { question: "", points: "", solution: ""}]);
+    setQuizQuestions([...quizQuestions, { question: "", points: "", solution: "", testcases: [{testCaseInput: "", testCaseOutput: ""}]}]);
   }
 
 var removeQuestion = (i) => {
     var newquizQuestions = [...quizQuestions];
     newquizQuestions.splice(i, 1);
     setQuizQuestions(newquizQuestions);
+}
+
+var handleTestcaseChange = (index1, index2, e) => {
+  var newquizQuestions = [...quizQuestions];
+  newquizQuestions[index1].testcases[index2][e.target.name] = e.target.value;
+  setQuizQuestions(newquizQuestions);
+}
+
+var addTestCase = (index1) => {
+  const newTestCase = { testCaseInput: "", testCaseOutput: "" };
+  const updatedTestCases = [...quizQuestions[index1].testcases, newTestCase];
+  const updatedQuizQuestions = {...quizQuestions[index1], testcases: updatedTestCases}
+  const newQuizQuestions = [...quizQuestions];
+  newQuizQuestions[index1] = updatedQuizQuestions;
+  setQuizQuestions(newQuizQuestions);
+}
+
+var removeTestcase = (index1, index2) => {
+  var newquizQuestions = [...quizQuestions];
+  newquizQuestions[index1].testcases.splice(index2, 1);
+  setQuizQuestions(newquizQuestions);
 }
 
 
@@ -131,7 +152,7 @@ const createAssignment = async(event) =>{
     event.preventDefault();
     event.stopPropagation();
     console.log(quizQuestions);
-    if(points.trim().length === 0 || dueDate === null){
+   if(points.trim().length === 0 || dueDate === null){
       alert("One or more form fields are empty, please fill out !");
     }
     else if(quizQuestions[0].question=== ''){
@@ -279,15 +300,33 @@ const createAssignment = async(event) =>{
                             <input type="text" name="points" placeholder="Quiz Points" value = {points} onChange={handlePointChange} />
                             <input type="date" name="dueDate" placeholder="Select deadline" value = {dueDate} onChange={handleDateChange} />
                             <button type="button" className="addButton" onClick={() => addQuestion()}>Add Question</button>
-                            {quizQuestions.map((element, index) => (
-                                <div className="form-inline" key={index}>
-                                <input type="text" name="question" placeholder="Add question" value={element.question || ""} onChange={e => handleQuestionChange(index, e)} />
-                                <input type="text" name="points" placeholder="Add points" value={element.points || ""} onChange={e => handleQuestionChange(index, e)} />
-                                <input type="text" name="solution" placeholder="Add solution" value={element.solution || ""} onChange={e => handleQuestionChange(index, e)} />
+                            {quizQuestions.map((element, index1) => (
+                                <div className="form-inline" key={index1}>
+                                <input type="text" name="question" placeholder="Add question" value={element.question || ""} onChange={e => handleQuestionChange(index1, e)} />
+                                <input type="text" name="points" placeholder="Add points" value={element.points || ""} onChange={e => handleQuestionChange(index1, e)} />
+                                <input type="text" name="solution" placeholder="Add solution" value={element.solution || ""} onChange={e => handleQuestionChange(index1, e)} />
                                 {
-                                    index ? 
-                                    <button type="button" className="removeButton" onClick={() => removeQuestion(index)}>Remove Question</button> 
+                                    index1 ? 
+                                    <button type="button" className="removeButton" onClick={() => removeQuestion(index1)}>Remove Question</button> 
                                     : null
+                                }
+                                <button type="button" className="addButton" onClick={() => addTestCase(index1)}>Add testcase</button>
+                                
+                                 { 
+                                 element.testcases.map((tcase, index2) => (
+                                   
+                                  <div>
+                                    <input type="text" name="testCaseInput" placeholder="Enter input" value={tcase.testCaseInput || ""} onChange={e => handleTestcaseChange(index1, index2, e)}/>
+                                    <input type="text" name="testCaseOutput" placeholder="Enter output" value={tcase.testCaseOutput || ""} onChange={e => handleTestcaseChange(index1, index2, e)}/>
+                                    {
+                                    index2 ? 
+                                    <button type="button" className="removeButton" onClick={() => removeTestcase(index1, index2)}>Remove Testcase</button> 
+                                    : null
+                                   }
+                                  </div>
+
+                                  
+                                ))
                                 }
                                 </div>
                             ))}
