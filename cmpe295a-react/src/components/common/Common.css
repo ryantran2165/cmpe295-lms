@@ -435,6 +435,13 @@ https://freefrontend.com/css-login-forms/
         display: block;
     }
 
+    #enrollCourse{
+        position: absolute;
+        left: 44%;
+        top: 50%;
+        display: block;
+    }
+
     .createCourseFormHeading{
         position: fixed;
         left: 16em;
@@ -460,7 +467,7 @@ https://freefrontend.com/css-login-forms/
 
     .createNewQuizForm {
         display: block;
-        /*overflow: scroll;*/
+        overflow: auto;
         position: fixed;
         left: 7.5em;
         height: 20.125em;
@@ -509,6 +516,20 @@ https://freefrontend.com/css-login-forms/
         display: block;
     }
 
+    #getQuizzes{
+      position: absolute;
+      left: 43%;
+      top: 44%;
+      display: block;
+  }
+
+  #createQuizzes{
+    position: absolute;
+    left: 45%;
+    top: 58%;
+    display: block;
+}
+
      /*polaroid design for user profile start*/
 
      .profile-details {
@@ -551,6 +572,33 @@ https://freefrontend.com/css-login-forms/
       }
 
       /*polaroid design for user profile end*/
+
+      #enrollButton{
+        cursor: pointer;
+        color: #fafad2;
+        background-color: #7f7fd5;
+        border-radius: 0.3125em;
+        padding: 0.75em 1.25em;
+        font-size: 1em;
+        width: 55%;
+        border: none;
+        transition: all 0.4s ease-in-out;
+      }
+      
+      #enrollBackButton{
+        position: relative;
+        top: 7em;
+        left: 67em;
+        cursor: pointer;
+        color: #fafad2;
+        background-color: #7f7fd5;
+        border-radius: 0.3125em;
+        padding: 0.75em 1.25em;
+        font-size: 1em;
+        width: 13%;
+        border: none;
+        transition: all 0.4s ease-in-out;
+      }
 
 }
 
@@ -1085,6 +1133,13 @@ https://freefrontend.com/css-login-forms/
         display: block;
     }
     
+    #enrollCourse{
+        position: absolute;
+        left: 44%;
+        top: 50%;
+        display: block;
+    }
+
     .createCourseFormHeading{
         position: fixed;
         left: 30.875em;
@@ -1111,7 +1166,7 @@ https://freefrontend.com/css-login-forms/
 
     .createNewQuizForm {
         display: block;
-        /*overflow: scroll;*/
+        overflow: auto;
         position: fixed;
         left: 23.125em;
         height: 20.125em;
@@ -1160,6 +1215,20 @@ https://freefrontend.com/css-login-forms/
         display: block;
     }
 
+    #getQuizzes{
+      position: absolute;
+      left: 43%;
+      top: 44%;
+      display: block;
+  }
+
+  #createQuizzes{
+    position: absolute;
+    left: 45%;
+    top: 58%;
+    display: block;
+}
+
      /*polaroid design for user profile start*/
 
      .profile-details {
@@ -1202,6 +1271,33 @@ https://freefrontend.com/css-login-forms/
       }
 
       /*polaroid design for user profile end*/
+
+      #enrollButton{
+        cursor: pointer;
+        color: #fafad2;
+        background-color: #7f7fd5;
+        border-radius: 0.3125em;
+        padding: 0.75em 1.25em;
+        font-size: 1em;
+        width: 55%;
+        border: none;
+        transition: all 0.4s ease-in-out;
+      }
+
+      #enrollBackButton{
+        position: relative;
+        top: 7em;
+        left: 67em;
+        cursor: pointer;
+        color: #fafad2;
+        background-color: #7f7fd5;
+        border-radius: 0.3125em;
+        padding: 0.75em 1.25em;
+        font-size: 1em;
+        width: 13%;
+        border: none;
+        transition: all 0.4s ease-in-out;
+      }
     
 
 }
@@ -1756,6 +1852,13 @@ https://freefrontend.com/css-login-forms/
         display: block;
     }
 
+    #enrollCourse{
+        position: absolute;
+        left: 44%;
+        top: 50%;
+        display: block;
+    }
+
     .createCourseFormHeading{
         position: fixed;
         left: 44em;
@@ -1817,7 +1920,7 @@ https://freefrontend.com/css-login-forms/
 
     .createNewQuizForm {
         display: block;
-        /*overflow: scroll;*/
+        overflow: auto;
         position: fixed;
         left: 37.5em;
         height: 20.125em;
@@ -1858,6 +1961,20 @@ https://freefrontend.com/css-login-forms/
         top: 44%;
         display: block;
     }
+
+    #getQuizzes{
+      position: absolute;
+      left: 43%;
+      top: 44%;
+      display: block;
+  }
+
+  #createQuizzes{
+    position: absolute;
+    left: 45%;
+    top: 58%;
+    display: block;
+}
 
     .createQuizFormHeading{
         position: fixed;
@@ -1908,6 +2025,32 @@ https://freefrontend.com/css-login-forms/
       }
 
       /*polaroid design for user profile end*/
+ 
+      #enrollButton{
+        cursor: pointer;
+        color: #fafad2;
+        background-color: #7f7fd5;
+        border-radius: 0.3125em;
+        padding: 0.75em 1.25em;
+        font-size: 1em;
+        width: 55%;
+        border: none;
+        transition: all 0.4s ease-in-out;
+      }
 
+      #enrollBackButton{
+        position: relative;
+        top: 7em;
+        left: 67em;
+        cursor: pointer;
+        color: #fafad2;
+        background-color: #7f7fd5;
+        border-radius: 0.3125em;
+        padding: 0.75em 1.25em;
+        font-size: 1em;
+        width: 13%;
+        border: none;
+        transition: all 0.4s ease-in-out;
+      }
 
 }

@@ -14,8 +14,8 @@ export default function UserProfile (user) {
     }
     
     return(
-      <div class="profile">
-        <div class="profile-details">
+      <div className="profile">
+        <div className="profile-details">
           <h2>Hello {user.user.user.userName} !</h2>
           <p>{user.user.user.firstName + "  "} {user.user.user.lastName}</p>
           <p>User ID: {user.user.user.userId}</p>

@@ -199,6 +199,81 @@ https://www.w3schools.com/howto/howto_css_next_prev.asp
     }
 
      /*Assignment and quiz list styles end*/
+
+     /*grades table styles start*/
+
+     .grade-table {
+      position: relative;
+      top: 7em;
+      margin-top: 2em;
+      width: 150%;
+      border-collapse: collapse;
+      background: rgb(205,238,174);
+      background: radial-gradient(circle, rgb(208, 205, 205) 0%, rgba(148,230,233,1) 100%);
+      box-shadow: 0em 0.125em 0.3125em #00000033;
+    }
+    
+    .grade-table  td, .grade-table  th {
+      padding: 1em;
+      border-bottom: 0.1em solid #ffffff;
+      color: #700cbc;
+      text-align: center;
+      margin-right: 15em;
+    }
+        
+    
+    .grade-table tr:nth-child(){background-color: #ffffff;}
+    
+    .grade-table tr:hover {background-color: #d5d4d4;}
+    
+    .grade-table th {
+      background-color: #315755;
+      text-align: center;
+      padding: 0.9em 0 0.9em 0;
+      background: rgb(182, 212, 238);
+    }
+
+     /*grades table styles end*/
+
+     /*add and remove button styles start*/
+
+     .addButton, .removeButton {
+      color: #fafad2;
+      background-color: #7f7fd5;
+      border-radius: 0.3125em;
+      padding: 0.75em 1.25em;
+      font-size: 1em;
+      width: 45%;
+      border: none;
+      transition: all 0.4s ease-in-out;
+      margin-bottom: 1em;
+    }
+
+    /*add and remove button styles end*/
+
+    /*show and hide buttons QA page start*/
+
+    .showHideQuestions{
+      text-decoration: underline;
+      color: white;
+      padding: 0;
+      border: none;
+      background: none;
+      display: block;
+    }
+
+    .showHideQuestions:hover{
+      color: #700cbc; 
+    }
+
+
+    .navigableQuestionList{
+      position: relative;
+      top:10%;
+      margin-left: 7em;
+    }
+
+    /*show and hide buttons QA page end*/
   }
 
 
@@ -399,6 +474,81 @@ https://www.w3schools.com/howto/howto_css_next_prev.asp
       }
 
        /*Assignment and quiz list styles end*/
+      /*grades table styles start*/
+
+      .grade-table {
+        position: relative;
+        top: 7em;
+        margin-top: 2em;
+        width: 150%;
+        border-collapse: collapse;
+        background: rgb(205,238,174);
+        background: radial-gradient(circle, rgb(208, 205, 205) 0%, rgba(148,230,233,1) 100%);
+        box-shadow: 0em 0.125em 0.3125em #00000033;
+      }
+      
+      .grade-table  td, .grade-table  th {
+        padding: 1em;
+        border-bottom: 0.1em solid #ffffff;
+        color: #700cbc;
+        text-align: center;
+        margin-right: 15em;
+      }
+          
+      
+      .grade-table tr:nth-child(){background-color: #ffffff;}
+      
+      .grade-table tr:hover {background-color: #d5d4d4;}
+      
+      .grade-table th {
+        text-align: center;
+        padding: 0.9em 0 0.9em 0;
+        background: rgb(182, 212, 238);
+      }
+
+       /*grades table styles end*/
+
+       /*add and remove button styles start*/
+
+      .addButton, .removeButton {
+        cursor: pointer;
+        color: #fafad2;
+        background-color: #7f7fd5;
+        border-radius: 0.3125em;
+        padding: 0.75em 1.25em;
+        font-size: 1em;
+        width: 45%;
+        border: none;
+        transition: all 0.4s ease-in-out;
+        margin-bottom: 1em;
+      }
+
+      /*add and remove button styles end*/
+
+      /*show and hide buttons QA page start*/
+
+      .showHideQuestions{
+        text-decoration: underline;
+        color: white;
+        padding: 0;
+        border: none;
+        background: none;
+        display: block;
+      }
+
+      .showHideQuestions:hover{
+        color: #700cbc; 
+      }
+
+
+      .navigableQuestionList{
+        position: relative;
+        top:10%;
+        margin-left: 7em;
+      }
+
+      /*show and hide buttons QA page end*/
+       
     }
 
 @media all and (min-width: 1200px){
@@ -599,10 +749,84 @@ https://www.w3schools.com/howto/howto_css_next_prev.asp
         top: -3em;
         left: 21em;
       }
-      
-
-
        /*Assignment and quiz list styles end*/
+
+       /*grades table styles start*/
+
+       .grade-table {
+        position: relative;
+        top: 7em;
+        margin-top: 2em;
+        width: 150%;
+        border-collapse: collapse;
+        background: rgb(205,238,174);
+        background: radial-gradient(circle, rgb(208, 205, 205) 0%, rgba(148,230,233,1) 100%);
+        box-shadow: 0em 0.125em 0.3125em #00000033;
+      }
+      
+      .grade-table  td, .grade-table  th {
+        padding: 1em;
+        border-bottom: 0.1em solid #ffffff;
+        color: #700cbc;
+        text-align: center;
+        margin-right: 15em;
+      }
+          
+      
+      .grade-table tr:nth-child(){background-color: #ffffff;}
+      
+      .grade-table tr:hover {background-color: #d5d4d4;}
+      
+      .grade-table th {
+        text-align: center;
+        padding: 0.9em 0 0.9em 0;
+        background: rgb(182, 212, 238);
+      }
+
+       /*grades table styles end*/
+
+      /*add and remove button styles start*/
+
+      .addButton, .removeButton {
+        cursor: pointer;
+        color: #fafad2;
+        background-color: #7f7fd5;
+        border-radius: 0.3125em;
+        padding: 0.75em 1.25em;
+        font-size: 1em;
+        width: 45%;
+        border: none;
+        transition: all 0.4s ease-in-out;
+        margin-bottom: 1em;
+      }
+
+      /*add and remove button styles end*/
+
+      /*show and hide buttons QA page start*/
+
+      .showHideQuestions{
+        text-decoration: underline;
+        color: white;
+        padding: 0;
+        border: none;
+        background: none;
+        display: block;
+      }
+
+      .showHideQuestions:hover{
+        color: #700cbc; 
+      }
+
+
+      .navigableQuestionList{
+        position: relative;
+        top:10%;
+        margin-left: 7em;
+      }
+
+      /*show and hide buttons QA page end*/
+
+
     }
 
   

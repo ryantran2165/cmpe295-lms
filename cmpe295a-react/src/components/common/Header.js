@@ -19,8 +19,6 @@ function Header () {
                     <a href="/">Home</a>
                     <a href="/signup">Register</a>
                     <a href="/login">Login</a>
-                    {/*<a href="/reactsketch">Sketch</a>
-                    <a href="/qapage">QAPage2</a>*/}
                 </div>
                 {/*Images from freesvg.org-->*/}
             </div> 

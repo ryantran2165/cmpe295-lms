@@ -11,15 +11,20 @@ https://www.quackit.com/css/grid/tutorial/create_a_responsive_grid.cfm  */}
 
 function UserDashBoard() {
 
+    const already_enrolled_student_courses = [];
+    const [dummy, setDummy] = useState([]);
+    var checkCurrentCourseList = [];
     const[cname, setCname] = useState('');
     const[cdes, setCdes] = useState('');
     const getCoursesButton = useRef(null);
     const createCourseButton = useRef(null);
     const createCourseForm = useRef(null);
+    const enrollCourseForm = useRef(null);
     const courseCards = useRef(null);
+    const enrollCourseButton = useRef(null);
     const location = useLocation();
-    const [currentCourse, setCurrentCourse] = useState();
-    const [courseList, setCourseList] = useState([]);
+    const [availableCourses, setAvailableCourses] = useState([]);
+    const [currentCourseList, setCurrentCourseList] = useState([]);
     const [user, setUser] = useState({
                 firstName: location.state.firstName,
                 lastName: location.state.lastName,
@@ -30,17 +35,30 @@ function UserDashBoard() {
         });
 
     const getCourses = () =>{
-        axios.get('http://localhost:3001/api/v1/courses/')
+        if(user.role ==='teacher'){
+        axios.get(`http://localhost:3001/api/v1/courses/byinstructor/${user.userId}`)
         .then(function (response) {
-            setCourseList(response.data);
+            setCurrentCourseList(response.data);
             getCoursesButton.current.style.display = 'none';
-            if(user.role ==='teacher')
-                createCourseButton.current.style.display='none';
+            createCourseButton.current.style.display='none';
             courseCards.current.style.display = 'contents';
           })
           .catch(function (error) {
             console.log(error);
           });
+        }
+        else{
+        axios.get(`http://localhost:3001/api/v1/courses/bystudent/${user.userId}`)
+        .then(function (response) {
+            setCurrentCourseList(response.data);
+            getCoursesButton.current.style.display = 'none';
+            courseCards.current.style.display = 'contents';
+            enrollCourseButton.current.style.display='none';
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+        }
     }
 
     const showCreateCourseForm = () =>{
@@ -50,7 +68,43 @@ function UserDashBoard() {
             createCourseButton.current.style.display='none';
     }
 
-    const createCourse = async(event) =>{
+    const backFromEnroll = () =>{
+        enrollCourseButton.current.style.display='block';
+        getCoursesButton.current.style.display='block';
+        enrollCourseForm.current.style.display='none';
+    }
+
+    const verifyEnrollemnt = async() =>{
+        await axios.get(`http://localhost:3001/api/v1/courses/bystudent/${user.userId}`)
+        .then(function (response) {
+            checkCurrentCourseList = response.data;
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+        checkCurrentCourseList.map((course,index) => {
+            already_enrolled_student_courses[index] = course._id;        
+        });
+        setDummy(already_enrolled_student_courses);
+    }
+
+    const showEnrollCourseForm = () =>{
+        axios.get('http://localhost:3001/api/v1/courses/')
+        .then(function (response) {
+            setAvailableCourses(response.data);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+        
+        enrollCourseForm.current.style.display='block';
+        getCoursesButton.current.style.display='none';
+        if(user.role ==='student')
+            enrollCourseButton.current.style.display='none';
+        verifyEnrollemnt();
+    }
+
+    const createCourse = (event) =>{
         event.preventDefault();
         event.stopPropagation();
         if(cname.trim().length === 0 || cdes.trim().length === 0 ){
@@ -59,7 +113,8 @@ function UserDashBoard() {
         else{
             axios.post('http://localhost:3001/api/v1/courses/', {
               name: cname,
-              instructor: user.userId
+              instructor: user.userId,
+              description: cdes
             })
             .then(function (response) {
               if(response.data.status === true)
@@ -81,6 +136,32 @@ function UserDashBoard() {
           }
     }
 
+    const enrollCourse = async(course) =>{
+            if(dummy.indexOf(course)>-1)
+             alert("You have already enrolled for this course!");
+            else{
+            axios.put(`http://localhost:3001/api/v1/courses/enroll/${course}`, {
+              student: user.userId
+            })
+            .then(function (response) {
+              if(response.data.status === true)
+              {
+                enrollCourseForm.current.style.display='none';
+                getCoursesButton.current.style.display='block';
+                if(user.role ==='student')
+                  enrollCourseButton.current.style.display='block';
+                alert("Enrollment successfull");
+              }
+              else{
+                alert("Course enrollment failed! ");
+              }
+            })
+            .catch(function (error) {
+              console.log(error.response.data);
+            });
+        }
+    }
+
     const handleCancel = () => {
         setCname('');
         setCdes('');
@@ -100,6 +181,7 @@ function UserDashBoard() {
      const history = useNavigate();
 
       const gotoCourse = (course_name,course_id,course_instructor_firstName,course_instructor_lastName,course_instructor_email) =>{
+        if(user.role === 'student'){
         history("/CourseHome",{state:{userName:user.userName,
             email:user.email, 
             role:user.role,
@@ -111,6 +193,21 @@ function UserDashBoard() {
             instructorFname:course_instructor_firstName,
             instructorLname:course_instructor_lastName,
             instructorEmail:course_instructor_email}});
+        }
+
+        else{
+            history("/CourseHome",{state:{userName:user.userName,
+                email:user.email, 
+                role:user.role,
+                firstName:user.firstName,
+                lastName:user.lastName,
+                userId: user.userId,
+                cname:course_name,
+                cid:course_id,
+                instructorFname:user.firstName,
+                instructorLname:user.lastName,
+                instructorEmail:user.email}});
+            }
     }
 
     return (
@@ -119,6 +216,7 @@ function UserDashBoard() {
                     <UserHeader user={user}/>
                     <span id="getCourses" ref={getCoursesButton}><input type="button" value="See Current Courses" onClick={getCourses}/></span>
                     {user.role === 'teacher' && <span id="createCourse" ref={createCourseButton}><input type="button" value="Create Course" onClick={showCreateCourseForm}/></span>}
+                    {user.role === 'student' && <span id="enrollCourse" ref={enrollCourseButton}><input type="button" value="Enroll for Course" onClick={showEnrollCourseForm}/></span>}
                     {/*looping array of objects code reference from
                     https://www.javatpoint.com/loop-array-in-reactjs
 
@@ -126,7 +224,7 @@ function UserDashBoard() {
                     */}
                     <span style={{display:'none'}} ref={courseCards}>
                     {
-                        courseList.map((course,index) => 
+                        currentCourseList.map((course,index) => 
                             <div className="card">
                                 <img src={Book} alt="Image"/>
                                 <a href='' onClick={()=>gotoCourse(course.name,course._id,course.instructor.firstName,course.instructor.lastName,course.instructor.email)}><h1>{course.name}</h1></a>
@@ -144,6 +242,42 @@ function UserDashBoard() {
                             <input type="submit" id='button1' value="Create"/>
                             <input type="reset" id='button2' value="Cancel" onClick={handleCancel}/>
                         </form>
+                    </span>
+
+                    <span style={{display:'none'}} ref={enrollCourseForm} className="enrollCourse">
+                        <span><button id="enrollBackButton" onClick={backFromEnroll}>Back</button></span>
+                        <div className="createCourseFormHeading"><h1>Enroll for a Course</h1></div>
+                    <table className="grade-table">
+                    <tbody>
+                    <tr>
+                        <th>Course ID</th>
+                        <th>Course Name</th>
+                        <th>Instructor</th>
+                        <th>Enroll</th>
+                    </tr>
+                    
+                        
+                        {
+                            availableCourses.map((acourse,index) => 
+                                  <tr key={index}>
+                                    <td>
+                                        <p>{acourse._id}</p>
+                                    </td>
+                                    <td>
+                                        <p>{acourse.name}</p>
+                                    </td>
+                                    <td>
+                                        <p>Teacher {index}</p>
+                                    </td>
+                                    <td>
+                                    <p><button id="enrollButton" onClick={()=>enrollCourse(acourse._id)}>Enroll</button></p>
+                                    </td>
+                                 </tr>
+                            )
+                            
+                        }
+                    </tbody>
+                    </table>
                     </span>
         </div>
      </>

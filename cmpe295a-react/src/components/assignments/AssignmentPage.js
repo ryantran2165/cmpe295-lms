@@ -1,18 +1,20 @@
 import React, {useState,useRef} from 'react';
 import Header from '../common/Header';
 import UserHeader from '../common/UserHeader';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useLocation} from 'react-router-dom';
 import axios from 'axios';
 import { FaPencilAlt } from "react-icons/fa";
 import Container from 'react-bootstrap/esm/Container';
 import QAPage2 from './QAPage2';
 
-function AssignmentPage(user, course) {
+function AssignmentPage() {
 
   const getAssignmentsButton = useRef(null);
   const createAssignmentButton = useRef(null);
   const createAssignmentForm = useRef(null);
   const currentAssignments = useRef(null);
+
+  const location = useLocation();
 
   
   const history = useNavigate();
@@ -23,6 +25,22 @@ function AssignmentPage(user, course) {
   const[solution, setSolution] = useState('');
   const[instruction, setInstruction] = useState('');
   const [assignmentList, setAssignmentList] = useState([]);
+
+  const [user, setUser] = useState({
+    firstName: location.state.firstName,
+    lastName: location.state.lastName,
+    userName: location.state.userName,
+    email: location.state.email,
+    role: location.state.role,
+    userId: location.state.userId
+});
+  const [course, setCourse] = useState({
+  cname: location.state.cname,
+  cid: location.state.parentCourse,
+  instructorFname: location.state.instructorFname,
+  instructorLname: location.state.instructorLname,
+  instructorEmail:location.state.instructorEmail
+  });
   
 
 
@@ -35,15 +53,7 @@ function AssignmentPage(user, course) {
     setInstruction('');
     getAssignmentsButton.current.style.display = 'contents';
     createAssignmentForm.current.style.display = 'none';
-    if(user.user.role ==='teacher')
-    createAssignmentButton.current.style.display='contents';
-    currentAssignments.current.style.display = 'none';
-  };
-
-  const backHome = () => {
-    getAssignmentsButton.current.style.display = 'contents';
-    createAssignmentForm.current.style.display = 'none';
-    if(user.user.role ==='teacher')
+    if(user.role ==='teacher')
     createAssignmentButton.current.style.display='contents';
     currentAssignments.current.style.display = 'none';
   };
@@ -69,14 +79,12 @@ function AssignmentPage(user, course) {
   }
 
   const getAssignments = () =>{
-    console.log("user: ",user);
-    console.log("course: ", course);
-    axios.get('http://localhost:3001/api/v1/assgs/')
+    axios.get(`http://localhost:3001/api/v1/assgs/bycourse/${course.cid}`)
     .then(function (response) {
         setAssignmentList(response.data);
         getAssignmentsButton.current.style.display = 'none';
         currentAssignments.current.style.display = 'contents';
-        if(user.user.role ==='teacher')
+        if(user.role ==='teacher')
         createAssignmentButton.current.style.display='none';
       })
       .catch(function (error) {
@@ -87,7 +95,7 @@ function AssignmentPage(user, course) {
 const showCreateAssignmentForm = () =>{
     createAssignmentForm.current.style.display='block';
     getAssignmentsButton.current.style.display='none';
-    if(user.user.role ==='teacher')
+    if(user.role ==='teacher')
         createAssignmentButton.current.style.display='none';
 }
 
@@ -99,7 +107,7 @@ const createAssignment = async(event) =>{
     }
     else{
         axios.post('http://localhost:3001/api/v1/assgs/', {
-          course: user.course.cid,
+          course: course.cid,
           name: name,
           points: points,
           dueDate: dueDate,
@@ -111,7 +119,7 @@ const createAssignment = async(event) =>{
           {
             createAssignmentForm.current.style.display='none';
             getAssignmentsButton.current.style.display='block';
-            if(user.user.role ==='teacher')
+            if(user.role ==='teacher')
               createAssignmentButton.current.style.display='block';
             alert("New assignment created successfully");
           }
@@ -125,31 +133,77 @@ const createAssignment = async(event) =>{
         });
       }
   }
-  const openQAPage = (assignmentId, assignmentInstructions, parentCourse, index) =>{
-    history("/qapage2", {state:{userName:user.user.userName,
-            email:user.user.email, 
-            role:user.user.role,
-            firstName:user.user.firstName,
-            lastName:user.user.lastName,
-            userId:user.user.userId,
-            assignmentId: assignmentId,
-            assignmentInstructions: assignmentInstructions,
-            parentCourse:parentCourse,
-            assignmentNumber: index+1}});
+  const openQAPage = (assignment, index) =>{
+    history("/qapage", {state:{userName:user.userName,
+      email:user.email, 
+      role:user.role,
+      firstName:user.firstName,
+      lastName:user.lastName,
+      userId: user.userId,
+      assignmentId: assignment.id,
+      assignmentInstructions: assignment.name,
+      parentCourse:course.cid,
+      assignmentNumber: index+1,
+      cname: course.cname,
+      instructorFname: course.instructorFname,
+      instructorLname: course.instructorLname,
+      instructorEmail: course.instructorEmail
+    
+    }});
   }
+
+  const gotoDashBoard = (event) => {
+    history("/UserDashBoard",{state:{userName:user.userName,
+        email:user.email, 
+        role:user.role,
+        firstName:user.firstName,
+        lastName:user.lastName,
+        userId: user.userId}});
+}
+
+const openAssignments = () =>{
+  getAssignmentsButton.current.style.display = 'block';
+      currentAssignments.current.style.display = 'none';
+      if(user.role ==='teacher')
+      createAssignmentButton.current.style.display='block';
+}
+
+const openQuizzes = () =>{
+
+  history("/quizpage", {state:{userName:user.userName,
+    email:user.email, 
+    role:user.role,
+    firstName:user.firstName,
+    lastName:user.lastName,
+    userId: user.userId,
+    parentCourse:course.cid,
+    cname: course.cname,
+    instructorFname: course.instructorFname,
+    instructorLname: course.instructorLname,
+    instructorEmail:course.instructorEmail
+    
+}});
+      
+}
 
 
   return (
     <>
+  
     {/*
     form code reference https://react-bootstrap.github.io/forms/overview/ 
     */}
+     <div className="backgroundDecoration">
+     <div className="leftnav">
+                        <a onClick={openAssignments}>Assignments</a>
+                        <a onClick={openQuizzes}>Quizzes</a>
+                        <a onClick={gotoDashBoard}>Dashboard</a>
+    </div>
      <div className="listBackground">
-     <span id="getAssignments" ref={getAssignmentsButton}><input type="button" value="See Current Assignments" onClick={getAssignments}/></span>
-                    {user.user.role === 'teacher' && <span id="createAssignment" ref={createAssignmentButton}><input type="button" value="Create Assignment" onClick={showCreateAssignmentForm}/></span>}
+     <span id="getQuizzes" ref={getAssignmentsButton}><input type="button" value="See Current Assignments" onClick={getAssignments}/></span>
+                    {user.role === 'teacher' && <span id="createQuizzes" ref={createAssignmentButton}><input type="button" value="Create Assignment" onClick={showCreateAssignmentForm}/></span>}
    
                     <span style={{display:'none'}} ref={currentAssignments} className="currentAssignments">
-                    <a id="backButton" href='' onClick={backHome}>Back to Assignment Home</a>
                     <div className="item-list">
                           <ul>
                             {
@@ -162,7 +216,7 @@ const createAssignment = async(event) =>{
                                             </div>
                                             <div className="list-details">
                                             <p>{assignment.name} <span style={{display:'inline', marginLeft:194}}>Points: {assignment.points} </span></p>
-                                            <a href='' onClick={() => openQAPage(assignment._id, assignment.instructions, assignment.course._id, index)}>Submit</a>
+                                            <a href='' onClick={() => openQAPage(assignment, index)}>Check out</a>
                                             </div>
                                         </li>
                                         
@@ -184,6 +238,7 @@ const createAssignment = async(event) =>{
                             <input type="reset" id='button2' value="Cancel" onClick={handleCancel}/>
                         </form>
                     </span>
+    </div>
     </div>
     </>
   )
