@@ -14,15 +14,13 @@ app.use(cookieParser());
 // import routes here
 const userRoutes = require('./src/routes/user.route');
 const uploadRoute = require('./src/routes/upload.route')
-const assgRoute = require('./src/routes/assg.route');
+const assgQuizRoute = require('./src/routes/assgQuiz.route');
 const courseRoute = require('./src/routes/course.route');
-const quizRoute = require('./src/routes/quiz.route');
 
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/upload", uploadRoute);
-app.use("/api/v1/assgs", assgRoute);
+app.use("/api/v1/assgs", assgQuizRoute);
 app.use("/api/v1/courses", courseRoute);
-app.use("/api/v1/quizzes", quizRoute);
 
 
 // Backend runs on Port 3001
