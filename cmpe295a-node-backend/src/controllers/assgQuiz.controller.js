@@ -118,3 +118,37 @@ exports.submit = (req, res) => {
         }
     })
 }
+
+
+// Get AssignmentQuiz Submissions
+exports.getSubmissions = (req, res) => {
+    console.log("\nGET SUBMISSIONS FOR ASSIGNMENT: ", req.params.assgID);
+
+    assgQuizService.getSubmissions(req.params.assgID, (err, result) => {
+        if(err){
+            console.log(err);
+            res.status(400).send(result);
+        }
+        else{
+            console.log(result);
+            res.status(200).send(result);
+        }
+    })
+}
+
+
+// Get Student AssignmentQuiz Submission
+exports.getStudentSubmission = (req, res) => {
+    console.log("\nGET STUDENT SUBMISSION FOR ASSIGNMENT: ", req.params.assgID);
+
+    assgQuizService.getStudentSubmission(req.params.assgID, req.body.student ,(err, result) => {
+        if(err){
+            console.log(err);
+            res.status(400).send(result);
+        }
+        else{
+            console.log(result);
+            res.status(200).send(result);
+        }
+    })
+}

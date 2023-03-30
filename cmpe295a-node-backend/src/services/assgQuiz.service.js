@@ -120,3 +120,29 @@ exports.submit = async(assignmentQuiz, req, result) => {
         result(null, {status: false, message:"Error Submitting", err});
     }
 }
+
+
+// Get AssignmentQuiz Submissions
+exports.getSubmissions = async(assgID , result) => {
+
+    try{
+        const submissions = await submissionModel.find({assignmentQuiz:assgID});
+        result(null, submissions);
+    }
+    catch(err){
+        result(null, err);
+    }
+}
+
+
+// Get STUDENT AssignmentQuiz Submission
+exports.getStudentSubmission = async(assgID , student, result) => {
+
+    try{
+        const submission = await submissionModel.find({'assignmentQuiz':assgID, 'student':student});
+        result(null, submission);
+    }
+    catch(err){
+        result(null, err);
+    }
+}

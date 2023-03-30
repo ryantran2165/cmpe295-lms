@@ -26,4 +26,10 @@ router.get('/coursequizzes/:courseID', assgQuizController.getCourseQuizzes);
 // Create Submission            POST
 router.post('/submit/:assgID', upload.array('fileURL'), assgQuizController.submit);
 
+// Get Assg/Quiz Submissions    GET
+router.get('/submissions/:assgID', assgQuizController.getSubmissions);
+
+// Get Student Submission       GET
+router.get('/stusubmission/:assgID', assgQuizController.getStudentSubmission);
+
 module.exports = router;

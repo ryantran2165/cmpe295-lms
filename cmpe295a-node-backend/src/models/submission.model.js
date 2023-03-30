@@ -24,11 +24,13 @@ const submissionSchema = new Schema({
         },
         points:{
             type:Number,
+            default: 0
         }
     }],
     score:{
         type: Number,
-        required:true
+        required:true,
+        default: 0
     },
     dateSubmitted:{
         //type: Date,
