@@ -30,6 +30,6 @@ router.post('/submit/:assgID', upload.array('fileURL'), assgQuizController.submi
 router.get('/submissions/:assgID', assgQuizController.getSubmissions);
 
 // Get Student Submission       GET
-router.get('/stusubmission/:assgID', assgQuizController.getStudentSubmission);
+router.get('/stusubmission/:assgID/:student', assgQuizController.getStudentSubmission);
 
 module.exports = router;

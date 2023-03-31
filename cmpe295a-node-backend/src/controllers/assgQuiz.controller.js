@@ -141,7 +141,7 @@ exports.getSubmissions = (req, res) => {
 exports.getStudentSubmission = (req, res) => {
     console.log("\nGET STUDENT SUBMISSION FOR ASSIGNMENT: ", req.params.assgID);
 
-    assgQuizService.getStudentSubmission(req.params.assgID, req.body.student ,(err, result) => {
+    assgQuizService.getStudentSubmission(req.params.assgID, req.params.student ,(err, result) => {
         if(err){
             console.log(err);
             res.status(400).send(result);
