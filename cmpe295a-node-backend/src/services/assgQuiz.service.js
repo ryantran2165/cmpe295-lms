@@ -126,7 +126,7 @@ exports.submit = async(assignmentQuiz, req, result) => {
 exports.getSubmissions = async(assgID , result) => {
 
     try{
-        const submissions = await submissionModel.find({assignmentQuiz:assgID});
+        const submissions = await submissionModel.find({assignmentQuiz:assgID}).populate('assignmentQuiz');
         result(null, submissions);
     }
     catch(err){
@@ -139,7 +139,7 @@ exports.getSubmissions = async(assgID , result) => {
 exports.getStudentSubmission = async(assgID , student, result) => {
 
     try{
-        const submission = await submissionModel.find({'assignmentQuiz':assgID, 'student':student});
+        const submission = await submissionModel.find({'assignmentQuiz':assgID, 'student':student}).populate('assignmentQuiz');
         result(null, submission);
     }
     catch(err){
