@@ -1,0 +1,7 @@
+1 epoch
+--------------------
+mnist - 99.1
+emnistbyclass - 85.3
+mathsymbols - 95.9
+mnist_mathsymbols - 98.1
+emnistbyclass_mathsymbols - 88.1
