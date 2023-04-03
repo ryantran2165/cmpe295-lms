@@ -136,12 +136,14 @@ const QAPage = () => {
         console.log("answers")
         answers.map((ans, index) => {
             formData.append('fileURL', ans.answer);
-            questions.push({'question':ans.question});
             console.log(ans.answer);
-        })
+        });
+        const newAnswers = answers.map((ans) => {
+          return { question: ans.question };
+        });
         console.log("questions", questions);
         console.log(typeof submittedDate);
-        formData.append('answers', questions);
+        formData.append('answers', JSON.stringify(newAnswers));
         for (var x of formData) console.log(x);
         axios.post(`http://localhost:3001/api/v1/assgs/submit/${assignment.assignmentId}`, formData)
         .then(function (response) {
