@@ -1919,19 +1919,19 @@ https://freefrontend.com/css-login-forms/
     }
 
     .createNewQuizForm {
-        display: block;
-        overflow: auto;
-        position: fixed;
-        left: 37.5em;
-        height: 20.125em;
-        top: 13.625em;
-        width: 36.25em;
-        align-items: center;
-        border-radius: 0.625em;
-        flex-direction: column;
-        background-color: #ffffffb2;
-        box-shadow: 0 0.3125em 0.4375em 0 #00000043, 0 0.375em 1.3125em 0 #00000043, 0 0.3125em 1.1875em 0 #00000043;
-        padding: 1.875em;
+      display: block;
+      overflow: auto;
+      position: fixed;
+      left: 29.5em;
+      height: 80vh;
+      top: 5.625em;
+      width: 50em;
+      align-items: center;
+      border-radius: 0.625em;
+      flex-direction: column;
+      background-color: #ffffffb2;
+      box-shadow: 0 0.3125em 0.4375em 0 #00000043, 0 0.375em 1.3125em 0 #00000043, 0 0.3125em 1.1875em 0 #00000043;
+      padding: 1.875em;
     }
 
     .listBackground{
@@ -1979,7 +1979,7 @@ https://freefrontend.com/css-login-forms/
     .createQuizFormHeading{
         position: fixed;
         left: 46em;
-        top: 8.75em;
+        top: 1.75em;
         color: #700cbc;
     }
 

@@ -4,6 +4,7 @@ import { ReactSketchCanvas } from 'react-sketch-canvas';
 import UserHeader from '../common/UserHeader';
 import Styles from './assignment.css';
 import { useLocation, useNavigate } from 'react-router-dom';
+import {format} from 'date-fns';
 {/*
 
 run this to resolve peer dependencies
@@ -35,61 +36,7 @@ const QAPage = () => {
 
   
 
-  var answers = [];
-
-  var questions = [
-    {
-      id: "quiz_123",
-      parentQuiz: 2,
-      questionName: "This is question 1",
-      questionDescription: "This is question 1 description",
-      points: 1,
-      solution: "This is the solution for question 1",
-      testCases: "Test cases",
-    },
-    {
-        id: "quiz_223",
-        parentQuiz: 2,
-        questionName: "This is question 2",
-        questionDescription: "This is question 2 description",
-        points: 1,
-        solution: "This is the solution for question 2",
-        testCases: "Test cases",
-      },
-      {
-        id: "quiz_323",
-        parentQuiz: 2,
-        questionName: "This is question 3",
-        questionDescription: "This is question 3 description",
-        points: 1,
-        solution: "This is the solution for question 3",
-        testCases: "Test cases",
-      },
-      {
-        id: "quiz_423",
-        parentQuiz: 2,
-        questionName: "This is question 4",
-        questionDescription: "This is question 4 description",
-        points: 1,
-        solution: "This is the solution for question 4",
-        testCases: "Test cases",
-      },
-      {
-        id: "quiz_523",
-        parentQuiz: 2,
-        questionName: "This is question 5",
-        questionDescription: "This is question 5 description",
-        points: 1,
-        solution: "This is the solution for question 5",
-        testCases: "Test cases",
-      }
-  ];
-
-  const questionDivRefs = useRef([]);
-  const [visibleDiv, setVisibleDiv] = useState(null);
-  const [currentDiv, setCurrentDiv] = useState(0);
-  const disablePrevButton = currentDiv === 0;
-  const disableNextButton = currentDiv === questions.length - 1;
+  
 
 
   const toggleVisibility = (index) => {
@@ -136,27 +83,70 @@ const QAPage = () => {
   const [assignment, setAssignment] = useState({
     courseId: location.state.parentCourse,
     assignmentId: location.state.assignmentId,
-    instructions: location.state.assignmentInstructions,
+    assignmentName: location.state.assignmentName,
+    questions: location.state.questions,
+    instructions: location.state.assignmentDescription,
     assignmentNumber: location.state.assignmentNumber,
     cname: location.state.cname,
     cid: location.state.parentCourse,
     instructorFname: location.state.instructorFname,
     instructorLname: location.state.instructorLname,
-    instructorEmail:location.state.instructorEmail
+    instructorEmail:location.state.instructorEmail,
+    caller: location.state.caller
   });
 
-  const submitAnswer = async(answerFile) =>{
-        console.log(answerFile.name);
-        imageUrl = URL.createObjectURL(answerFile);
-        var img = document.createElement('img');
-        img.src=imageUrl;
-        console.log(imageUrl);
-        document.getElementsByClassName("upload-box")[0].appendChild(img);
-        const formData = new FormData();
-        formData.append("fileUpload", answerFile);
-        axios.post('http://localhost:3001/api/v1/upload/upload', formData)
+
+  const questionDivRefs = useRef([]);
+  const [visibleDiv, setVisibleDiv] = useState(null);
+  const [currentDiv, setCurrentDiv] = useState(0);
+  const disablePrevButton = currentDiv === 0;
+  const disableNextButton = currentDiv === assignment.questions.length - 1;
+  const [selectionStates, setSelectionStates] = useState(Array(assignment.questions.length).fill({
+    isUploadSolution: false,
+    isCanvasDisabled: false,
+  }));
+
+  const [answers, setAnswers] = useState([]);
+
+  const updateAnswer = (index, answerFile, question) => {
+    const updatedAnswers = [...answers];
+    updatedAnswers[index] = { question: question, answer: answerFile };
+    setAnswers(updatedAnswers);
+    alert("Answer Saved Succefully!");
+  };
+
+  const updateAnswerImage = (index, event, question) => {
+    var id = 'answerImage'+index
+    var file = document.getElementById(id).files[0]
+    const updatedAnswers = [...answers];
+    updatedAnswers[index] = { question: question, answer: file };
+    setAnswers(updatedAnswers);
+    alert("Answer Saved Succefully!");
+  };
+
+  const submitAnswer = async(event) =>{
+        event.preventDefault();
+        event.stopPropagation();
+        console.log("answers array", answers);
+        var submittedDate = format(new Date(), "MM-dd-yyyy");
+        var questions = [];
+        var formData = new FormData();
+        formData.append('student', user.userId);
+        formData.append('dateSubmitted', submittedDate);
+        console.log("answers")
+        answers.map((ans, index) => {
+            formData.append('fileURL', ans.answer);
+            questions.push({'question':ans.question});
+            console.log(ans.answer);
+        })
+        console.log("questions", questions);
+        console.log(typeof submittedDate);
+        formData.append('answers', questions);
+        for (var x of formData) console.log(x);
+        axios.post(`http://localhost:3001/api/v1/assgs/submit/${assignment.assignmentId}`, formData)
         .then(function (response) {
-          if(response.data.status === 200){
+          console.log(response.status);
+          if(response.status === 200){
           alert("answer submitted successfully");
           goBackToList();
           }
@@ -164,12 +154,21 @@ const QAPage = () => {
           alert("unable to submit answer");
         })
         .catch(function (error) {
-          console.log(error.response.data);
+          console.log(error.response);
         });
   }
 
 
   const goBackToList = () =>{
+
+    if(assignment.caller === 'quizPage')
+    goBackToQuizPage();
+    else
+    goBackToAssignmentPage();
+    
+  }
+
+  const goBackToQuizPage = () =>{
     history("/quizpage", {state:{userName:user.userName,
         email:user.email, 
         role:user.role,
@@ -184,27 +183,61 @@ const QAPage = () => {
         }});
   }
 
+  const goBackToAssignmentPage = () =>{
+    history("/assignmentpage", {state:{userName:user.userName,
+        email:user.email, 
+        role:user.role,
+        firstName:user.firstName,
+        lastName:user.lastName,
+        userId: user.userId,
+        parentCourse:assignment.courseId,
+        cname: assignment.cname,
+        instructorFname: assignment.instructorFname,
+        instructorLname: assignment.instructorLname,
+        instructorEmail:assignment.instructorEmail
+        }});
+  }
+
+
+
   return (
     <div className="backgroundDecoration">
       {/*<UserHeader user={user}/>*/}
       {
-        questions.map((question, index) => 
-      <div key={question.id}
+        assignment.questions.map((question, index) => 
+      <div key={question._id}
       ref={(el) => (questionDivRefs.current[index] = el)}
       style={{ display: visibleDiv === index ? "block" : "none" }}>
       <div className="assignment-box">
         <div className="assignment-box-head">
-          <h2>Question {index+1} {question.questionName}</h2>
+          <h2>{index+1}.  {" "+question.name}</h2>
           <div className="navigationButtons">
-          <Button style={{ marginRight: 50, height: 45, width: 120 }} variant="outline-success" onClick={goNext} disabled={!disableNextButton}>Submit Quiz</Button>
+          <Button style={{ marginRight: 50, height: 45, width: 120 }} variant="outline-success" onClick={(event)=>submitAnswer(event)} disabled={!disableNextButton}>Submit Quiz</Button>
             <button className="previousButton" onClick={goPrev} disabled={disablePrevButton}>Previous</button>
             <button className="nextButton" onClick={goNext} disabled={disableNextButton}>Next</button>
           </div>
         </div>
         <div className="questionSection">
-          <p style={{ padding: 50 }}>{question.questionDescription}</p>
+          <p style={{ padding: 50 }}>{question.description}</p>
+          <input type="radio" name={`solutionType-${index}`} value="upload" onClick={() => setSelectionStates(prevStates => {
+            const newStates = [...prevStates];
+            newStates[index] = {
+              ...newStates[index],
+              isUploadSolution: true,
+              isCanvasDisabled: true,
+            };
+            return newStates;})} /> Upload Solution
+          <input type="radio" name={`solutionType-${index}`} value="draw" onClick={() => setSelectionStates(prevStates => {
+            const newStates = [...prevStates];
+            newStates[index] = {
+              ...newStates[index],
+              isUploadSolution: false,
+              isCanvasDisabled: false,
+            };
+            return newStates;})} /> Draw Solution
         </div>
         <div className="answerArea">
+        {!selectionStates[index].isCanvasDisabled && (
           <ReactSketchCanvas
             ref={answerCanvas}
             width={width}
@@ -213,7 +246,8 @@ const QAPage = () => {
             strokeWidth={pentype}
             eraserWidth={erasertype}
             hideGrid={true}
-          />
+          />)}
+          {!selectionStates[index].isCanvasDisabled && (
           <div className='canvasbuttons'>
             <Button style={{ marginRight: 50, marginTop: 15, width: 80 }} variant="outline-info" onClick={() => { answerCanvas.current.clearCanvas(); }}>Reset</Button><br/>
             <Button style={{ marginRight: 50, marginTop: 15, width: 80 }} variant="outline-info" onClick={() => { answerCanvas.current.undo(); }}>Undo</Button><br/>
@@ -222,7 +256,8 @@ const QAPage = () => {
             <Button style={{ marginRight: 50, marginTop: 15, width: 80 }} variant="outline-info" onClick={() => 
                 { answerCanvas.current.exportImage("png")
                   .then(
-                     data => { console.log(data); 
+                     data => { 
+                      //console.log(data); 
                         const base64String = data;
                         const decodedString = atob(base64String.split(",")[1]);
                         const byteArray = new Uint8Array(decodedString.length);
@@ -230,29 +265,51 @@ const QAPage = () => {
                         byteArray[i] = decodedString.charCodeAt(i);
                         }
                         var answerFile = null;
-                        var answerImageName = "hi";
-                        /*answerImageName = user.userId+"_"+assignment.courseId+"_"+assignment.assignmentId+".png";*/
+                        var answerImageName = "";
+                        var qno = index+1;
+                        answerImageName = user.userId+"_"+assignment.courseId+"_"+assignment.assignmentId+"_question"+qno+".png";
                         const blob = new Blob([byteArray], { type: "image/png" });
                         answerFile = new File([blob], answerImageName, { type: "image/png" });
-                        submitAnswer(answerFile);
+                        updateAnswer(index, answerFile, question._id);
 
                      })
                   .catch(
                      e => { console.log(e); 
                      }); }}>Save</Button><br/>
           <Button style={{ marginRight: 50, marginTop: 15, width: 80 }} variant="outline-info" onClick={goBackToList}>Cancel</Button><br/>
-          </div>
+          </div>)}
+          {selectionStates[index].isUploadSolution && (
+          <ReactSketchCanvas
+            ref={answerCanvas}
+            width={width}
+            height={height}
+            strokeColor={pencolor}
+            strokeWidth={pentype}
+            eraserWidth={erasertype}
+            hideGrid={true}
+            style={selectionStates[index].isUploadSolution ? {pointerEvents: "none", opacity: "0.4"} : {}}
+          />)}
+          {selectionStates[index].isUploadSolution && (
+          <div className='canvasbuttons'>
+            <Button style={{ marginRight: 50, marginTop: 15, width: 80 }} variant="outline-info" disabled>Reset</Button><br/>
+            <Button style={{ marginRight: 50, marginTop: 15, width: 80 }} variant="outline-info" disabled>Undo</Button><br/>
+            <Button style={{ marginRight: 50, marginTop: 15, width: 80 }} variant="outline-info" disabled>Eraser</Button><br/>
+            <Button style={{ marginRight: 50, marginTop: 15, width: 80 }} variant="outline-info" disabled>Pen</Button><br/>
+            <Button style={{ marginRight: 50, marginTop: 15, width: 80 }} variant="outline-info" disabled>Save</Button><br/>
+          <Button style={{ marginRight: 50, marginTop: 15, width: 80 }} variant="outline-info" disabled>Cancel</Button><br/>
+          </div>)}
         </div>
         <div className='brushcontrols'>
           <span style={{ marginRight: 100 }}> <input type="color" value={pencolor} onChange={e => setPencolor(e.target.value)} /> Pen color  </span>
           <span style={{ marginRight: 10 }}> <input type="range" min="1" max="12" value={pentype} onChange={e => setPentype(parseInt(e.target.value, 10))} /> Pen type </span>
         </div>
      </div>
-     <div className="upload-box"><input type="file" name="answerImage"/>Upload Your answer</div>
-     </div>)
-     }
+     {selectionStates[index].isUploadSolution && (
+     <div className="upload-box"><input type="file"  id={"answerImage"+index} /><button onClick={(event) => updateAnswerImage(index, event, question._id)}>Save answer image</button></div>)}
+     </div>
+     )}
      <div className='navigableQuestionList'>
-        {questions.map((question, index) => (
+        {assignment.questions.map((question, index) => (
           <button className="showHideQuestions" key={question.id} onClick={() => toggleVisibility(index)}>
             {index === visibleDiv ? "Hide" : "Show"} question {index + 1}
           </button>
@@ -271,120 +328,3 @@ export default QAPage;
 
 
 
-{/*class QAPage2 extends Component {
-
-    state = {
-        pencolor : "#e66465",
-        pentype : 2,
-        erasertype: 12,
-        width : 980,
-        height : 560
-    };
-
-    user= {
-        firstName: this.location.firstName,
-        lastName: this.location.lastName,
-        userName: this.location.userName,
-        email: this.location.email,
-        role: this.location.role
-    };
-    assignment = {
-        cname: this.location.parentCourse,
-        cid: this.location.assignmentId,
-        instructions: this.location.assignmentInstructions
-    };
-
-    
-   
-   render(){
-        return (
-            <div className="backgroundDecoration">
-                <UserHeader/>
-                <div className="assignment-box">
-                    <div className="assignment-box-head">
-                        <h2>Question 1</h2>
-                        <div className="navigationButtons">
-                            <button className="previousButton" disabled>Previous</button>
-                            <button className="nextButton">Next</button>
-                        </div>
-                    </div>
-                    <div className="questionSection">
-                     <p style={{ padding: 50}}>{this.assignment.instructions}</p>
-                    </div>
-                    <div className="answerArea">
-                        {/*<div className='canvasSpace'>*/}
-                            {/*<div className='navButtons'>
-                                <a href="#" className="previous">&#8249;Previous</a><br/>
-                                <a href="#" className="next">Next&#8250;</a>
-                            </div>*/}
-                           {/* <ReactSketchCanvas
-                                ref={canvasDraw => (this.answerCanvas = canvasDraw)}
-                                width={this.state.width}
-                                height={this.state.height}
-                                strokeColor={this.state.pencolor}
-                                strokeWidth={this.state.pentype}
-                                eraserWidth={this.state.erasertype}
-                                hideGrid={true}
-                            />
-                            <div className='canvasbuttons'>
-                                <Button style={{ marginRight: 50, marginTop: 15, width: 80}} variant = "outline-info" onClick={() => {this.answerCanvas.clearCanvas();}}>Reset</Button><br/>
-                                <Button style={{ marginRight: 50, marginTop: 15, width: 80}} variant = "outline-info" onClick={() => {this.answerCanvas.undo();}}>Undo</Button><br/>
-                                <Button style={{ marginRight: 50, marginTop: 15, width: 80}} variant = "outline-info" onClick={() => {this.answerCanvas.eraseMode(true);}}>Eraser</Button><br/>
-                                <Button style={{ marginRight: 50, marginTop: 15, width: 80}} variant = "outline-info" onClick={() => {this.answerCanvas.eraseMode(false);}}>Pen</Button><br/>
-                                <Button style={{ marginRight: 50, marginTop: 15, width: 80}} variant = "outline-info" 
-                                onClick={() => {this.answerCanvas.exportImage("png").then(data => {
-                                    console.log(data);
-                                    console.log(this.user.firstName, this.assignment.cname);
-                                    })
-                                    .catch(e => {
-                                    console.log(e);
-                                    });}}>Export</Button><br/>
-                            </div>
-                       {/*</div>*/}
-                        {/*</div>
-                        <div className='brushcontrols'>
-                                <span style={{marginRight: 100}}> <input type="color" value={this.state.pencolor} onChange={e =>this.setState({ pencolor: e.target.value })}/> Pen color  </span>
-                                <span style={{marginRight: 10}}> <input type="range" min="1" max="12" value={this.state.pentype}  onChange={e =>this.setState({ pentype: parseInt(e.target.value, 10) })}/> Pen type </span>
-                        </div>
-                </div>
-                <div className="upload-box"><input type="file" name="answerImage"/>Upload Your answer</div>
-                
-               {/*<div className='fileUpload'>
-                    <Form>
-                      <Form.Group className="mb-3" controlId="formAnswer">
-                        <Form.Label>Upload you answer</Form.Label>
-                        <Form.Control type="file" name="answer"/>
-                      </Form.Group>
-                    </Form>
-                            </div>*/}
-                {/*<div className='footer'>All rights reserved © 2022</div>*/}
-           {/* </div>
-        )
-   }
-}
-
-export default QAPage2;*/}
-
-{/*
-
- <form  onSubmit={handleSubmit}>
-          {formValues.map((element, index) => (
-            <div className="form-inline" key={index}>
-              <label>Name</label>
-              <input type="text" name="name" value={element.name || ""} onChange={e => handleChange(index, e)} />
-              <label>Email</label>
-              <input type="text" name="email" value={element.email || ""} onChange={e => handleChange(index, e)} />
-              {
-                index ? 
-                  <button type="button"  className="button remove" onClick={() => removeFormFields(index)}>Remove</button> 
-                : null
-              }
-            </div>
-          ))}
-          <div className="button-section">
-              <button className="button add" type="button" onClick={() => addFormFields()}>Add</button>
-              <button className="button submit" type="submit">Submit</button>
-          </div>
-      </form>
-      
-*/}

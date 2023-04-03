@@ -274,6 +274,21 @@ https://www.w3schools.com/howto/howto_css_next_prev.asp
     }
 
     /*show and hide buttons QA page end*/
+    .pastAssignments{
+      position: relative;
+      top: -4em;
+      left: 15em;
+      color: #700cbc; 
+      font-size: 18px;
+    }
+
+    .currentAssignments{
+      position: relative;
+      top: -4em;
+      left: 15em;
+      color: #700cbc; 
+      font-size: 18px;
+    }
   }
 
 
@@ -548,6 +563,21 @@ https://www.w3schools.com/howto/howto_css_next_prev.asp
       }
 
       /*show and hide buttons QA page end*/
+      .pastAssignments{
+        position: relative;
+        top: -4em;
+        left: 15em;
+        color: #700cbc; 
+        font-size: 18px;
+      }
+
+      .currentAssignments{
+        position: relative;
+        top: -4em;
+        left: 15em;
+        color: #700cbc; 
+        font-size: 18px;
+      }
        
     }
 
@@ -825,6 +855,22 @@ https://www.w3schools.com/howto/howto_css_next_prev.asp
       }
 
       /*show and hide buttons QA page end*/
+
+      .pastAssignments{
+        position: relative;
+        top: -4em;
+        left: 15em;
+        color: #700cbc; 
+        font-size: 18px;
+      }
+
+      .currentAssignments{
+        position: relative;
+        top: -4em;
+        left: 15em;
+        color: #700cbc; 
+        font-size: 18px;
+      }
 
 
     }

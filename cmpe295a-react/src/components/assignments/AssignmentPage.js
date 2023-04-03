@@ -6,13 +6,17 @@ import axios from 'axios';
 import { FaPencilAlt } from "react-icons/fa";
 import Container from 'react-bootstrap/esm/Container';
 import QAPage2 from './QAPage2';
+import { format, isPast } from "date-fns";
 
 function AssignmentPage() {
 
   const getAssignmentsButton = useRef(null);
   const createAssignmentButton = useRef(null);
   const createAssignmentForm = useRef(null);
-  const currentAssignments = useRef(null);
+  const pastAssignments = useRef(null);
+  const upcomingAssignments = useRef(null);
+  const allSubmissionDetailsDiv = useRef(null);
+  const studentSubmissionDetailsDiv = useRef(null);
 
   const location = useLocation();
 
@@ -25,6 +29,91 @@ function AssignmentPage() {
   const[solution, setSolution] = useState('');
   const[instruction, setInstruction] = useState('');
   const [assignmentList, setAssignmentList] = useState([]);
+  const [pastAssignmentList, setPastAssignmentList] = useState([]);
+  const [upcomingAssignmentList, setUpcomingAssignmentList] = useState([]);
+  const [allSubmissionDetails, setAllSubmissionDetails] = useState([
+    { _id: "",
+      assignmentQuiz: {
+        _id: "",
+        course: "",
+        type: "",
+        name: "",
+        description:"",
+        dueDate: "",
+        totalPoints: "",
+        questions: [{
+          _id: "",
+          name: "",
+          description:"",
+          solution: "",
+          points: "",
+          testCases: [
+            {
+              _id: "",
+               input: "",
+               output:""
+            }
+          ]
+        }
+        ],
+        __v: ""
+      }, 
+      student: "", 
+      score: "",
+      dateSubmitted: "", 
+      answers: [
+        {
+        _id: "",  
+        question: "", 
+        fileURL: "",
+        points: ""
+      }
+    ],
+    __v: ""
+    }
+  ]);
+  const [studentSubmissionDetails, setStudentSubmissionDetails] = useState([
+    { _id: "",
+      assignmentQuiz: {
+        _id: "",
+        course: "",
+        type: "",
+        name: "",
+        description:"",
+        dueDate: "",
+        totalPoints: "",
+        questions: [{
+          _id: "",
+          name: "",
+          description:"",
+          solution: "",
+          points: "",
+          testCases: [
+            {
+              _id: "",
+               input: "",
+               output:""
+            }
+          ]
+        }
+        ],
+        __v: ""
+      }, 
+      student: "", 
+      score: "",
+      dateSubmitted: "", 
+      answers: [
+        {
+        _id: "",  
+        question: "", 
+        fileURL: "",
+        points: ""
+      }
+    ],
+    __v: ""
+    }
+  ]);  
+  const [quizQuestions, setQuizQuestions] = useState([{ name: "",description: "", points: "", solution: "", testCases: [{input: "", output: ""}]}]);
 
   const [user, setUser] = useState({
     firstName: location.state.firstName,
@@ -51,11 +140,13 @@ function AssignmentPage() {
     setDuedate('');
     setSolution('');
     setInstruction('');
+    setQuizQuestions([{ name: "",description: "", points: "", solution: "", testCases: [{input: "", output: ""}]}]);
     getAssignmentsButton.current.style.display = 'contents';
     createAssignmentForm.current.style.display = 'none';
     if(user.role ==='teacher')
     createAssignmentButton.current.style.display='contents';
-    currentAssignments.current.style.display = 'none';
+    pastAssignments.current.style.display = 'none';
+    upcomingAssignments.current.style.display = 'none';
   };
 
   const handleNameChange = (event) => {
@@ -78,12 +169,62 @@ function AssignmentPage() {
     setSolution(event.target.value);
   }
 
+  var handleQuestionChange = (i, e) => {
+    var newquizQuestions = [...quizQuestions];
+    newquizQuestions[i][e.target.name] = e.target.value;
+    setQuizQuestions(newquizQuestions);
+  }
+
+var addQuestion = () => {
+    setQuizQuestions([...quizQuestions, { name: "",description: "", points: "", solution: "", testCases: [{input: "", output: ""}]}]);
+  }
+
+var removeQuestion = (i) => {
+    var newquizQuestions = [...quizQuestions];
+    newquizQuestions.splice(i, 1);
+    setQuizQuestions(newquizQuestions);
+}
+
+var handleTestcaseChange = (index1, index2, e) => {
+  var newquizQuestions = [...quizQuestions];
+  newquizQuestions[index1].testCases[index2][e.target.name] = e.target.value;
+  setQuizQuestions(newquizQuestions);
+}
+
+var addTestCase = (index1) => {
+  const newTestCase = { input: "", output: "" };
+  const updatedTestCases = [...quizQuestions[index1].testCases, newTestCase];
+  const updatedQuizQuestions = {...quizQuestions[index1], testCases: updatedTestCases}
+  const newQuizQuestions = [...quizQuestions];
+  newQuizQuestions[index1] = updatedQuizQuestions;
+  setQuizQuestions(newQuizQuestions);
+}
+
+var removeTestcase = (index1, index2) => {
+  var newquizQuestions = [...quizQuestions];
+  newquizQuestions[index1].testCases.splice(index2, 1);
+  setQuizQuestions(newquizQuestions);
+}
+
+
   const getAssignments = () =>{
-    axios.get(`http://localhost:3001/api/v1/assgs/bycourse/${course.cid}`)
+    axios.get(`http://localhost:3001/api/v1/assgs/courseassignments/${course.cid}`)
     .then(function (response) {
         setAssignmentList(response.data);
+        var past = [];
+        var upcoming = [];
+        response.data.map((quiz, index) => {
+          var dueDate = new Date(quiz.dueDate);
+            if(isPast(dueDate))
+            past.push(quiz);
+            else
+            upcoming.push(quiz);
+        })
+        setPastAssignmentList(past);
+        setUpcomingAssignmentList(upcoming);
         getAssignmentsButton.current.style.display = 'none';
-        currentAssignments.current.style.display = 'contents';
+        pastAssignments.current.style.display = 'contents';
+        upcomingAssignments.current.style.display = 'contents';
         if(user.role ==='teacher')
         createAssignmentButton.current.style.display='none';
       })
@@ -102,20 +243,22 @@ const showCreateAssignmentForm = () =>{
 const createAssignment = async(event) =>{
     event.preventDefault();
     event.stopPropagation();
+    console.log("questions", quizQuestions);
     if(points.trim().length === 0 || dueDate === null){
       alert("One or more form fields are empty, please fill out !");
     }
     else{
         axios.post('http://localhost:3001/api/v1/assgs/', {
           course: course.cid,
+          type: 'assignment',
           name: name,
-          points: points,
-          dueDate: dueDate,
-          solution: solution,
-          instructions: instruction
-        })
+          description: instruction,
+          dueDate: format(new Date(dueDate), "MM-dd-yyyy"),
+          totalPoints: points,
+          questions: quizQuestions
+})
         .then(function (response) {
-          if(response.data.status === true)
+          if(response.status === 200)
           {
             createAssignmentForm.current.style.display='none';
             getAssignmentsButton.current.style.display='block';
@@ -140,14 +283,17 @@ const createAssignment = async(event) =>{
       firstName:user.firstName,
       lastName:user.lastName,
       userId: user.userId,
-      assignmentId: assignment.id,
-      assignmentInstructions: assignment.name,
+      assignmentId: assignment._id,
+      assignmentName: assignment.name,
+      assignmentDescription: assignment.description,
+      questions: assignment.questions,
       parentCourse:course.cid,
       assignmentNumber: index+1,
       cname: course.cname,
       instructorFname: course.instructorFname,
       instructorLname: course.instructorLname,
-      instructorEmail: course.instructorEmail
+      instructorEmail: course.instructorEmail,
+      caller: 'assignmentPage'
     
     }});
   }
@@ -162,8 +308,11 @@ const createAssignment = async(event) =>{
 }
 
 const openAssignments = () =>{
-  getAssignmentsButton.current.style.display = 'block';
-      currentAssignments.current.style.display = 'none';
+      getAssignmentsButton.current.style.display = 'block';
+      pastAssignments.current.style.display = 'none';
+      upcomingAssignments.current.style.display = 'none';
+      allSubmissionDetailsDiv.current.style.display = 'none';
+      studentSubmissionDetailsDiv.current.style.display = 'none';
       if(user.role ==='teacher')
       createAssignmentButton.current.style.display='block';
 }
@@ -186,6 +335,49 @@ const openQuizzes = () =>{
       
 }
 
+const getQuizDueDate = (rawDate) =>{
+  var formattedDate = format(new Date(rawDate), "MMMM do, yyyy");
+  return formattedDate;
+}
+
+const openSubmissionDetails = async(event,quizId) =>{
+  var studentId = '6406547d2891c63dfee04af1';
+  var quizIds = '64253188c45a333fbcd4d41e';
+  event.preventDefault();
+  event.stopPropagation();
+  if(user.role === 'teacher'){
+     await axios.get(`http://localhost:3001/api/v1/assgs/submissions/${quizId}`)
+      .then(function (response) {
+        setAllSubmissionDetails(response.data);
+          getAssignmentsButton.current.style.display = 'none';
+          pastAssignments.current.style.display = 'none';
+          upcomingAssignments.current.style.display = 'none';
+          allSubmissionDetailsDiv.current.style.display = 'contents';
+          createAssignmentButton.current.style.display='none';
+          createAssignmentForm.current.style.display='none';
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+  }
+
+  else{
+    await axios.get(`http://localhost:3001/api/v1/assgs/stusubmission/${quizId}/${user.userId}`)
+    .then(function (response) {
+      console.log("submission details");
+      console.log(response);
+        setStudentSubmissionDetails(response.data);
+        getAssignmentsButton.current.style.display = 'none';
+        pastAssignments.current.style.display = 'none';
+        upcomingAssignments.current.style.display = 'none';
+        studentSubmissionDetailsDiv.current.style.display = 'contents';
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+}
+
 
   return (
     <>
@@ -203,20 +395,23 @@ const openQuizzes = () =>{
      <span id="getQuizzes" ref={getAssignmentsButton}><input type="button" value="See Current Assignments" onClick={getAssignments}/></span>
                     {user.role === 'teacher' && <span id="createQuizzes" ref={createAssignmentButton}><input type="button" value="Create Assignment" onClick={showCreateAssignmentForm}/></span>}
    
-                    <span style={{display:'none'}} ref={currentAssignments} className="currentAssignments">
+                    <span style={{display:'none'}} ref={upcomingAssignments}>
+                    <span className="currentAssignments">Upcoming Assignments </span>
                     <div className="item-list">
                           <ul>
                             {
-                                assignmentList.map((assignment,index) => 
+                               upcomingAssignmentList.map((assignment,index) => 
                                     
                                         <li key={index}>
                                             <div className="list-area-header">
                                             <h4>Assignment {index+1}</h4>
-                                            <p>Deadline: {assignment.dueDate}</p>
+                                            <p>Deadline: {getQuizDueDate(assignment.dueDate)}</p>
                                             </div>
                                             <div className="list-details">
-                                            <p>{assignment.name} <span style={{display:'inline', marginLeft:194}}>Points: {assignment.points} </span></p>
-                                            <a href='' onClick={() => openQAPage(assignment, index)}>Check out</a>
+                                            <p>{assignment.name} <span style={{display:'inline', marginLeft:194}}>Points: {assignment.totalPoints} </span></p>
+                                            <p>{assignment.description} </p>
+                                          <a href='' style={{marginRight:10}} onClick={() => openQAPage(assignment, index)}>Attempt</a>
+                                          <a href='' onClick={(event) => openSubmissionDetails(event,assignment._id)}>View Submissions</a>
                                             </div>
                                         </li>
                                         
@@ -226,14 +421,152 @@ const openQuizzes = () =>{
                           </ul>
                     </div>
                     </span>
+                    <span style={{display:'none'}} ref={pastAssignments}>
+                    <span className="currentAssignments">Past Assignments </span>
+                    <div className="item-list">
+                          <ul>
+                            {
+                               pastAssignmentList.map((assignment,index) => 
+                                    
+                                        <li key={index}>
+                                            <div className="list-area-header">
+                                            <h4>Assignment {index+1}</h4>
+                                            <p>Deadline: {getQuizDueDate(assignment.dueDate)}</p>
+                                            </div>
+                                            <div className="list-details">
+                                            <p>{assignment.name} <span style={{display:'inline', marginLeft:194}}>Points: {assignment.totalPoints} </span></p>
+                                            <p>{assignment.description} </p>
+                                            <a href='' onClick={(event) => openSubmissionDetails(event,assignment._id)}>View Submission</a>
+                                            </div>
+                                        </li>
+                                        
+                                )
+                                
+                            }
+                          </ul>
+                    </div>
+                    </span>
+
+                    <span style={{display:'none'}} ref={studentSubmissionDetailsDiv} > 
+                    <span className="pastAssignments">Assignment Submission Details </span>
+                    <div className="item-list">
+                      {studentSubmissionDetails.length === 0  &&(<span>Currently there are no submissions for this assignment</span>)}
+                    <ul>
+                    {studentSubmissionDetails.map((submissionDetail) => (
+                        <li>
+                        <div key={submissionDetail._id}>
+                          <h2>{submissionDetail.assignmentQuiz.name}</h2>
+                          <p>{submissionDetail.assignmentQuiz.description}</p>
+                          <ul>
+                            
+                          {submissionDetail.assignmentQuiz.questions.map((question) => (
+                            <li>
+                                  <div key={question._id}>
+                                    <h3>{question.name}</h3>
+                                    <p>{question.description}</p>
+                                    <p>{question.solution}</p>
+                                    {submissionDetail.answers.map((answer) => {
+                                      if (answer.question === question._id) {
+                                        return (
+                                        <a key={answer._id} href={answer.fileURL}>
+                                          Download answer image
+                                        </a>
+                                        );
+                                      } else {
+                                        return null;
+                                      }
+                                    })}
+                                
+                                  </div>
+                                  </li>
+                            ))}
+                          </ul>
+                        </div>
+                        </li>
+                    ))}
+                    </ul>
+                    </div>
+                    </span>
+
+                    <span style={{display:'none'}} ref={allSubmissionDetailsDiv} > 
+                    <span className="pastAssignments">Assignment Submission Details </span>
+                    <div className="item-list">
+                    {allSubmissionDetails.length === 0  &&(<span>Currently there are no submissions for this assignment</span>)}
+                        <ul>
+                        {allSubmissionDetails.map((submissionDetail) => (
+                          <li>
+                          <div key={submissionDetail._id}>
+                          <h2>{submissionDetail.assignmentQuiz.name}</h2>
+                          <p>{submissionDetail.assignmentQuiz.description}</p>
+                            <p>Submitted by: {submissionDetail.student}</p>
+                            <ul>
+                            {submissionDetail.assignmentQuiz.questions.map((question) => (
+                              <li>
+                              <div key={question._id}>
+                                <h3>{question.name}</h3>
+                                <p>{question.description}</p>
+                                <p>{question.solution}</p>
+                                {submissionDetail.answers.map((answer) => {
+                                  if (answer.question === question._id) {
+                                    return (
+                                      <a key={answer._id} href={answer.fileURL}>
+                                        Download answer image
+                                      </a>
+                                    );
+                                  } else {
+                                    return null;
+                                  }
+                                })}
+                              </div>
+                              </li>
+                              ))}
+                              </ul>
+                          </div>
+                          </li>
+                    ))}
+                    </ul>
+                    </div>
+                    </span>
+
                     <span style={{display:'none'}} ref={createAssignmentForm} className="createCourse">
-                        <div className="createCourseFormHeading"><h1>Create Assignment</h1></div>
-                        <form className="createNewAssignmentForm" onSubmit={createAssignment}>
-                            <input type="text" name="name" placeholder="Assignment Name" value = {name} onChange={handleNameChange} />
+                        <div className="createQuizFormHeading"><h1>Create Assignment</h1></div>
+                        <form className="createNewQuizForm" onSubmit={createAssignment}>
+                        <input type="text" name="name" placeholder="Assignment Name" value = {name} onChange={handleNameChange} />
+                            <input type="text" name="instructions" placeholder="Add description" value = {instruction} onChange={handleInstructionChange} />
                             <input type="text" name="points" placeholder="Assignment Points" value = {points} onChange={handlePointChange} />
                             <input type="date" name="dueDate" placeholder="Select deadline" value = {dueDate} onChange={handleDateChange} />
-                            <input type="text" name="solution" placeholder="Add solution" value = {solution} onChange={handleSolutionChange} />
-                            <input type="text" name="instructions" placeholder="Add instructions" value = {instruction} onChange={handleInstructionChange} />
+                            <button type="button" className="addButton" onClick={() => addQuestion()}>Add Question</button>
+                            {quizQuestions.map((element, index1) => (
+                                <div className="form-inline" key={index1}>
+                                <input type="text" name="name" placeholder="Add question name" value={element.name || ""} onChange={e => handleQuestionChange(index1, e)} />
+                                <input type="text" name="description" placeholder="Add question description" value={element.description || ""} onChange={e => handleQuestionChange(index1, e)} />
+                                <input type="text" name="points" placeholder="Add points" value={element.points || ""} onChange={e => handleQuestionChange(index1, e)} />
+                                <input type="text" name="solution" placeholder="Add solution" value={element.solution || ""} onChange={e => handleQuestionChange(index1, e)} />
+                                {
+                                    index1 ? 
+                                    <button type="button" className="removeButton" onClick={() => removeQuestion(index1)}>Remove Question</button> 
+                                    : null
+                                }
+                                <button type="button" className="addButton" onClick={() => addTestCase(index1)}>Add testcase</button>
+                                
+                                 { 
+                                 element.testCases.map((tcase, index2) => (
+                                   
+                                  <div>
+                                    <input type="text" name="input" placeholder="Enter input" value={tcase.input || ""} onChange={e => handleTestcaseChange(index1, index2, e)}/>
+                                    <input type="text" name="output" placeholder="Enter output" value={tcase.output || ""} onChange={e => handleTestcaseChange(index1, index2, e)}/>
+                                    {
+                                    index2 ? 
+                                    <button type="button" className="removeButton" onClick={() => removeTestcase(index1, index2)}>Remove Testcase</button> 
+                                    : null
+                                   }
+                                  </div>
+
+                                  
+                                ))
+                                }
+                                </div>
+                            ))}
                             <input type="submit" id='button1' value="Create"/>
                             <input type="reset" id='button2' value="Cancel" onClick={handleCancel}/>
                         </form>

@@ -4,6 +4,7 @@ import { FaRegUserCircle } from "react-icons/fa";
 import UserHeader from '../common/UserHeader';
 import AssignmentPage from '../assignments/AssignmentPage';
 import QuizPage from '../assignments/QuizPage';
+import { format } from "date-fns";
 
 
 
@@ -74,7 +75,7 @@ function CourseHome() {
     }
 
     const getQuizzes = () =>{
-        axios.get('http://localhost:3001/api/v1/quizzes/')
+        axios.get(`http://localhost:3001/api/v1/assgs/coursequizzes/${course.cid}`)
         .then(function (response) {
             setQuizList(response.data);
           })
@@ -86,7 +87,7 @@ function CourseHome() {
     const getAssignments = () =>{
         console.log("user: ",user);
         console.log("course: ", course);
-        axios.get('http://localhost:3001/api/v1/assgs/')
+        axios.get(`http://localhost:3001/api/v1/assgs/courseassignments/${course.cid}`)
         .then(function (response) {
             setAssignmentList(response.data);
           })
@@ -136,6 +137,11 @@ function CourseHome() {
                 instructorLname: course.instructorLname,
                 instructorEmail:course.instructorEmail
                 }});
+      }
+
+      const getQuizDueDate = (rawDate) =>{
+        var formattedDate = format(new Date(rawDate), "MMMM do, yyyy");
+        return formattedDate;
       }
 
     return (
@@ -191,7 +197,7 @@ function CourseHome() {
                                         <p>Quiz</p>
                                     </td>
                                     <td>
-                                        <p>{quiz.dueDate}</p>
+                                        <p>{getQuizDueDate(quiz.dueDate)}</p>
                                     </td>
                                     <td>
                                         <p>Submitted</p>
@@ -217,7 +223,7 @@ function CourseHome() {
                                     <p>Assignment</p>
                                 </td>
                                 <td>
-                                    <p>{assignment.dueDate}</p>
+                                    <p>{getQuizDueDate(assignment.dueDate)}</p>
                                 </td>
                                 <td>
                                     <p>Submitted</p>

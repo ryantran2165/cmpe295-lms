@@ -19,6 +19,7 @@
     "base64-2-img": "^1.0.0",
     "base64image-to-file": "^1.2.0",
     "convert-base64-to-image": "^0.0.16",
+    "date-fns": "^2.29.3",
     "react": "^18.2.0",
     "react-bootstrap": "^2.5.0",
     "react-canvas-draw": "^1.2.1",
@@ -58,7 +59,7 @@
   "browser": {
     "fs": false
   },
-  "resolve.fallback": { 
+  "resolve.fallback": {
     "path": false
   }
 }
