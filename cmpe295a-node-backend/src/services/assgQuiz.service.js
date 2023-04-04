@@ -96,7 +96,10 @@ exports.getCourseQuizzes = async(courseID , result) => {
 // Submit
 exports.submit = async(assignmentQuiz, req, result) => {
 
-    const { student, answers, score, dateSubmitted } = req.body;
+    const { student,score, dateSubmitted } = req.body;
+
+    const answers = JSON.parse(req.body.answers);
+    
     
     if (req.files.length > 0) {
          for(let i = 0; i < req.files.length; i++){
