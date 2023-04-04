@@ -358,7 +358,7 @@ const createAssignment = async(event) =>{
     }
 
     if(user.role === 'student'){
-      axios.get(`http://localhost:3001/api/v1/assgs/stusubmission/${quizIds}/${user.userId}`)
+      axios.get(`http://localhost:3001/api/v1/assgs/stusubmission/${quizId}/${user.userId}`)
       .then(function (response) {
         setStudentSubmissionDetails(response.data);
           getAssignmentsButton.current.style.display = 'none';
