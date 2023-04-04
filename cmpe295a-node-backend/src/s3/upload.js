@@ -16,7 +16,7 @@ module.exports = multer({
       s3: s3,
       acl: "public-read",
       key: function (req, file, cb) {
-        cb(null, file.originalname);
+        cb(null, Math.floor(Math.random() * 999999) + "_" + file.originalname);
       }
     }),
 });
