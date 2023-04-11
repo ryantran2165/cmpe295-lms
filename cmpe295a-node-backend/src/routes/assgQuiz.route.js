@@ -32,4 +32,7 @@ router.get('/submissions/:assgID', assgQuizController.getSubmissions);
 // Get Student Submission       GET
 router.get('/stusubmission/:assgID/:student', assgQuizController.getStudentSubmission);
 
+// Grade Submission             PUT
+router.put('/grade/:submissionID/', assgQuizController.grade);
+
 module.exports = router;

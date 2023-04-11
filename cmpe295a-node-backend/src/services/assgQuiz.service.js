@@ -149,3 +149,24 @@ exports.getStudentSubmission = async(assgID , student, result) => {
         result(null, err);
     }
 }
+
+
+// EDIT Grade Submission
+exports.grade = async(submissionID, reqBody, result) => {
+
+    try{
+        await submissionModel.findByIdAndUpdate(submissionID,
+            {
+                $set:{
+                    answers: reqBody.answers,
+                    score:reqBody.score
+                },
+            },
+            {returnOriginal:false});
+
+        result(null, {status:true, message:"Grade Updated"});
+    }
+    catch(err){
+        result(null, {status: false, message:"Error Grading", err});
+    }
+}

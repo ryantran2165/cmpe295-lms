@@ -152,3 +152,20 @@ exports.getStudentSubmission = (req, res) => {
         }
     })
 }
+
+
+// Get Student AssignmentQuiz Submission
+exports.grade = (req, res) => {
+    console.log("\nEDIT GRADE FOR SUBMISSION: ", req.params.submissionID);
+
+    assgQuizService.grade(req.params.submissionID, req.body, (err, result) => {
+        if(err){
+            console.log(err);
+            res.status(400).send(result);
+        }
+        else{
+            console.log(result);
+            res.status(200).send(result);
+        }
+    })
+}
