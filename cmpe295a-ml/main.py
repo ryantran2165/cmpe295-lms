@@ -1,12 +1,18 @@
 import cv2
+import numpy as np
 import torch
 from torch import nn
 
-n_classes = 10
+# math_symbols = ["-", "(", ")", ",", "[", "]", "+", "=", "forward_slash", "gt", "lt", "times"]
+math_symbols = ["-", "+", "=", "forward_slash", "gt", "lt", "times"]
+class_names = (
+    [str(num) for num in range(10)]
+    + [chr(capital) for capital in range(ord("A"), ord("Z") + 1)]
+    + [chr(lower) for lower in range(ord("a"), ord("z") + 1)]
+    + math_symbols
+)
+n_classes = len(class_names)
 
-class_names = [str(num) for num in range(10)] + \
-              [chr(capital) for capital in range(ord('A'), ord('Z') + 1)] + \
-              [chr(lower) for lower in range(ord('a'), ord('z') + 1)]
 
 class CNN(nn.Module):
     def __init__(self):
@@ -18,7 +24,7 @@ class CNN(nn.Module):
             nn.Conv2d(in_channels=32, out_channels=32, kernel_size=3),
             nn.ReLU(),
             nn.BatchNorm2d(num_features=32),
-            nn.Conv2d(in_channels=32, out_channels=32, kernel_size=5, stride=1, padding='same'),
+            nn.Conv2d(in_channels=32, out_channels=32, kernel_size=5, stride=1, padding="same"),
             nn.ReLU(),
             nn.BatchNorm2d(num_features=32),
             nn.Dropout(p=0.4),
@@ -28,13 +34,13 @@ class CNN(nn.Module):
             nn.Conv2d(in_channels=64, out_channels=64, kernel_size=3),
             nn.ReLU(),
             nn.BatchNorm2d(num_features=64),
-            nn.Conv2d(in_channels=64, out_channels=64, kernel_size=5, stride=1, padding='same'),
+            nn.Conv2d(in_channels=64, out_channels=64, kernel_size=5, stride=1, padding="same"),
             nn.ReLU(),
             nn.BatchNorm2d(num_features=64),
         )
         self.classifier = nn.Sequential(
             nn.Dropout(p=0.4),
-            nn.Linear(in_features=64*20*20, out_features=128),
+            nn.Linear(in_features=64 * 20 * 20, out_features=128),
             nn.ReLU(),
             nn.BatchNorm1d(num_features=128),
             nn.Dropout(p=0.4),
@@ -47,10 +53,16 @@ class CNN(nn.Module):
         out = self.classifier(out)
         return out
 
+
 def intersects(a, b):
     x1, y1, x2, y2 = a
     x3, y3, x4, y4 = b
-    return (x1 < x4) and (x3 < x2) and (y1 < y4) and (y3 < y2)
+    x_overlap = max(0, min(x2, x4) - max(x1, x3))
+    y_overlap = max(0, min(y2, y4) - max(y1, y3))
+    overlap_area = x_overlap * y_overlap
+    area1 = (x2 - x1) * (y2 - y1)
+    area2 = (x4 - x3) * (y4 - y3)
+    return overlap_area > 0.9 * min(area1, area2)
 
 
 def merge(a, b):
@@ -91,17 +103,17 @@ def filter_rects(rects, min_area, max_area):
 
 
 def main():
-    name = 'digits'
+    name = "simple_if"
 
-    img = cv2.imread(f'{name}.jpg')
+    img = cv2.imread(f"{name}.jpg")
 
     # Grayscale
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    cv2.imwrite(f'{name}_gray.jpg', gray)
+    cv2.imwrite(f"{name}_gray.jpg", gray)
 
     # Canny
     canny = cv2.Canny(gray, 100, 200)
-    cv2.imwrite(f'{name}_canny.jpg', canny)
+    cv2.imwrite(f"{name}_canny.jpg", canny)
 
     # Contours
     contours, _ = cv2.findContours(canny, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -109,7 +121,7 @@ def main():
     # Draw contours
     canny = cv2.cvtColor(canny, cv2.COLOR_GRAY2BGR)
     cv2.drawContours(canny, contours, -1, (255, 255, 255), 5)
-    cv2.imwrite(f'{name}_contours.jpg', canny)
+    cv2.imwrite(f"{name}_contours.jpg", canny)
 
     # Bounding boxes
     rects = []
@@ -137,30 +149,69 @@ def main():
     # Draw bounding boxes
     for x1, y1, x2, y2 in rects:
         cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
-    cv2.imwrite(f'{name}_boxes.jpg', img)
+    cv2.imwrite(f"{name}_boxes.jpg", img)
 
-    device = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
+    device = (
+        "cuda"
+        if torch.cuda.is_available()
+        else "mps"
+        if torch.backends.mps.is_available()
+        else "cpu"
+    )
     print(f"Using {device} device")
     model = CNN()
-    model.load_state_dict(torch.load("model_digits.pth"))
+    model.load_state_dict(torch.load("model_emnistbyclass_mathsymbols.pth"))
     model = model.to(device)
     model.eval()
     with torch.no_grad():
         for i, (x1, y1, x2, y2) in enumerate(rects):
+            # Get region of interest from grayscale image
             roi = gray[y1:y2, x1:x2]
-            size = 20
-            roi = cv2.resize(roi, (size, size))
-            roi = cv2.bitwise_not(roi)
-            # roi[roi < 128] = 0
-            # roi[roi >= 128] = 255
-            border = (28 - size) // 2
-            roi = cv2.copyMakeBorder(roi, border, border, border, border, cv2.BORDER_CONSTANT, value=(0,0,0))
-            tensor = torch.from_numpy(roi.astype('float32')).unsqueeze(0).unsqueeze(0).to(device)
+
+            # Resize, maintain aspect ratio, shrink larger dimension to 20 pixels
+            resize_size = 20
+            width = x2 - x1
+            height = y2 - y1
+            if width > height:
+                new_width = resize_size
+                new_height = int(new_width * (height / width))
+            else:
+                new_height = resize_size
+                new_width = int(new_height * (width / height))
+            resized = cv2.resize(roi, (new_width, new_height))
+
+            # Flip black and white
+            flipped = cv2.bitwise_not(resized)
+
+            # Ensure black background
+            flipped[flipped < 85] = 0
+
+            # Add black padding border
+            pad_size = 28
+            padded = np.zeros((pad_size, pad_size))
+            x_start = pad_size // 2 - new_width // 2
+            x_end = x_start + new_width
+            y_start = pad_size // 2 - new_height // 2
+            y_end = y_start + new_height
+            padded[y_start:y_end, x_start:x_end] = flipped
+
+            # Noramlize
+            normalized = padded / 255
+
+            # Keep only the largest continuous stroke, but that messes with letters like 'i'
+
+            # Convert to tensor
+            tensor = (
+                torch.from_numpy(normalized.astype("float32")).unsqueeze(0).unsqueeze(0).to(device)
+            )
+
+            # Predit
             pred = model(tensor)
             pred = class_names[pred[0].argmax(0)]
-            print('Predicted:', pred)
-            cv2.imwrite(f'preds/{i}_{pred}.jpg', roi)
+            print("Predicted:", pred)
+
+            cv2.imwrite(f"preds/roi_{i}_{pred}.jpg", padded)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
