@@ -34,6 +34,8 @@ if "custom" in classifier_name:
 
 n_classes = len(class_names)
 
+class_names_map = {"gt": ">", "colon": ":"}
+
 
 class CNN(nn.Module):
     def __init__(self):
@@ -211,6 +213,7 @@ def main():
     cv2.imwrite(f"{name}_boxes.jpg", img)
 
     # Inference
+    rect_preds = []
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print(f"Using {device} device")
     model = CNN()
@@ -262,12 +265,71 @@ def main():
 
             # Predict
             pred = model(tensor)
-            pred = class_names[pred[0].argmax(0)]
-            print("Predicted:", pred)
+            class_name = class_names[pred[0].argmax(0)]
+            rect_preds.append((x1, y1, x2, y2, class_name))
 
-            cv2.imwrite(f"preds/{i}_{pred}.jpg", padded)
+            print("Predicted:", class_name)
+            cv2.imwrite(f"preds/{i}_{class_name}.jpg", padded)
 
-    # Split into lines and tokens
+    avg_width = sum(x2 - x1 for (x1, y1, x2, y2, class_name) in rect_preds) / len(rect_preds)
+    avg_height = sum(y2 - y1 for (x1, y1, x2, y2, class_name) in rect_preds) / len(rect_preds)
+
+    # Split into lines
+    lines = []
+    for rect_pred in rect_preds:
+        x1, y1, x2, y2, class_name = rect_pred
+        cy = (y1 + y2) / 2
+        found = False
+        for line in lines:
+            cy_avg = line[0] / (len(line) - 1)
+            if np.abs(cy - cy_avg) < avg_height:
+                line[0] += cy
+                line.append(rect_pred)
+                found = True
+                break
+        if not found:
+            lines.append([cy, rect_pred])
+
+    # Sort by ascending average center y
+    lines.sort(key=lambda line: line[0] / (len(line) - 1))
+
+    # Convert to string with indentation
+    line_strs = []
+    indents = {}
+    cur_indent = 0
+    for line in lines:
+        line_str = []
+
+        # Indentation
+        x1, y1, x2, y2, class_name = line[1]
+        first_xc = x2 - x1
+        found_indent = None
+        for xc, indent in indents.items():
+            if np.abs(first_xc - xc) < avg_width:
+                found_indent = indent
+                break
+        if found_indent is None:
+            indents[first_xc] = cur_indent
+        line_str += ["\t"] * cur_indent
+
+        # Current line starts a new block
+        if line[-1][-1] == ":":
+            cur_indent += 1
+
+        # Convert to class name strings
+        for x1, y1, x2, y2, class_name in line[1:]:
+            if class_name in class_names_map:
+                class_name = class_names_map[class_name]
+            line_str.append(class_name)
+
+        line_strs.append("".join(line_str).lower())
+
+    # Split lines into tokens (add spaces)
+
+    # Fix basic rules (capitalization)
+    print("========================================")
+    for line_str in line_strs:
+        print(line_str)
 
 
 if __name__ == "__main__":
