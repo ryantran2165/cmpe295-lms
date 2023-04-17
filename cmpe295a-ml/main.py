@@ -117,7 +117,6 @@ def merge_noncontinuous(rects):
     avg_width = sum(x2 - x1 for (x1, y1, x2, y2) in rects) / len(rects)
     avg_height = sum(y2 - y1 for (x1, y1, x2, y2) in rects) / len(rects)
     avg_dst = np.sqrt(avg_width**2 + avg_height**2)
-    print("avg dims:", avg_width, avg_height)
 
     hasMerge = True
     while hasMerge:
@@ -215,7 +214,7 @@ def main():
     # Inference
     rect_preds = []
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    print(f"Using {device} device")
+    print(f"Device:", device)
     model = CNN()
     model.load_state_dict(torch.load(f"model_{classifier_name}.pth"))
     model = model.to(device)
@@ -268,7 +267,6 @@ def main():
             class_name = class_names[pred[0].argmax(0)]
             rect_preds.append((x1, y1, x2, y2, class_name))
 
-            print("Predicted:", class_name)
             cv2.imwrite(f"preds/{i}_{class_name}.jpg", padded)
 
     avg_width = sum(x2 - x1 for (x1, y1, x2, y2, class_name) in rect_preds) / len(rect_preds)
@@ -297,39 +295,64 @@ def main():
     line_strs = []
     indents = {}
     cur_indent = 0
-    for line in lines:
+    for i, line in enumerate(lines):
         line_str = []
 
         # Indentation
-        x1, y1, x2, y2, class_name = line[1]
-        first_xc = x2 - x1
-        found_indent = None
-        for xc, indent in indents.items():
-            if np.abs(first_xc - xc) < avg_width:
-                found_indent = indent
-                break
-        if found_indent is None:
-            indents[first_xc] = cur_indent
-        line_str += ["\t"] * cur_indent
+        x1 = line[1][0]
+        if i == 0:
+            # First line
+            indents[x1] = 0
+        else:
+            # Previous line ends with colon, starting new indent block
+            if lines[i - 1][-1][-1] == "colon":
+                cur_indent += 1
+                indents[x1] = cur_indent
+            else:
+                # Find closest indent
+                min_dst = float("inf")
+                for x, indent in indents.items():
+                    dst = np.abs(x1 - x)
+                    if dst < min_dst:
+                        min_dst = dst
+                        cur_indent = indent
 
-        # Current line starts a new block
-        if line[-1][-1] == ":":
-            cur_indent += 1
+        rect_preds = line[1:]
 
-        # Convert to class name strings
-        for x1, y1, x2, y2, class_name in line[1:]:
+        # Spaces and convert class name strings
+        tokens = []
+        for i, (x1, y1, x2, y2, class_name) in enumerate(rect_preds):
+            # Add space
+            if i > 0:
+                prev_x2 = rect_preds[i - 1][2]
+                dx = x1 - prev_x2
+                if dx > 0.75 * avg_width:
+                    tokens.append(" ")
+
+            # Convert class name if exists
             if class_name in class_names_map:
                 class_name = class_names_map[class_name]
-            line_str.append(class_name)
 
-        line_strs.append("".join(line_str).lower())
+            tokens.append(class_name)
 
-    # Split lines into tokens (add spaces)
+        # Split into tokens
+        tokens = "".join(tokens).lower().split(" ")
 
-    # Fix basic rules (capitalization)
-    print("========================================")
-    for line_str in line_strs:
-        print(line_str)
+        # Fix basic rules (capitalization)
+        for i, token in enumerate(tokens):
+            if token == "true":
+                tokens[i] = "True"
+            elif token == "false":
+                tokens[i] = "False"
+            if token == "jf":
+                tokens[i] = "if"
+
+        # Add indentation and join tokens with space
+        line_str = ("    " * cur_indent) + " ".join(tokens)
+        line_strs.append(line_str)
+
+    print()
+    print("\n".join(line_strs))
 
 
 if __name__ == "__main__":
