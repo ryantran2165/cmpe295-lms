@@ -7,7 +7,6 @@ import ReactSketch from "./components/common/ReactSketch";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import QAPage from "./components/assignments/QAPage";
 import QAPage2 from "./components/assignments/QAPage2";
-import QuizQuestionsList from "./components/assignments/QuizQuestionsList";
 import CourseHome from "./components/dashboard/CourseHome";
 import UserDashBoard from "./components/dashboard/UserDashBoard";
 import QuizPage from "./components/assignments/QuizPage";
