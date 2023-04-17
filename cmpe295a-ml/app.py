@@ -1,40 +1,32 @@
 import cv2
 import numpy as np
+import requests
 import torch
+from flask import Flask, request
 from torch import nn
 
-classifier_name = "emnistbalanced_mathsymbols_custom"
-
-# math_symbols = ["-", "(", ")", ",", "[", "]", "+", "=", "forward_slash", "gt", "lt", "times"]
-math_symbols = ["gt"]
-
-custom_symbols = ["colon"]
-
-class_names = []
-
-if "mnist" in classifier_name:
-    class_names += [str(num) for num in range(10)]
-
-if "emnist" in classifier_name:
-    class_names += [chr(capital) for capital in range(ord("A"), ord("Z") + 1)]
-    class_names += [chr(lower) for lower in range(ord("a"), ord("z") + 1)]
-
-if "balanced" in classifier_name:
-    class_names = [
+CLASSIFIER_NAME = "emnistbalanced_mathsymbols_custom"
+# MATH_SYMBOLS = ["-", "(", ")", ",", "[", "]", "+", "=", "forward_slash", "gt", "lt", "times"]
+MATH_SYMBOLS = ["gt"]
+CUSTOM_SYMBOLS = ["colon"]
+CLASS_NAMES = []
+if "mnist" in CLASSIFIER_NAME:
+    CLASS_NAMES += [str(num) for num in range(10)]
+if "emnist" in CLASSIFIER_NAME:
+    CLASS_NAMES += [chr(capital) for capital in range(ord("A"), ord("Z") + 1)]
+    CLASS_NAMES += [chr(lower) for lower in range(ord("a"), ord("z") + 1)]
+if "balanced" in CLASSIFIER_NAME:
+    CLASS_NAMES = [
         x
-        for x in class_names
+        for x in CLASS_NAMES
         if x not in {"c", "i", "j", "k", "l", "m", "o", "p", "s", "u", "v", "w", "x", "y", "z"}
     ]
-
-if "symbols" in classifier_name:
-    class_names += math_symbols
-
-if "custom" in classifier_name:
-    class_names += custom_symbols
-
-n_classes = len(class_names)
-
-class_names_map = {"gt": ">", "colon": ":"}
+if "symbols" in CLASSIFIER_NAME:
+    CLASS_NAMES += MATH_SYMBOLS
+if "custom" in CLASSIFIER_NAME:
+    CLASS_NAMES += CUSTOM_SYMBOLS
+N_CLASSES = len(CLASS_NAMES)
+CLASS_NAMES_MAP = {"gt": ">", "colon": ":"}
 
 
 class CNN(nn.Module):
@@ -67,7 +59,7 @@ class CNN(nn.Module):
             nn.ReLU(),
             nn.BatchNorm1d(num_features=128),
             nn.Dropout(p=0.4),
-            nn.Linear(in_features=128, out_features=n_classes),
+            nn.Linear(in_features=128, out_features=N_CLASSES),
         )
 
     def forward(self, x):
@@ -153,20 +145,30 @@ def filter_rects(rects, min_area, max_area):
     return filtered
 
 
-def main():
-    # name = "sharpie"
-    name = "simple_if"
-    # name = "smallest_even_multiple_gray"
+app = Flask(__name__)
 
-    img = cv2.imread(f"{name}.jpg")
+
+@app.route("/parse")
+def parse():
+    # Get image URL from query parameter
+    url = request.args.get("url")
+    print(url)
+
+    # name = "simple_if"
+    # img = cv2.imread(f"{name}.jpg")
+
+    # Get image from S3
+    res = requests.get(url, stream=True).raw
+    img = np.asarray(bytearray(res.read()), dtype="uint8")
+    img = cv2.imdecode(img, cv2.IMREAD_COLOR)
 
     # Grayscale
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    cv2.imwrite(f"{name}_gray.jpg", gray)
+    # cv2.imwrite(f"{name}_gray.jpg", gray)
 
     # Canny
     canny = cv2.Canny(gray, 100, 200)
-    cv2.imwrite(f"{name}_canny.jpg", canny)
+    # cv2.imwrite(f"{name}_canny.jpg", canny)
 
     # Contours
     contours, _ = cv2.findContours(canny, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -174,7 +176,7 @@ def main():
     # Draw contours
     canny = cv2.cvtColor(canny, cv2.COLOR_GRAY2BGR)
     cv2.drawContours(canny, contours, -1, (255, 255, 255), 5)
-    cv2.imwrite(f"{name}_contours.jpg", canny)
+    # cv2.imwrite(f"{name}_contours.jpg", canny)
 
     # Bounding boxes
     rects = []
@@ -209,14 +211,14 @@ def main():
     # Draw bounding boxes
     for x1, y1, x2, y2 in rects:
         cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
-    cv2.imwrite(f"{name}_boxes.jpg", img)
+    # cv2.imwrite(f"{name}_boxes.jpg", img)
 
     # Inference
     rect_preds = []
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print(f"Device:", device)
     model = CNN()
-    model.load_state_dict(torch.load(f"model_{classifier_name}.pth"))
+    model.load_state_dict(torch.load(f"model_{CLASSIFIER_NAME}.pth"))
     model = model.to(device)
     model.eval()
     with torch.no_grad():
@@ -264,10 +266,10 @@ def main():
 
             # Predict
             pred = model(tensor)
-            class_name = class_names[pred[0].argmax(0)]
+            class_name = CLASS_NAMES[pred[0].argmax(0)]
             rect_preds.append((x1, y1, x2, y2, class_name))
 
-            cv2.imwrite(f"preds/{i}_{class_name}.jpg", padded)
+            # cv2.imwrite(f"preds/{i}_{class_name}.jpg", padded)
 
     avg_width = sum(x2 - x1 for (x1, y1, x2, y2, class_name) in rect_preds) / len(rect_preds)
     avg_height = sum(y2 - y1 for (x1, y1, x2, y2, class_name) in rect_preds) / len(rect_preds)
@@ -330,8 +332,8 @@ def main():
                     tokens.append(" ")
 
             # Convert class name if exists
-            if class_name in class_names_map:
-                class_name = class_names_map[class_name]
+            if class_name in CLASS_NAMES_MAP:
+                class_name = CLASS_NAMES_MAP[class_name]
 
             tokens.append(class_name)
 
@@ -351,9 +353,18 @@ def main():
         line_str = ("    " * cur_indent) + " ".join(tokens)
         line_strs.append(line_str)
 
-    print()
-    print("\n".join(line_strs))
+    # Join all lines into one string
+    final_str = "\n".join(line_strs)
+    print(final_str)
+
+    return final_str
 
 
-if __name__ == "__main__":
-    main()
+@app.route("/repair")
+def repair():
+    return "Not implemented yet."
+
+
+@app.route("/grade")
+def grade():
+    return "Not implemented yet."
