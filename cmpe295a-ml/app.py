@@ -1,3 +1,5 @@
+import py_compile
+
 import cv2
 import numpy as np
 import requests
@@ -148,10 +150,11 @@ def filter_rects(rects, min_area, max_area):
 app = Flask(__name__)
 
 
-@app.route("/parse")
+@app.route("/parse", methods=["POST"])
 def parse():
     # Get image URL from query parameter
-    url = request.args.get("url")
+    json = request.get_json()
+    url = json["url"]
     print(url)
 
     # name = "simple_if"
@@ -360,11 +363,34 @@ def parse():
     return final_str
 
 
-@app.route("/repair")
+@app.route("/repair", methods=["POST"])
 def repair():
-    return "Not implemented yet."
+    json = request.get_json()
+    code = json["code"]
+
+    try:
+        # Try compiling
+        py_compile.compile("code.py", doraise=True)
+
+        # Already valid
+        print("valid")
+        return code
+    except py_compile.PyCompileError:
+        # Invalid
+        print("invalid")
+        return code
 
 
-@app.route("/grade")
+@app.route("/grade", methods=["POST"])
 def grade():
-    return "Not implemented yet."
+    json = request.get_json()
+    code = json["code"]
+    test_cases = json["testCases"]
+    print(code)
+    print(test_cases)
+    valid = True
+    passed = 0
+    failed = 0
+    errors = ""
+    response = {"valid": valid, "passed": passed, "failed": failed, "errors": errors}
+    return response
