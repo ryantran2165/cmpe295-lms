@@ -1,3 +1,4 @@
+import os
 import py_compile
 
 import cv2
@@ -152,7 +153,7 @@ app = Flask(__name__)
 
 @app.route("/parse", methods=["POST"])
 def parse():
-    # Get image URL from query parameter
+    # Get image URL from request body
     json = request.get_json()
     url = json["url"]
     print(url)
@@ -219,7 +220,7 @@ def parse():
     # Inference
     rect_preds = []
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    print(f"Device:", device)
+    print(f"DEVICe:", device)
     model = CNN()
     model.load_state_dict(torch.load(f"model_{CLASSIFIER_NAME}.pth"))
     model = model.to(device)
@@ -365,29 +366,45 @@ def parse():
 
 @app.route("/repair", methods=["POST"])
 def repair():
+    # Get code from request body
     json = request.get_json()
     code = json["code"]
+    print("BEFORE:")
+    print(code)
+
+    # Write temporary file
+    temp_file = "temp.py"
+    with open(temp_file, "w") as f:
+        f.write(code)
 
     try:
         # Try compiling
-        py_compile.compile("code.py", doraise=True)
+        py_compile.compile(temp_file, doraise=True)
 
-        # Already valid
-        print("valid")
-        return code
+        # Already valid, don't need to do anything
+        print("VALID")
     except py_compile.PyCompileError:
-        # Invalid
-        print("invalid")
-        return code
+        # Invalid, try Break-It-Fix-It
+        print("INVALID")
+
+    # Delete temporary file
+    os.remove(temp_file)
+
+    print("AFTER:")
+    print(code)
+    return code
 
 
 @app.route("/grade", methods=["POST"])
 def grade():
+    # Get code and test cases from request body
     json = request.get_json()
     code = json["code"]
     test_cases = json["testCases"]
+
     print(code)
     print(test_cases)
+
     valid = True
     passed = 0
     failed = 0
