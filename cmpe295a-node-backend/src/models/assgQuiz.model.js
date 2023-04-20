@@ -46,14 +46,9 @@ const assgQuizSchema = new Schema({
         solution:{
             type:String,
         },
-        testCases:[{
-            input:{
-                type:Array,
-            },
-            output:{
-                type:Boolean,
-            }
-        }],
+        testCases:{
+            type:Array  
+        },
     }],
 });
 
