@@ -220,7 +220,7 @@ def parse():
     # Inference
     rect_preds = []
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    print(f"DEVICe:", device)
+    print(f"DEVICE:", device)
     model = CNN()
     model.load_state_dict(torch.load(f"model_{CLASSIFIER_NAME}.pth"))
     model = model.to(device)
@@ -397,17 +397,63 @@ def repair():
 
 @app.route("/grade", methods=["POST"])
 def grade():
-    # Get code and test cases from request body
+    # Get function definition, code, and test cases from request body
     json = request.get_json()
+    func_def = json["funcDef"]
     code = json["code"]
     test_cases = json["testCases"]
 
-    print(code)
-    print(test_cases)
+    # Function definition name
+    func_def_name = func_def.split("(")[0]
 
-    valid = True
+    # Indent the student code
+    indented_code = []
+    code_lines = code.split("\n")
+    for code_line in code_lines:
+        indented_code.append(f"    {code_line}")
+    indented_code = "\n".join(indented_code)
+
+    # Run code against test cases
     passed = 0
     failed = 0
-    errors = ""
-    response = {"valid": valid, "passed": passed, "failed": failed, "errors": errors}
+    results = []
+    for i, test_case in enumerate(test_cases):
+        inp = test_case["input"]
+        out = test_case["output"]
+
+        # Generate test code
+        params = ", ".join([str(x) for x in inp])
+        test_code_lines = [
+            f"def {func_def}:",
+            indented_code,
+            "try:",
+            f"    res = {func_def_name}({params})",
+            "except Exception as e:",
+            "    err = str(e)",
+        ]
+        test_code = "\n".join(test_code_lines)
+        print("====================")
+        print(test_code)
+
+        # Execute test code
+        local = {}
+        exec(test_code, {}, local)
+
+        # Tally results
+        result = {"id": i}
+        if "res" in local:
+            res = local["res"]
+            if res == out:
+                passed += 1
+                result["passed"] = True
+            else:
+                failed += 1
+                result["passed"] = False
+        if "err" in local:
+            failed += 1
+            result["passed"] = False
+            result["error"] = local["err"]
+        results.append(result)
+
+    response = {"passed": passed, "failed": failed, "results": results}
     return response
