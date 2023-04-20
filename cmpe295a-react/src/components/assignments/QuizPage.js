@@ -37,7 +37,7 @@ function QuizPage() {
   const[name, setName] = useState('');
   const[points, setPoints] = useState('');
   const[dueDate, setDuedate] = useState('');
-  const [quizQuestions, setQuizQuestions] = useState([{ name: "",description: "", points: "", solution: "", testCases: [{input: "", output: ""}]}]);
+  const [quizQuestions, setQuizQuestions] = useState([{ name: "",description: "", funcDef: "", points: "", solution: "", testCases: [{input: "", output: ""}]}]);
   const [quizList, setQuizList] = useState([]);
   const [pastQuizList, setPastQuizList] = useState([]);
   const [upcomingQuizList, setUpcomingQuizList] = useState([]);
@@ -55,6 +55,7 @@ function QuizPage() {
           _id: "",
           name: "",
           description:"",
+          funcDef: "",
           solution: "",
           points: "",
           testCases: [
@@ -96,6 +97,7 @@ function QuizPage() {
           _id: "",
           name: "",
           description:"",
+          funcDef: "",
           solution: "",
           points: "",
           testCases: [
@@ -149,7 +151,7 @@ function QuizPage() {
     setName('');
     setPoints('');
     setDuedate('');
-    setQuizQuestions([{ name: "",description: "", points: "", solution: "", testCases: [{input: "", output: ""}]}]);
+    setQuizQuestions([{ name: "",description: "", funcDef: "", points: "", solution: "", testCases: [{input: "", output: ""}]}]);
     getAssignmentsButton.current.style.display = 'contents';
     createAssignmentForm.current.style.display = 'none';
     if(user.role ==='teacher')
@@ -190,7 +192,7 @@ function QuizPage() {
   }
 
 var addQuestion = () => {
-    setQuizQuestions([...quizQuestions, { name: "",description: "", points: "", solution: "", testCases: [{input: "", output: ""}]}]);
+    setQuizQuestions([...quizQuestions, { name: "",description: "", funcDef: "", points: "", solution: "", testCases: [{input: "", output: ""}]}]);
   }
 
 var removeQuestion = (i) => {
@@ -568,6 +570,7 @@ const createAssignment = async(event) =>{
                                 <div className="form-inline" key={index1}>
                                 <input type="text" name="name" placeholder="Add question name" value={element.name || ""} onChange={e => handleQuestionChange(index1, e)} />
                                 <input type="text" name="description" placeholder="Add question description" value={element.description || ""} onChange={e => handleQuestionChange(index1, e)} />
+                                <input type="text" name="funcDef" placeholder="Add Function definition" value={element.funcDef || ""} onChange={e => handleQuestionChange(index1, e)} />
                                 <input type="text" name="points" placeholder="Add points" value={element.points || ""} onChange={e => handleQuestionChange(index1, e)} />
                                 <input type="text" name="solution" placeholder="Add solution" value={element.solution || ""} onChange={e => handleQuestionChange(index1, e)} />
                                 {

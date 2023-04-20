@@ -45,6 +45,7 @@ function AssignmentPage() {
           _id: "",
           name: "",
           description:"",
+          funcDef: "",
           solution: "",
           points: "",
           testCases: [
@@ -86,6 +87,7 @@ function AssignmentPage() {
           _id: "",
           name: "",
           description:"",
+          funcDef: "",
           solution: "",
           points: "",
           testCases: [
@@ -113,7 +115,7 @@ function AssignmentPage() {
     __v: ""
     }
   ]);  
-  const [quizQuestions, setQuizQuestions] = useState([{ name: "",description: "", points: "", solution: "", testCases: [{input: "", output: ""}]}]);
+  const [quizQuestions, setQuizQuestions] = useState([{ name: "",description: "", funcDef: "", points: "", solution: "", testCases: [{input: "", output: ""}]}]);
 
   const [user, setUser] = useState({
     firstName: location.state.firstName,
@@ -140,7 +142,7 @@ function AssignmentPage() {
     setDuedate('');
     setSolution('');
     setInstruction('');
-    setQuizQuestions([{ name: "",description: "", points: "", solution: "", testCases: [{input: "", output: ""}]}]);
+    setQuizQuestions([{ name: "",description: "", funcDef: "", points: "", solution: "", testCases: [{input: "", output: ""}]}]);
     getAssignmentsButton.current.style.display = 'contents';
     createAssignmentForm.current.style.display = 'none';
     if(user.role ==='teacher')
@@ -176,7 +178,7 @@ function AssignmentPage() {
   }
 
 var addQuestion = () => {
-    setQuizQuestions([...quizQuestions, { name: "",description: "", points: "", solution: "", testCases: [{input: "", output: ""}]}]);
+    setQuizQuestions([...quizQuestions, { name: "",description: "", funcDef: "", points: "", solution: "", testCases: [{input: "", output: ""}]}]);
   }
 
 var removeQuestion = (i) => {
@@ -256,7 +258,7 @@ const createAssignment = async(event) =>{
           dueDate: format(new Date(dueDate), "MM-dd-yyyy"),
           totalPoints: points,
           questions: quizQuestions
-})
+    })
         .then(function (response) {
           if(response.status === 200)
           {
@@ -540,6 +542,7 @@ const openSubmissionDetails = async(event,quizId) =>{
                                 <div className="form-inline" key={index1}>
                                 <input type="text" name="name" placeholder="Add question name" value={element.name || ""} onChange={e => handleQuestionChange(index1, e)} />
                                 <input type="text" name="description" placeholder="Add question description" value={element.description || ""} onChange={e => handleQuestionChange(index1, e)} />
+                                <input type="text" name="funcDef" placeholder="Add Function definition" value={element.funcDef || ""} onChange={e => handleQuestionChange(index1, e)} />
                                 <input type="text" name="points" placeholder="Add points" value={element.points || ""} onChange={e => handleQuestionChange(index1, e)} />
                                 <input type="text" name="solution" placeholder="Add solution" value={element.solution || ""} onChange={e => handleQuestionChange(index1, e)} />
                                 {

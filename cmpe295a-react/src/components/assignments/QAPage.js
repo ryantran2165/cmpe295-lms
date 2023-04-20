@@ -221,6 +221,7 @@ const QAPage = () => {
         </div>
         <div className="questionSection">
           <p style={{ padding: 50 }}>{question.description}</p>
+          <p style={{ padding: 50 }}>Function definition to use: <br/>{question.funcDef}</p>
           <input type="radio" name={`solutionType-${index}`} value="upload" onClick={() => setSelectionStates(prevStates => {
             const newStates = [...prevStates];
             newStates[index] = {
