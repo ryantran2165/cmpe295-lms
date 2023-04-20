@@ -40,15 +40,18 @@ const assgQuizSchema = new Schema({
         points:{
             type:Number,
         },
+        funcDef:{
+            type:String,
+        },
         solution:{
             type:String,
         },
         testCases:[{
             input:{
-                type:String,
+                type:Array,
             },
             output:{
-                type:String,
+                type:Boolean,
             }
         }],
     }],
