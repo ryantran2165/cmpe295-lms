@@ -5,8 +5,22 @@ import cv2
 import numpy as np
 import requests
 import torch
+from fairseq.models.transformer import TransformerModel
 from flask import Flask, request
 from torch import nn
+
+app = Flask(__name__)
+
+bifi_model = None
+
+
+def load_bifi_model():
+    global bifi_model
+    bifi_model = TransformerModel.from_pretrained(
+        "./", checkpoint_file="bifi_model.pt", data_name_or_path="./", is_gpu=True
+    ).cuda()
+    print("LOADED BIFI MODEL")
+
 
 CLASSIFIER_NAME = "emnistbalanced_mathsymbols_custom"
 # MATH_SYMBOLS = ["-", "(", ")", ",", "[", "]", "+", "=", "forward_slash", "gt", "lt", "times"]
@@ -146,9 +160,6 @@ def filter_rects(rects, min_area, max_area):
             continue
         filtered.append((x1, y1, x2, y2))
     return filtered
-
-
-app = Flask(__name__)
 
 
 @app.route("/parse", methods=["POST"])
@@ -387,6 +398,9 @@ def repair():
         # Invalid, try Break-It-Fix-It
         print("INVALID")
 
+        inputs = "def asdf ( sdfg ) : <NEWLINE> <INDENT> <INDENT> print ( <STRING> ) )"
+        print(bifi_model.translate(inputs))
+
     # Delete temporary file
     os.remove(temp_file)
 
@@ -457,3 +471,8 @@ def grade():
 
     response = {"passed": passed, "failed": failed, "results": results}
     return response
+
+
+if __name__ == "__main__":
+    load_bifi_model()
+    app.run()
