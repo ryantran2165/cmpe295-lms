@@ -12,13 +12,19 @@ from torch import nn
 app = Flask(__name__)
 
 bifi_model = None
+bifi_vocab = set()
 
 
 def load_bifi_model():
     global bifi_model
+    global bifi_vocab
     bifi_model = TransformerModel.from_pretrained(
         "./", checkpoint_file="bifi_model.pt", data_name_or_path="./", is_gpu=True
     ).cuda()
+    with open("dict.good.txt") as f:
+        for line in f:
+            tokens = line.split()
+            bifi_vocab.add(tokens[0])
     print("LOADED BIFI MODEL")
 
 
@@ -169,9 +175,6 @@ def parse():
     url = json["url"]
     print(url)
 
-    # name = "simple_if"
-    # img = cv2.imread(f"{name}.jpg")
-
     # Get image from S3
     res = requests.get(url, stream=True).raw
     img = np.asarray(bytearray(res.read()), dtype="uint8")
@@ -179,11 +182,9 @@ def parse():
 
     # Grayscale
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    # cv2.imwrite(f"{name}_gray.jpg", gray)
 
     # Canny
     canny = cv2.Canny(gray, 100, 200)
-    # cv2.imwrite(f"{name}_canny.jpg", canny)
 
     # Contours
     contours, _ = cv2.findContours(canny, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -191,7 +192,6 @@ def parse():
     # Draw contours
     canny = cv2.cvtColor(canny, cv2.COLOR_GRAY2BGR)
     cv2.drawContours(canny, contours, -1, (255, 255, 255), 5)
-    # cv2.imwrite(f"{name}_contours.jpg", canny)
 
     # Bounding boxes
     rects = []
@@ -226,7 +226,7 @@ def parse():
     # Draw bounding boxes
     for x1, y1, x2, y2 in rects:
         cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
-    # cv2.imwrite(f"{name}_boxes.jpg", img)
+    # cv2.imwrite(f"boxes.jpg", img)
 
     # Inference
     rect_preds = []
@@ -394,19 +394,128 @@ def repair():
 
         # Already valid, don't need to do anything
         print("VALID")
+
+        final_code = code
     except py_compile.PyCompileError:
         # Invalid, try Break-It-Fix-It
         print("INVALID")
 
-        inputs = "def asdf ( sdfg ) : <NEWLINE> <INDENT> <INDENT> print ( <STRING> ) )"
-        print(bifi_model.translate(inputs))
+        # Add space around special symbols
+        special_symbols = [
+            ".",
+            ",",
+            "(",
+            ")",
+            "[",
+            "]",
+            ":",
+            "=",
+            "+",
+            "-",
+            "*",
+            "/",
+            "!",
+            "<",
+            ">",
+        ]
+        for symbol in special_symbols:
+            code = code.replace(symbol, f" {symbol} ")
+
+        # Convert raw code input to BIFI tokens: <NEWLINE> <INDENT> <DEDENT>
+        lines = code.split("\n")
+        preprocessed_tokens = []
+        indent = 0
+
+        for i, line in enumerate(lines):
+            # New line
+            if i > 0:
+                preprocessed_tokens.append("<NEWLINE>")
+
+            # Count spaces to calculate line indent
+            space_count = 0
+            for char in line:
+                if char != " ":
+                    break
+                space_count += 1
+            line_indent = space_count // 4
+
+            # Add <INDENT> or <DEDENT>s
+            if line_indent > indent:
+                preprocessed_tokens.append("<INDENT>")
+                indent = line_indent
+            elif line_indent < indent:
+                indent_dif = indent - line_indent
+                for _ in range(indent_dif):
+                    preprocessed_tokens.append("<DEDENT>")
+                indent = line_indent
+
+            # Add rest of line
+            preprocessed_tokens.append(line[space_count:])
+
+        preprocessed = " ".join(preprocessed_tokens)
+
+        print("PREPROCESSED:")
+        print(preprocessed)
+
+        # Keep track of unknown tokens to replace <unk> later
+        unknown_tokens = []
+        code_tokens = preprocessed.split()
+        for token in code_tokens:
+            if token not in bifi_vocab:
+                unknown_tokens.append(token)
+
+        # BIFI inference
+        repaired_raw = bifi_model.translate(preprocessed)
+
+        print("REPAIRED RAW:")
+        print(repaired_raw)
+
+        # Convert raw output back to normal code tokens
+        raw_tokens = repaired_raw.split()
+        repaired_tokens = []
+        indent = 0
+        unknown_idx = 0
+
+        for token in raw_tokens:
+            if token == "<NEWLINE>":
+                repaired_tokens.append("\n")
+                for _ in range(indent):
+                    repaired_tokens.append("    ")
+            elif token == "<INDENT>":
+                indent += 1
+                repaired_tokens.append("    ")
+            elif token == "<DEDENT>":
+                indent -= 1
+                repaired_tokens.pop()
+            else:
+                if (
+                    repaired_tokens
+                    and repaired_tokens[-1][-1] != " "
+                    and repaired_tokens[-1] != "\n"
+                ):
+                    repaired_tokens.append(" ")
+                if token == "<unk>":
+                    unknown_token = unknown_tokens[unknown_idx]
+                    unknown_idx += 1
+                    repaired_tokens.append(unknown_token)
+                else:
+                    repaired_tokens.append(token)
+
+        final_code = "".join(repaired_tokens)
+        final_code = final_code.replace(" . ", ".")
+        final_code = final_code.replace(" , ", ", ")
+        final_code = final_code.replace(" ( ", "(")
+        final_code = final_code.replace(" )", ")")
+        final_code = final_code.replace("[ ", "[")
+        final_code = final_code.replace(" ]", "]")
+        final_code = final_code.replace(" :", ":")
 
     # Delete temporary file
     os.remove(temp_file)
 
     print("AFTER:")
-    print(code)
-    return code
+    print(final_code)
+    return final_code
 
 
 @app.route("/grade", methods=["POST"])
@@ -449,24 +558,33 @@ def grade():
         print("====================")
         print(test_code)
 
-        # Execute test code
+        # Execute test code and tally results
         local = {}
-        exec(test_code, {}, local)
+        result = {"id": i, "input": inp, "expected": out}
+        try:
+            # Execute test code
+            exec(test_code, {}, local)
 
-        # Tally results
-        result = {"id": i}
-        if "res" in local:
-            res = local["res"]
-            if res == out:
-                passed += 1
-                result["passed"] = True
-            else:
+            # Tally results
+            if "res" in local:
+                res = local["res"]
+                result["output"] = res
+                result["error"] = None
+                if res == out:
+                    passed += 1
+                    result["passed"] = True
+                else:
+                    failed += 1
+                    result["passed"] = False
+            if "err" in local:
                 failed += 1
+                result["output"] = None
                 result["passed"] = False
-        if "err" in local:
+                result["error"] = local["err"]
+
+        except Exception as e:
             failed += 1
-            result["passed"] = False
-            result["error"] = local["err"]
+            result["error"] = str(e)
         results.append(result)
 
     response = {"passed": passed, "failed": failed, "results": results}
