@@ -30,8 +30,8 @@ def load_bifi_model():
 
 CLASSIFIER_NAME = "emnistbalanced_mathsymbols_custom"
 # MATH_SYMBOLS = ["-", "(", ")", ",", "[", "]", "+", "=", "forward_slash", "gt", "lt", "times"]
-MATH_SYMBOLS = ["gt"]
-CUSTOM_SYMBOLS = ["colon"]
+MATH_SYMBOLS = ["gt", "lt", "(", ")", "[", "]", "=", "-", "+"]
+CUSTOM_SYMBOLS = ["colon", "decimal"]
 CLASS_NAMES = []
 if "mnist" in CLASSIFIER_NAME:
     CLASS_NAMES += [str(num) for num in range(10)]
@@ -49,7 +49,7 @@ if "symbols" in CLASSIFIER_NAME:
 if "custom" in CLASSIFIER_NAME:
     CLASS_NAMES += CUSTOM_SYMBOLS
 N_CLASSES = len(CLASS_NAMES)
-CLASS_NAMES_MAP = {"gt": ">", "colon": ":"}
+CLASS_NAMES_MAP = {"gt": ">", "lt": "<", "colon": ":", "decimal": "."}
 
 
 class CNN(nn.Module):
@@ -168,6 +168,78 @@ def filter_rects(rects, min_area, max_area):
     return filtered
 
 
+def check_token(token, tokens, rect_preds, i, idx, opening, closing):
+    if token == opening:
+        found = False
+        for j in range(i + 1, len(tokens)):
+            if tokens[j] == closing:
+                found = True
+                break
+        if not found:
+            idx -= 1
+            idxs = rect_preds[i][4]
+            class_name = CLASS_NAMES[idxs[idx]]
+            if class_name in CLASS_NAMES_MAP:
+                class_name = CLASS_NAMES_MAP[class_name]
+            token = class_name.lower()
+    return token, idx
+
+
+def fix_token(tokens, token, rect_preds, i):
+    # Possibly mistaken plus sign with letter 't'
+    if token == "t":
+        found = False
+        for t in tokens:
+            if t == "=" or t == ">" or t == "<":
+                found = True
+                break
+        if found:
+            token = "+"
+
+    if len(token) > 1:
+        temp = token
+
+        # Possibly mistaken letter 't' with plus sign
+        temp = temp.replace("+", "t")
+        if temp in bifi_vocab:
+            token = temp
+
+        # Possibly mistaken letter 'o' with number 0
+        temp = temp.replace("0", "o")
+        if temp in bifi_vocab:
+            token = temp
+
+        # Possibly mistaken letter 's' with number 5
+        temp = temp.replace("5", "s")
+        if temp in bifi_vocab:
+            token = temp
+
+        # Possibly mistaken letter 'l' with left parenthesis
+        temp = temp.replace("(", "l")
+        if temp in bifi_vocab:
+            token = temp
+
+        # Possibly mistaken letter 'i' with letter 'j'
+        temp = temp.replace("j", "i")
+        if temp in bifi_vocab:
+            token = temp
+
+    # Possibly mistaken letter 'c' or 'l' with left parenthesis
+    # Check multiple times because it could be either order
+    idx = -1
+    token, idx = check_token(token, tokens, rect_preds, i, idx, "(", ")")
+    token, idx = check_token(token, tokens, rect_preds, i, idx, "[", "]")
+    token, idx = check_token(token, tokens, rect_preds, i, idx, "(", ")")
+
+    # True/False are capitalized
+    if token == "true":
+        token = "True"
+    elif token == "false":
+        token = "False"
+
+    return token
+
+
 @app.route("/parse", methods=["POST"])
 def parse():
     # Get image URL from request body
@@ -179,6 +251,7 @@ def parse():
     res = requests.get(url, stream=True).raw
     img = np.asarray(bytearray(res.read()), dtype="uint8")
     img = cv2.imdecode(img, cv2.IMREAD_COLOR)
+    # img = cv2.imread("simple_if.jpg")
 
     # Grayscale
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -188,10 +261,6 @@ def parse():
 
     # Contours
     contours, _ = cv2.findContours(canny, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-
-    # Draw contours
-    canny = cv2.cvtColor(canny, cv2.COLOR_GRAY2BGR)
-    cv2.drawContours(canny, contours, -1, (255, 255, 255), 5)
 
     # Bounding boxes
     rects = []
@@ -280,19 +349,20 @@ def parse():
             )
 
             # Predict
-            pred = model(tensor)
-            class_name = CLASS_NAMES[pred[0].argmax(0)]
-            rect_preds.append((x1, y1, x2, y2, class_name))
+            pred = model(tensor).cpu()[0]
+            idxs = np.argsort(pred)
+            rect_preds.append((x1, y1, x2, y2, idxs))
 
+            # class_name = CLASS_NAMES[idxs[-1]]
             # cv2.imwrite(f"preds/{i}_{class_name}.jpg", padded)
 
-    avg_width = sum(x2 - x1 for (x1, y1, x2, y2, class_name) in rect_preds) / len(rect_preds)
-    avg_height = sum(y2 - y1 for (x1, y1, x2, y2, class_name) in rect_preds) / len(rect_preds)
+    avg_width = sum(x2 - x1 for (x1, y1, x2, y2, idxs) in rect_preds) / len(rect_preds)
+    avg_height = sum(y2 - y1 for (x1, y1, x2, y2, idxs) in rect_preds) / len(rect_preds)
 
     # Split into lines
     lines = []
     for rect_pred in rect_preds:
-        x1, y1, x2, y2, class_name = rect_pred
+        x1, y1, x2, y2, idxs = rect_pred
         cy = (y1 + y2) / 2
         found = False
         for line in lines:
@@ -322,7 +392,12 @@ def parse():
             indents[x1] = 0
         else:
             # Previous line ends with colon, starting new indent block
-            if lines[i - 1][-1][-1] == "colon":
+            prev_line = lines[i - 1]
+            prev_rect_pred = prev_line[-1]
+            prev_idxs = prev_rect_pred[-1]
+            prev_idx = prev_idxs[-1]
+            prev_class_name = CLASS_NAMES[prev_idx]
+            if prev_class_name == "colon":
                 cur_indent += 1
                 indents[x1] = cur_indent
             else:
@@ -338,7 +413,7 @@ def parse():
 
         # Spaces and convert class name strings
         tokens = []
-        for i, (x1, y1, x2, y2, class_name) in enumerate(rect_preds):
+        for i, (x1, y1, x2, y2, idxs) in enumerate(rect_preds):
             # Add space
             if i > 0:
                 prev_x2 = rect_preds[i - 1][2]
@@ -347,6 +422,7 @@ def parse():
                     tokens.append(" ")
 
             # Convert class name if exists
+            class_name = CLASS_NAMES[idxs[-1]]
             if class_name in CLASS_NAMES_MAP:
                 class_name = CLASS_NAMES_MAP[class_name]
 
@@ -355,14 +431,25 @@ def parse():
         # Split into tokens
         tokens = "".join(tokens).lower().split(" ")
 
-        # Fix basic rules (capitalization)
+        # Fix basic rules and common mistakes
         for i, token in enumerate(tokens):
-            if token == "true":
-                tokens[i] = "True"
-            elif token == "false":
-                tokens[i] = "False"
-            if token == "jf":
-                tokens[i] = "if"
+            # Decimals get in the way of fixing, so split on them then rejoin later
+            if len(token) > 1 and "." in token:
+                fixed = []
+                split = token.split(".")
+                for t in split:
+                    t_fixed = fix_token(tokens, t, rect_preds, i)
+                    fixed.append(t_fixed)
+
+                # Add decimals back
+                token = ".".join(fixed)
+                if token[0] == ".":
+                    token = "." + token
+                if token[-1] == ".":
+                    token = token + "."
+            else:
+                token = fix_token(tokens, token, rect_preds, i)
+            tokens[i] = token
 
         # Add indentation and join tokens with space
         line_str = ("    " * cur_indent) + " ".join(tokens)
