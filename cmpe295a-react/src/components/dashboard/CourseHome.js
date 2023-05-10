@@ -213,7 +213,10 @@ function CourseHome() {
                     
                         
                         {
-                            quizList.map((quiz,index) => 
+                            quizList
+                            .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate)) // Sort by due date
+                            .reverse()
+                            .map((quiz,index) => 
                                   <tr key={index}>
                                     <td>
                                         <p>{quiz.name}</p>
@@ -225,10 +228,10 @@ function CourseHome() {
                                         <p>{getQuizDueDate(quiz.dueDate)}</p>
                                     </td>
                                     <td>
-                                        <p>Submitted</p>
+                                        <p></p>
                                     </td>
                                     <td>
-                                        <p>{quiz.points}</p>
+                                        <p>{quiz.totalPoints}</p>
                                     </td>
                                  </tr>
                             )
@@ -238,7 +241,10 @@ function CourseHome() {
                     
                     
                     {
-                        assignmentList.map((assignment,index) => 
+                        assignmentList
+                        .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate)) // Sort by due date
+                        .reverse()
+                        .map((assignment,index) => 
                                         
                              <tr key={index}>
                                 <td>
@@ -251,10 +257,10 @@ function CourseHome() {
                                     <p>{getQuizDueDate(assignment.dueDate)}</p>
                                 </td>
                                 <td>
-                                    <p>Submitted</p>
+                                    <p></p>
                                 </td>
                                 <td>
-                                    <p>{assignment.points}</p>
+                                    <p>{assignment.totalPoints}</p>
                                 </td>
                             </tr>
                                         
