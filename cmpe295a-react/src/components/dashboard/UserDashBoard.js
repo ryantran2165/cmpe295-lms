@@ -68,7 +68,8 @@ function UserDashBoard() {
             createCourseButton.current.style.display='none';
     }
 
-    const backFromEnroll = () =>{
+    const backFromEnroll = (event) =>{
+        event.preventDefault();
         enrollCourseButton.current.style.display='block';
         getCoursesButton.current.style.display='block';
         enrollCourseForm.current.style.display='none';
@@ -180,7 +181,7 @@ function UserDashBoard() {
 
      const history = useNavigate();
 
-      const gotoCourse = (course_name,course_id,course_instructor_firstName,course_instructor_lastName,course_instructor_email) =>{
+      const gotoCourse = (course_name,course_id,course_description,course_instructor_firstName,course_instructor_lastName,course_instructor_email) =>{
         if(user.role === 'student'){
         history("/CourseHome",{state:{userName:user.userName,
             email:user.email, 
@@ -189,6 +190,7 @@ function UserDashBoard() {
             lastName:user.lastName,
             userId: user.userId,
             cname:course_name,
+            cdes:course_description,
             cid:course_id,
             instructorFname:course_instructor_firstName,
             instructorLname:course_instructor_lastName,
@@ -203,6 +205,7 @@ function UserDashBoard() {
                 lastName:user.lastName,
                 userId: user.userId,
                 cname:course_name,
+                cdes:course_description,
                 cid:course_id,
                 instructorFname:user.firstName,
                 instructorLname:user.lastName,
@@ -227,8 +230,8 @@ function UserDashBoard() {
                         currentCourseList.map((course,index) => 
                             <div className="card">
                                 <img src={Book} alt="Image"/>
-                                <a href='' onClick={()=>gotoCourse(course.name,course._id,course.instructor.firstName,course.instructor.lastName,course.instructor.email)}><h1>{course.name}</h1></a>
-                                <a href='' onClick={()=>gotoCourse(course.name,course._id,course.instructor.firstName,course.instructor.lastName,course.instructor.email)}><p>{course._id}</p></a>
+                                <a href='' onClick={()=>gotoCourse(course.name,course._id,course.description,course.instructor.firstName,course.instructor.lastName,course.instructor.email)}><h1>{course.name}</h1></a>
+                                <a href='' onClick={()=>gotoCourse(course.name,course._id,course.description,course.instructor.firstName,course.instructor.lastName,course.instructor.email)}><p>{course._id}</p></a>
                             </div>
                         )
                         
@@ -245,9 +248,9 @@ function UserDashBoard() {
                     </span>
 
                     <span style={{display:'none'}} ref={enrollCourseForm} className="enrollCourse">
-                        <span><button id="enrollBackButton" onClick={backFromEnroll}>Back</button></span>
-                        <div className="createCourseFormHeading"><h1>Enroll for a Course</h1></div>
-                    <table className="grade-table">
+                        <span><a id="enrollBackButton" onClick={backFromEnroll}>Back</a></span>
+                        <div className="tableHeadingEnroll"><h3>Enroll for a Course</h3></div>
+                    <table className="enroll-table">
                     <tbody>
                     <tr>
                         <th>Course ID</th>
@@ -267,7 +270,7 @@ function UserDashBoard() {
                                         <p>{acourse.name}</p>
                                     </td>
                                     <td>
-                                        <p>Teacher {index}</p>
+                                        <p>{acourse.instructor ? acourse.instructor.firstName+ " " + acourse.instructor.lastName: 'Not Available'}</p>
                                     </td>
                                     <td>
                                     <p><button id="enrollButton" onClick={()=>enrollCourse(acourse._id)}>Enroll</button></p>

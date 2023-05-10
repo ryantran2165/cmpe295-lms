@@ -402,15 +402,21 @@ const openSubmissionDetails = async(event,quizId) =>{
                     <div className="item-list">
                           <ul>
                             {
-                               upcomingAssignmentList.map((assignment,index) => 
-                                    
+                              upcomingAssignmentList.length === 0 ? (
+                                <li>Currently there are no upcoming assignments</li>
+                              ) : (
+                               upcomingAssignmentList
+                               .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate)) // Sort by due date
+                               .reverse()
+                               .map((assignment,index) => 
                                         <li key={index}>
                                             <div className="list-area-header">
                                             <h4>Assignment {index+1}</h4>
                                             <p>Deadline: {getQuizDueDate(assignment.dueDate)}</p>
+                                            <p>Points: {assignment.totalPoints} </p>
                                             </div>
                                             <div className="list-details">
-                                            <p>{assignment.name} <span style={{display:'inline', marginLeft:194}}>Points: {assignment.totalPoints} </span></p>
+                                            <p>{assignment.name}</p>
                                             <p>{assignment.description} </p>
                                           <a href='' style={{marginRight:10}} onClick={() => openQAPage(assignment, index)}>Attempt</a>
                                           <a href='' onClick={(event) => openSubmissionDetails(event,assignment._id)}>View Submissions</a>
@@ -419,24 +425,31 @@ const openSubmissionDetails = async(event,quizId) =>{
                                         
                                 )
                                 
-                            }
+                            )}
                           </ul>
                     </div>
                     </span>
                     <span style={{display:'none'}} ref={pastAssignments}>
-                    <span className="currentAssignments">Past Assignments </span>
+                    <span className="currentAssignments" style={{marginTop: 100}}>Past Assignments </span>
                     <div className="item-list">
                           <ul>
                             {
-                               pastAssignmentList.map((assignment,index) => 
-                                    
+                              
+                              pastAssignmentList.length === 0 ? (
+                                <li>Currently there are no past assignments</li>
+                              ) : (
+                               pastAssignmentList
+                               .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate)) // Sort by due date
+                               .reverse()
+                               .map((assignment,index) => 
                                         <li key={index}>
                                             <div className="list-area-header">
                                             <h4>Assignment {index+1}</h4>
                                             <p>Deadline: {getQuizDueDate(assignment.dueDate)}</p>
+                                            <p>Points: {assignment.totalPoints} </p>
                                             </div>
                                             <div className="list-details">
-                                            <p>{assignment.name} <span style={{display:'inline', marginLeft:194}}>Points: {assignment.totalPoints} </span></p>
+                                            <p>{assignment.name}</p>
                                             <p>{assignment.description} </p>
                                             <a href='' onClick={(event) => openSubmissionDetails(event,assignment._id)}>View Submission</a>
                                             </div>
@@ -444,7 +457,7 @@ const openSubmissionDetails = async(event,quizId) =>{
                                         
                                 )
                                 
-                            }
+                            )}
                           </ul>
                     </div>
                     </span>
@@ -452,9 +465,12 @@ const openSubmissionDetails = async(event,quizId) =>{
                     <span style={{display:'none'}} ref={studentSubmissionDetailsDiv} > 
                     <span className="pastAssignments">Assignment Submission Details </span>
                     <div className="item-list">
-                      {studentSubmissionDetails.length === 0  &&(<span>Currently there are no submissions for this assignment</span>)}
                     <ul>
-                    {studentSubmissionDetails.map((submissionDetail) => (
+                    {
+                    studentSubmissionDetails.length === 0 ? (
+                      <li>Currently there are no submissions for this assignment</li>
+                    ) : (
+                    studentSubmissionDetails.map((submissionDetail) => (
                         <li>
                         <div key={submissionDetail._id}>
                           <h2>{submissionDetail.assignmentQuiz.name}</h2>
@@ -462,7 +478,7 @@ const openSubmissionDetails = async(event,quizId) =>{
                           <ul>
                             
                           {submissionDetail.assignmentQuiz.questions.map((question) => (
-                            <li>
+                            <li style={{backgroundColor:'#a7e2ec'}}>
                                   <div key={question._id}>
                                     <h3>{question.name}</h3>
                                     <p>{question.description}</p>
@@ -485,7 +501,7 @@ const openSubmissionDetails = async(event,quizId) =>{
                           </ul>
                         </div>
                         </li>
-                    ))}
+                    )))}
                     </ul>
                     </div>
                     </span>
@@ -493,9 +509,12 @@ const openSubmissionDetails = async(event,quizId) =>{
                     <span style={{display:'none'}} ref={allSubmissionDetailsDiv} > 
                     <span className="pastAssignments">Assignment Submission Details </span>
                     <div className="item-list">
-                    {allSubmissionDetails.length === 0  &&(<span>Currently there are no submissions for this assignment</span>)}
                         <ul>
-                        {allSubmissionDetails.map((submissionDetail) => (
+                        {
+                          allSubmissionDetails.length === 0 ? (
+                            <li>Currently there are no submissions for this assignment</li>
+                          ) : (
+                         allSubmissionDetails.map((submissionDetail) => (
                           <li>
                           <div key={submissionDetail._id}>
                           <h2>{submissionDetail.assignmentQuiz.name}</h2>
@@ -503,7 +522,7 @@ const openSubmissionDetails = async(event,quizId) =>{
                             <p>Submitted by: {submissionDetail.student}</p>
                             <ul>
                             {submissionDetail.assignmentQuiz.questions.map((question) => (
-                              <li>
+                              <li style={{backgroundColor:'#a7e2ec'}}>
                               <div key={question._id}>
                                 <h3>{question.name}</h3>
                                 <p>{question.description}</p>
@@ -525,7 +544,7 @@ const openSubmissionDetails = async(event,quizId) =>{
                               </ul>
                           </div>
                           </li>
-                    ))}
+                    )))}
                     </ul>
                     </div>
                     </span>

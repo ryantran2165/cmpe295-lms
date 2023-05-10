@@ -21,6 +21,7 @@ https://www.w3schools.com/css/tryit.asp?filename=trycss_table_fancy
 function CourseHome() {
 
     const homeInfo = useRef(null);
+    const courseCard = useRef(null);
     const assignmentInfo = useRef(null);
     const quizInfo = useRef(null);
     const gradesInfo = useRef(null);
@@ -144,6 +145,24 @@ function CourseHome() {
         return formattedDate;
       }
 
+      function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+    
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].style.display = "none";
+        }
+      
+       
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+          tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+      
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+      }
+
     return (
      <>
      <div className="backgroundDecoration">
@@ -159,23 +178,29 @@ function CourseHome() {
                         <a onClick={gotoDashBoard}>Dashboard</a>
                         <a onClick={openGrades}>Grades</a>
                     </div>
-                    <div className="courseinfo-list" ref={homeInfo}>
+                    <div className="courseInformation" ref={homeInfo}>
                                 <ul>
                                 <li>
-                                    <div className="list-area-header">
-                                    <h4>{course.cname}</h4><br/>
-                                    <p>Welcome to {course.cname}. This course helps to build you programming and data analysis skills</p>
-                                    </div>
-                                    <div className="list-details">
-                                    <p>Course ID: {course.cid}</p>
-                                    <p>Instructor: {course.instructorFname} {course.instructorLname}</p>
-                                    <p>Instructor Email: {course.instructorEmail}</p>
+                                    <div ref={courseCard}>
+                                        <div className="tab">
+                                            <button className="tablinks active" onClick={(event) => openTab(event, "course-info")}>Course Info</button>
+                                            <button className="tablinks" onClick={(event) => openTab(event, "professor")}>Instructor Info</button>
+                                        </div>
+                                        <div id="course-info" className="tabcontent" style={{display: 'block'}}>
+                                            <h4>{course.cname}</h4>
+                                            <p>{course.cdes}</p>
+                                            <p>{course.cid}</p>
+                                        </div>
+                                        <div id="professor" className="tabcontent">
+                                            <p>{course.instructorFname} {course.instructorLname}</p>
+                                            <p>{course.instructorEmail}</p>
+                                        </div>
                                     </div>
                                 </li>
                                 </ul>
                             </div>
                     <div  className="gradesInfo" ref={gradesInfo} style={{display:'none'}}>
-                    <div className="createCourseFormHeading"><h1>Grades for {course.cname}</h1></div>
+                    <div className="tableHeadingGrades"><h3>Grades for {course.cname}</h3></div>
                     <table className="grade-table">
                     <tbody>
                     <tr>

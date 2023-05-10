@@ -1,3 +1,8 @@
+@media screen and (max-width: 768px) {
+  .tab button {
+    width: 100%;
+  }
+}
 @media all and (min-width: 768px) and (max-width: 991px){
 /*Previous and next button reference
 
@@ -127,6 +132,7 @@ https://www.w3schools.com/howto/howto_css_next_prev.asp
     
      .list-area-header h4 {
       margin: 0;
+      color: #8b17ae !important;
      }
 
      .list-area-header p {
@@ -134,11 +140,12 @@ https://www.w3schools.com/howto/howto_css_next_prev.asp
      }
 
      .item-list {
-      color: #333;
+      color: #8b17ae;
       padding: 1.25em;
       /*background: linear-gradient(to bottom right, #7f7fd5, #86a8e7, #91eae4);*/
       border-radius: 0.625em;
       font-family: Arial, sans-serif;
+      width: 100%;
     }
     
     .item-list ul {
@@ -180,7 +187,7 @@ https://www.w3schools.com/howto/howto_css_next_prev.asp
       left: -1em;
     }
 
-    .courseinfo-list {
+    .courseInformation {
       color: #282828;
       padding: 1.25em;
       background: snow;
@@ -189,7 +196,7 @@ https://www.w3schools.com/howto/howto_css_next_prev.asp
       margin-left: 5em;
     }
 
-    .courseinfo-list li {
+    .courseInformation li {
       display: block;
       box-shadow: 0em 0.125em 0.3125em #00000033;
       margin-bottom: 1.25em;
@@ -202,13 +209,23 @@ https://www.w3schools.com/howto/howto_css_next_prev.asp
 
      /*grades table styles start*/
 
+     .tableHeadingGrades{
+      position: relative;
+      top: 3em;
+      left: 35%;
+      color: #700cbc;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+     }
+
      .grade-table {
       position: relative;
       top: 7em;
+      left: -14em;
+      margin-left: 7em;
       margin-top: 2em;
       width: 150%;
       border-collapse: collapse;
-      background: rgb(205,238,174);
+      background: rgb(205, 238, 174);
       background: radial-gradient(circle, rgb(208, 205, 205) 0%, rgba(148,230,233,1) 100%);
       box-shadow: 0em 0.125em 0.3125em #00000033;
     }
@@ -234,6 +251,51 @@ https://www.w3schools.com/howto/howto_css_next_prev.asp
     }
 
      /*grades table styles end*/
+
+     /*enroll table styles start*/
+
+     .tableHeadingEnroll{
+      position: relative;
+      top: 3em;
+      left: 40%;
+      color: #700cbc;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+     }
+
+     .enroll-table {
+      position: relative;
+      top: 7em;
+      left: -5em;
+      margin-left: 7em;
+      margin-top: 2em;
+      width: 150%;
+      border-collapse: collapse;
+      background: rgb(205, 238, 174);
+      background: radial-gradient(circle, rgb(208, 205, 205) 0%, rgba(148,230,233,1) 100%);
+      box-shadow: 0em 0.125em 0.3125em #00000033;
+    }
+    
+    .enroll-table  td, .enroll-table  th {
+      padding: 1em;
+      border-bottom: 0.1em solid #ffffff;
+      color: #700cbc;
+      text-align: center;
+      margin-right: 15em;
+    }
+        
+    
+    .enroll-table tr:nth-child(){background-color: #ffffff;}
+    
+    .enroll-table tr:hover {background-color: #d5d4d4;}
+    
+    .enroll-table th {
+      background-color: #315755;
+      text-align: center;
+      padding: 0.9em 0 0.9em 0;
+      background: rgb(182, 212, 238);
+    }
+
+     /*enroll table styles end*/
 
      /*add and remove button styles start*/
 
@@ -277,18 +339,67 @@ https://www.w3schools.com/howto/howto_css_next_prev.asp
     .pastAssignments{
       position: relative;
       top: -4em;
-      left: 15em;
-      color: #700cbc; 
-      font-size: 18px;
+      left: -5%;
+      color: #fffafa; 
+      font-size: 23px;
     }
 
     .currentAssignments{
       position: relative;
       top: -4em;
-      left: 15em;
-      color: #700cbc; 
-      font-size: 18px;
+      left: -5%;
+      color: #fffafa; 
+      font-size: 23px;
     }
+
+    /*course info tab styles start*/
+
+      
+    .tab {
+      justify-content: center;
+      overflow: hidden;
+      display: flex;
+      border-bottom: 0.0625em solid #cccccc;
+    }
+
+    .tablinks {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .tab button {
+      border: none;
+      background-color: inherit;
+      transition: 0.45s;
+      outline: none;
+      padding: 0.875em 1em;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .tab button:hover {
+      background-color: #e1dede;
+    }
+
+    .tab button.active {
+      background-color: #a45fdd;
+    }
+
+    .tabcontent {
+      display: none;
+      border: 0.0625em ridge #1e25b7;
+      padding: 0.375em 0.75em;
+    }
+
+    .tabcontent p, h4{
+      color: white;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    #course-info{
+      display: block;
+    }
+
+  /*course info styles end*/
   }
 
 
@@ -415,8 +526,9 @@ https://www.w3schools.com/howto/howto_css_next_prev.asp
         margin-bottom: 0.625em;
        }
       
-       .list-area-header h2 {
+       .list-area-header h4 {
         margin: 0;
+        color: #8b17ae !important;
        }
 
        .list-area-header p {
@@ -424,11 +536,12 @@ https://www.w3schools.com/howto/howto_css_next_prev.asp
        }
 
        .item-list {
-        color: #333;
+        color: #8b17ae;;
         padding: 1.25em;
        /* background: linear-gradient(to bottom right, #7f7fd5, #86a8e7, #91eae4);*/
         border-radius: 0.625em;
         font-family: Arial, sans-serif;
+        width: 100%;
       }
       
       .item-list ul {
@@ -470,7 +583,7 @@ https://www.w3schools.com/howto/howto_css_next_prev.asp
         left: 19em;
       }
 
-      .courseinfo-list {
+      .courseInformation {
         color: #282828;
         padding: 1.25em;
         background: snow;
@@ -479,7 +592,7 @@ https://www.w3schools.com/howto/howto_css_next_prev.asp
         margin-left: 5em;
       }
 
-      .courseinfo-list li {
+      .courseInformation li {
         display: block;
         box-shadow: 0em 0.125em 0.3125em #00000033;
         margin-bottom: 1.25em;
@@ -491,37 +604,93 @@ https://www.w3schools.com/howto/howto_css_next_prev.asp
        /*Assignment and quiz list styles end*/
       /*grades table styles start*/
 
-      .grade-table {
-        position: relative;
-        top: 7em;
-        margin-top: 2em;
-        width: 150%;
-        border-collapse: collapse;
-        background: rgb(205,238,174);
-        background: radial-gradient(circle, rgb(208, 205, 205) 0%, rgba(148,230,233,1) 100%);
-        box-shadow: 0em 0.125em 0.3125em #00000033;
-      }
-      
-      .grade-table  td, .grade-table  th {
-        padding: 1em;
-        border-bottom: 0.1em solid #ffffff;
-        color: #700cbc;
-        text-align: center;
-        margin-right: 15em;
-      }
-          
-      
-      .grade-table tr:nth-child(){background-color: #ffffff;}
-      
-      .grade-table tr:hover {background-color: #d5d4d4;}
-      
-      .grade-table th {
-        text-align: center;
-        padding: 0.9em 0 0.9em 0;
-        background: rgb(182, 212, 238);
-      }
+     .tableHeadingGrades{
+      position: relative;
+      top: 3em;
+      left: 35%;
+      color: #700cbc;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+     }
 
-       /*grades table styles end*/
+     .grade-table {
+      position: relative;
+      top: 7em;
+      left: -14em;
+      margin-left: 7em;
+      margin-top: 2em;
+      width: 150%;
+      border-collapse: collapse;
+      background: rgb(205, 238, 174);
+      background: radial-gradient(circle, rgb(208, 205, 205) 0%, rgba(148,230,233,1) 100%);
+      box-shadow: 0em 0.125em 0.3125em #00000033;
+    }
+    
+    .grade-table  td, .grade-table  th {
+      padding: 1em;
+      border-bottom: 0.1em solid #ffffff;
+      color: #700cbc;
+      text-align: center;
+      margin-right: 15em;
+    }
+        
+    
+    .grade-table tr:nth-child(){background-color: #ffffff;}
+    
+    .grade-table tr:hover {background-color: #d5d4d4;}
+    
+    .grade-table th {
+      background-color: #315755;
+      text-align: center;
+      padding: 0.9em 0 0.9em 0;
+      background: rgb(182, 212, 238);
+    }
+
+     /*grades table styles end*/
+
+     /*enroll table styles start*/
+
+     .tableHeadingEnroll{
+      position: relative;
+      top: 3em;
+      left: 40%;
+      color: #700cbc;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+     }
+
+     .enroll-table {
+      position: relative;
+      top: 7em;
+      left: -5em;
+      margin-left: 7em;
+      margin-top: 2em;
+      width: 150%;
+      border-collapse: collapse;
+      background: rgb(205, 238, 174);
+      background: radial-gradient(circle, rgb(208, 205, 205) 0%, rgba(148,230,233,1) 100%);
+      box-shadow: 0em 0.125em 0.3125em #00000033;
+    }
+    
+    .enroll-table  td, .enroll-table  th {
+      padding: 1em;
+      border-bottom: 0.1em solid #ffffff;
+      color: #700cbc;
+      text-align: center;
+      margin-right: 15em;
+    }
+        
+    
+    .enroll-table tr:nth-child(){background-color: #ffffff;}
+    
+    .enroll-table tr:hover {background-color: #d5d4d4;}
+    
+    .enroll-table th {
+      background-color: #315755;
+      text-align: center;
+      padding: 0.9em 0 0.9em 0;
+      background: rgb(182, 212, 238);
+    }
+
+     /*enroll table styles end*/
 
        /*add and remove button styles start*/
 
@@ -566,18 +735,67 @@ https://www.w3schools.com/howto/howto_css_next_prev.asp
       .pastAssignments{
         position: relative;
         top: -4em;
-        left: 15em;
-        color: #700cbc; 
-        font-size: 18px;
+        left: -5%;
+        color: #fffafa; 
+        font-size: 23px;
       }
 
       .currentAssignments{
         position: relative;
         top: -4em;
-        left: 15em;
-        color: #700cbc; 
-        font-size: 18px;
+        left: -5%;
+        color: #fffafa; 
+        font-size: 23px;
       }
+
+      /*course info tab styles start*/
+
+      
+      .tab {
+        justify-content: center;
+        overflow: hidden;
+        display: flex;
+        border-bottom: 0.0625em solid #cccccc;
+      }
+
+      .tablinks {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      .tab button {
+        border: none;
+        background-color: inherit;
+        transition: 0.45s;
+        outline: none;
+        padding: 0.875em 1em;
+        font-size: 18px;
+        cursor: pointer;
+      }
+
+      .tab button:hover {
+        background-color: #e1dede;
+      }
+
+      .tab button.active {
+        background-color: #a45fdd;
+      }
+
+      .tabcontent {
+        display: none;
+        border: 0.0625em ridge #1e25b7;
+        padding: 0.375em 0.75em;
+      }
+
+      .tabcontent p, h4{
+        color: white;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      #course-info{
+        display: block;
+      }
+
+    /*course info styles end*/
        
     }
 
@@ -709,6 +927,7 @@ https://www.w3schools.com/howto/howto_css_next_prev.asp
       
        .list-area-header h4 {
         margin: 0;
+        color: #8b17ae !important;
        }
 
        .list-area-header p {
@@ -716,14 +935,15 @@ https://www.w3schools.com/howto/howto_css_next_prev.asp
        }
 
        .item-list {
-        color: #282828;
+        color: #8b17ae;;
         padding: 1.25em;
         /*background: linear-gradient(to bottom right, #7f7fd5, #86a8e7, #91eae4);*/
         border-radius: 0.625em;
         font-family: Arial, sans-serif;
+        width: 100%;
       }
 
-      .courseinfo-list {
+      .courseInformation {
         color: #282828;
         padding: 1.25em;
         background: snow;
@@ -732,7 +952,7 @@ https://www.w3schools.com/howto/howto_css_next_prev.asp
         margin-left: 5em;
       }
       
-      .item-list ul, .courseinfo-list ul {
+      .item-list ul, .courseInformation ul {
         margin: 0;
         list-style: none;
         padding: 0;
@@ -747,7 +967,7 @@ https://www.w3schools.com/howto/howto_css_next_prev.asp
         border-radius: 0.3125em;
       }
 
-      .courseinfo-list li {
+      .courseInformation li {
         display: block;
         box-shadow: 0em 0.125em 0.3125em #00000033;
         margin-bottom: 1.25em;
@@ -783,37 +1003,93 @@ https://www.w3schools.com/howto/howto_css_next_prev.asp
 
        /*grades table styles start*/
 
-       .grade-table {
-        position: relative;
-        top: 7em;
-        margin-top: 2em;
-        width: 150%;
-        border-collapse: collapse;
-        background: rgb(205,238,174);
-        background: radial-gradient(circle, rgb(208, 205, 205) 0%, rgba(148,230,233,1) 100%);
-        box-shadow: 0em 0.125em 0.3125em #00000033;
-      }
-      
-      .grade-table  td, .grade-table  th {
-        padding: 1em;
-        border-bottom: 0.1em solid #ffffff;
-        color: #700cbc;
-        text-align: center;
-        margin-right: 15em;
-      }
-          
-      
-      .grade-table tr:nth-child(){background-color: #ffffff;}
-      
-      .grade-table tr:hover {background-color: #d5d4d4;}
-      
-      .grade-table th {
-        text-align: center;
-        padding: 0.9em 0 0.9em 0;
-        background: rgb(182, 212, 238);
-      }
+     .tableHeadingGrades{
+      position: relative;
+      top: 3em;
+      left: 35%;
+      color: #700cbc;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+     }
 
-       /*grades table styles end*/
+     .grade-table {
+      position: relative;
+      top: 7em;
+      left: -14em;
+      margin-left: 7em;
+      margin-top: 2em;
+      width: 150%;
+      border-collapse: collapse;
+      background: rgb(205, 238, 174);
+      background: radial-gradient(circle, rgb(208, 205, 205) 0%, rgba(148,230,233,1) 100%);
+      box-shadow: 0em 0.125em 0.3125em #00000033;
+    }
+    
+    .grade-table  td, .grade-table  th {
+      padding: 1em;
+      border-bottom: 0.1em solid #ffffff;
+      color: #700cbc;
+      text-align: center;
+      margin-right: 15em;
+    }
+        
+    
+    .grade-table tr:nth-child(){background-color: #ffffff;}
+    
+    .grade-table tr:hover {background-color: #d5d4d4;}
+    
+    .grade-table th {
+      background-color: #315755;
+      text-align: center;
+      padding: 0.9em 0 0.9em 0;
+      background: rgb(182, 212, 238);
+    }
+
+     /*grades table styles end*/
+
+     /*enroll table styles start*/
+
+     .tableHeadingEnroll{
+      position: relative;
+      top: 3em;
+      left: 40%;
+      color: #700cbc;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+     }
+
+     .enroll-table {
+      position: relative;
+      top: 7em;
+      left: -19em;
+      margin-left: 7em;
+      margin-top: 2em;
+      width: 150%;
+      border-collapse: collapse;
+      background: rgb(205, 238, 174);
+      background: radial-gradient(circle, rgb(208, 205, 205) 0%, rgba(148,230,233,1) 100%);
+      box-shadow: 0em 0.125em 0.3125em #00000033;
+    }
+    
+    .enroll-table  td, .enroll-table  th {
+      padding: 1em;
+      border-bottom: 0.1em solid #ffffff;
+      color: #700cbc;
+      text-align: center;
+      margin-right: 15em;
+    }
+        
+    
+    .enroll-table tr:nth-child(){background-color: #ffffff;}
+    
+    .enroll-table tr:hover {background-color: #d5d4d4;}
+    
+    .enroll-table th {
+      background-color: #315755;
+      text-align: center;
+      padding: 0.9em 0 0.9em 0;
+      background: rgb(182, 212, 238);
+    }
+
+     /*enroll table styles end*/
 
       /*add and remove button styles start*/
 
@@ -859,20 +1135,67 @@ https://www.w3schools.com/howto/howto_css_next_prev.asp
       .pastAssignments{
         position: relative;
         top: -4em;
-        left: 15em;
-        color: #700cbc; 
-        font-size: 18px;
+        left: -5%;
+        color: #fffafa; 
+        font-size: 23px;
       }
 
       .currentAssignments{
         position: relative;
         top: -4em;
-        left: 15em;
-        color: #700cbc; 
-        font-size: 18px;
+        left: -5%;
+        color: #fffafa; 
+        font-size: 23px;
       }
 
+      /*course info tab styles start*/
 
-    }
+      
+        .tab {
+          justify-content: center;
+          overflow: hidden;
+          display: flex;
+          border-bottom: 0.0625em solid #cccccc;
+        }
+
+        .tablinks {
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .tab button {
+          border: none;
+          background-color: inherit;
+          transition: 0.45s;
+          outline: none;
+          padding: 0.875em 1em;
+          font-size: 18px;
+          cursor: pointer;
+        }
+
+        .tab button:hover {
+          background-color: #e1dede;
+        }
+
+        .tab button.active {
+          background-color: #a45fdd;
+        }
+
+        .tabcontent {
+          display: none;
+          border: 0.0625em ridge #1e25b7;
+          padding: 0.375em 0.75em;
+        }
+
+        .tabcontent p, h4{
+          color: white;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        #course-info{
+          display: block;
+        }
+
+      /*course info styles end*/
+}
 
   

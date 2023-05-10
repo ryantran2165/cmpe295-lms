@@ -307,9 +307,9 @@ https://freefrontend.com/css-login-forms/
       
       .leftnav a {
         display: block;
-        color: #ffffff !important;
-        text-decoration: underline #ffffff  !important;
-        font-size: 0.9375em;
+        color: #fffafa !important;
+        text-decoration: underline #fffafa  !important;
+        font-size: 1em;
         padding: 0.375em 0.5em 0.375em 1em;
       }
       
@@ -492,8 +492,8 @@ https://freefrontend.com/css-login-forms/
         background-size: 100%;
         padding: 5.625em;
         overflow: auto;
-        height: 100vh;
-        width: auto;
+        height: 80%;
+        width: 100%;
         /*background: linear-gradient(to top right, #7f7fd5, #86a8e7 , #91eae4);*/
         display: flex;
         justify-content: center;
@@ -560,7 +560,7 @@ https://freefrontend.com/css-login-forms/
               
       .profile {
         position: relative;
-        top:22em;
+        top:15em;
         right: 5em;
         margin: 1.25em auto;
         background-color: white;
@@ -587,12 +587,11 @@ https://freefrontend.com/css-login-forms/
       
       #enrollBackButton{
         position: relative;
-        top: 7em;
-        left: 67em;
+        top: 10em;
+        left: 1em;
         cursor: pointer;
-        color: #fafad2;
-        background-color: #7f7fd5;
-        border-radius: 0.3125em;
+        color: #4725c4;
+        text-decoration: underline;
         padding: 0.75em 1.25em;
         font-size: 1em;
         width: 13%;
@@ -956,9 +955,9 @@ https://freefrontend.com/css-login-forms/
       
       .leftnav a {
         display: block;
-        color: #ffffff !important;
-        text-decoration: underline #ffffff  !important;
-        font-size: 0.9375em;
+        color: #fffafa !important;
+        text-decoration: underline #fffafa  !important;
+        font-size: 1em;
         padding: 0.375em 0.5em 0.375em 1em;
       }
       
@@ -1191,8 +1190,8 @@ https://freefrontend.com/css-login-forms/
         background-size: 100%;
         padding: 5.625em;
         overflow: auto;
-        height: 100vh;
-        width: auto;
+        height: 80%;
+        width: 100%;
         /*background: linear-gradient(to top right, #7f7fd5, #86a8e7 , #91eae4);*/
         display: flex;
         justify-content: center;
@@ -1259,7 +1258,7 @@ https://freefrontend.com/css-login-forms/
               
       .profile {
         position: relative;
-        top: 22em;
+        top:15em;
         right: 5em;
         margin: 1.25em auto;
         background-color: white;
@@ -1285,19 +1284,19 @@ https://freefrontend.com/css-login-forms/
       }
 
       #enrollBackButton{
-        position: relative;
-        top: 7em;
-        left: 67em;
+        position: relative; 
+        top: 10em;
+        left: 1em;
         cursor: pointer;
-        color: #fafad2;
-        background-color: #7f7fd5;
-        border-radius: 0.3125em;
+        color: #4725c4;
+        text-decoration: underline;
         padding: 0.75em 1.25em;
         font-size: 1em;
         width: 13%;
         border: none;
         transition: all 0.4s ease-in-out;
       }
+
     
 
 }
@@ -1659,9 +1658,9 @@ https://freefrontend.com/css-login-forms/
       
       .leftnav a {
         display: block;
-        color: #ffffff !important;
-        text-decoration: underline #ffffff  !important;
-        font-size: 0.9375em;
+        color: #fffafa !important;
+        text-decoration: underline #fffafa  !important;
+        font-size: 1em;
         padding: 0.375em 0.5em 0.375em 1em;
       }
       
@@ -1938,8 +1937,8 @@ https://freefrontend.com/css-login-forms/
         background-size: 100%;
         padding: 5.625em;
         overflow: auto;
-        height: 100vh;
-        width: auto;
+        height: 80%;
+        width: 80%;
         /*background: linear-gradient(to top right, #7f7fd5, #86a8e7 , #91eae4);*/
         display: flex;
         justify-content: center;
@@ -2013,7 +2012,7 @@ https://freefrontend.com/css-login-forms/
               
       .profile {
         position: absolute;
-        top:22em;
+        top:8em;
         right: 5em;
         margin: 1.25em auto;
         background-color: white;
@@ -2040,17 +2039,17 @@ https://freefrontend.com/css-login-forms/
 
       #enrollBackButton{
         position: relative;
-        top: 7em;
-        left: 67em;
+        top: 10em;
+        left: -13em;
         cursor: pointer;
-        color: #fafad2;
-        background-color: #7f7fd5;
-        border-radius: 0.3125em;
+        color: #4725c4;
+        text-decoration: underline;
         padding: 0.75em 1.25em;
         font-size: 1em;
         width: 13%;
         border: none;
         transition: all 0.4s ease-in-out;
       }
+
 
 }
