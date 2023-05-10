@@ -29,9 +29,8 @@ def load_bifi_model():
 
 
 CLASSIFIER_NAME = "emnistbalanced_mathsymbols_custom"
-# MATH_SYMBOLS = ["-", "(", ")", ",", "[", "]", "+", "=", "forward_slash", "gt", "lt", "times"]
 MATH_SYMBOLS = ["gt", "lt", "(", ")", "[", "]", "=", "-", "+"]
-CUSTOM_SYMBOLS = ["colon", "decimal"]
+CUSTOM_SYMBOLS = ["colon", "decimal", "multiply", "divide", "comma"]
 CLASS_NAMES = []
 if "mnist" in CLASSIFIER_NAME:
     CLASS_NAMES += [str(num) for num in range(10)]
@@ -49,7 +48,15 @@ if "symbols" in CLASSIFIER_NAME:
 if "custom" in CLASSIFIER_NAME:
     CLASS_NAMES += CUSTOM_SYMBOLS
 N_CLASSES = len(CLASS_NAMES)
-CLASS_NAMES_MAP = {"gt": ">", "lt": "<", "colon": ":", "decimal": "."}
+CLASS_NAMES_MAP = {
+    "gt": ">",
+    "lt": "<",
+    "colon": ":",
+    "decimal": ".",
+    "multiply": "*",
+    "divide": "/",
+    "comma": ",",
+}
 
 
 class CNN(nn.Module):
@@ -65,7 +72,7 @@ class CNN(nn.Module):
             nn.Conv2d(in_channels=32, out_channels=32, kernel_size=5, stride=1, padding="same"),
             nn.ReLU(),
             nn.BatchNorm2d(num_features=32),
-            nn.Dropout(p=0.4),
+            nn.Dropout(p=0.1),
             nn.Conv2d(in_channels=32, out_channels=64, kernel_size=3),
             nn.ReLU(),
             nn.BatchNorm2d(num_features=64),
@@ -77,11 +84,11 @@ class CNN(nn.Module):
             nn.BatchNorm2d(num_features=64),
         )
         self.classifier = nn.Sequential(
-            nn.Dropout(p=0.4),
+            nn.Dropout(p=0.1),
             nn.Linear(in_features=64 * 20 * 20, out_features=128),
             nn.ReLU(),
             nn.BatchNorm1d(num_features=128),
-            nn.Dropout(p=0.4),
+            nn.Dropout(p=0.1),
             nn.Linear(in_features=128, out_features=N_CLASSES),
         )
 
@@ -111,7 +118,7 @@ def merge(a, b):
     return (x1, y1, x2, y2)
 
 
-def merge_all(rects):
+def merge_all(rects, min_area_percent=0):
     hasMerge = True
     while hasMerge:
         hasMerge = False
@@ -119,7 +126,7 @@ def merge_all(rects):
         while i < len(rects) - 1:
             j = i + 1
             while j < len(rects):
-                if intersects(rects[i], rects[j], 0.9):
+                if intersects(rects[i], rects[j], min_area_percent):
                     hasMerge = True
                     rects[i] = merge(rects[i], rects[j])
                     del rects[j]
@@ -168,24 +175,7 @@ def filter_rects(rects, min_area, max_area):
     return filtered
 
 
-def check_token(token, tokens, rect_preds, i, idx, opening, closing):
-    if token == opening:
-        found = False
-        for j in range(i + 1, len(tokens)):
-            if tokens[j] == closing:
-                found = True
-                break
-        if not found:
-            idx -= 1
-            idxs = rect_preds[i][4]
-            class_name = CLASS_NAMES[idxs[idx]]
-            if class_name in CLASS_NAMES_MAP:
-                class_name = CLASS_NAMES_MAP[class_name]
-            token = class_name.lower()
-    return token, idx
-
-
-def fix_token(tokens, token, rect_preds, i):
+def fix_token(tokens, token):
     # Possibly mistaken plus sign with letter 't'
     if token == "t":
         found = False
@@ -219,17 +209,15 @@ def fix_token(tokens, token, rect_preds, i):
         if temp in bifi_vocab:
             token = temp
 
+        # Possibly mistaken letter 'l' with right parenthesis
+        temp = temp.replace(")", "l")
+        if temp in bifi_vocab:
+            token = temp
+
         # Possibly mistaken letter 'i' with letter 'j'
         temp = temp.replace("j", "i")
         if temp in bifi_vocab:
             token = temp
-
-    # Possibly mistaken letter 'c' or 'l' with left parenthesis
-    # Check multiple times because it could be either order
-    idx = -1
-    token, idx = check_token(token, tokens, rect_preds, i, idx, "(", ")")
-    token, idx = check_token(token, tokens, rect_preds, i, idx, "[", "]")
-    token, idx = check_token(token, tokens, rect_preds, i, idx, "(", ")")
 
     # True/False are capitalized
     if token == "true":
@@ -251,7 +239,7 @@ def parse():
     res = requests.get(url, stream=True).raw
     img = np.asarray(bytearray(res.read()), dtype="uint8")
     img = cv2.imdecode(img, cv2.IMREAD_COLOR)
-    # img = cv2.imread("simple_if.jpg")
+    # img = cv2.imread("sort.jpg")
 
     # Grayscale
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -281,16 +269,12 @@ def parse():
     max_area = 100000
 
     # Merge and clean intersecting rectangles, filter by area, and sort by horizontal position
-    merge_all(rects)
+    merge_all(rects, min_area_percent=0.0)
     rects = filter_rects(rects, min_area, max_area)
     rects.sort(key=lambda rect: rect[0])
 
     # Non-continuous characters: i, j, :, and =
     merge_noncontinuous(rects)
-
-    # Periods and commas: . and ,
-
-    # Quotation marks: ' and "
 
     # Draw bounding boxes
     for x1, y1, x2, y2 in rects:
@@ -438,7 +422,7 @@ def parse():
                 fixed = []
                 split = token.split(".")
                 for t in split:
-                    t_fixed = fix_token(tokens, t, rect_preds, i)
+                    t_fixed = fix_token(tokens, t)
                     fixed.append(t_fixed)
 
                 # Add decimals back
@@ -448,7 +432,7 @@ def parse():
                 if token[-1] == ".":
                     token = token + "."
             else:
-                token = fix_token(tokens, token, rect_preds, i)
+                token = fix_token(tokens, token)
             tokens[i] = token
 
         # Add indentation and join tokens with space
