@@ -1,5 +1,6 @@
 const courseModel = require('../models/course.model');
 const userModel = require('../models/user.model');
+const submissionModel = require('../models/submission.model')
 // Create Course
 exports.createCourse = async (reqData, result) => {
 
@@ -80,5 +81,39 @@ exports.getStudentCourses = async (studentID, result) => {
     }
     catch(err){
         result(null, err);
+    }
+}
+
+// Get Student Course Grades
+exports.getCourseGrades = async(courseID, studentID, result) => {
+
+    try{
+
+        let studentSubmissions = await submissionModel.find({'student':studentID}).populate('assignmentQuiz');
+        
+        // filter submissions by the course
+        studentSubmissions = studentSubmissions.filter(submission => JSON.stringify(submission.assignmentQuiz.course).includes(courseID));
+        
+        let pointsScored = totalPoints = courseGrade = 0;
+        
+        for(let i = 0; i < studentSubmissions.length; i++){
+            totalPoints += studentSubmissions[i].assignmentQuiz.totalPoints;
+            pointsScored += studentSubmissions[i].score;
+        }
+
+        courseGrade = ((pointsScored/totalPoints)*100).toFixed(2);
+
+        let payload = {
+            submissions: studentSubmissions,
+            pointsScored: pointsScored, 
+            totalPoints: totalPoints, 
+            courseGrade: courseGrade
+        };
+
+        result(null, {status: true, payload: payload, totalPoints: totalPoints, });
+    }
+
+    catch(err){
+        result(null, {status: false, message: "Could not retrieve grades", err});
     }
 }

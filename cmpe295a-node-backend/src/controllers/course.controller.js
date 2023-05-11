@@ -87,3 +87,19 @@ exports.getStudentCourses = (req, res) => {
         }
     })
 }
+
+// Get Student Course Grades
+exports.getCourseGrades = (req, res) => {
+    console.log("\nGET COURSE GRADES");
+
+    courseService.getCourseGrades(req.params.courseID, req.params.studentID, (err, result) => {
+        if(err){
+            console.log(err);
+            res.status(400).send(result)
+        }
+        else{
+            console.log(result);
+            res.status(200).send(result);
+        }
+    })
+}
