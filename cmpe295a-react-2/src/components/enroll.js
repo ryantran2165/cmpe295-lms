@@ -34,7 +34,7 @@ export default function Enroll() {
   const user = location.state.user;
   const enrolled = user.courses.map((course) => course._id);
 
-  const backToDashboard = () => {
+  const toDashboard = () => {
     navigate("/dashboard", {
       state: {
         user: user,
@@ -74,13 +74,14 @@ export default function Enroll() {
               <Button
                 variant="primary"
                 type="button"
-                onClick={backToDashboard}
+                onClick={toDashboard}
                 className="width-200 mt-1"
               >
-                Back to dashboard
+                Dashboard
               </Button>
             </div>
-            <Table striped bordered hover className="mt-5">
+            <hr className="m-4" />
+            <Table striped bordered hover>
               <thead>
                 <tr>
                   <th>Course ID</th>

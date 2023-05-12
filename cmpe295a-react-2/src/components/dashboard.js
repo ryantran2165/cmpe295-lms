@@ -31,8 +31,8 @@ export default function Dashboard() {
     navigate("/enroll", { state: { user: user } });
   };
 
-  const clickCourse = (course) => {
-    console.log(course);
+  const toCourse = (course) => {
+    navigate("/course", { state: { user: user, course: course } });
   };
 
   return (
@@ -60,7 +60,7 @@ export default function Dashboard() {
               <Row>
                 {user.courses.map((course) => (
                   <Col xs={12} md={6} lg={4} key={course._id} className="mt-3">
-                    <Card onClick={() => clickCourse(course)} className="cursor-pointer h-100">
+                    <Card onClick={() => toCourse(course)} className="cursor-pointer h-100">
                       <Card.Img variant="top" src={books} className="max-height-200" />
                       <Card.Title className="p-3">{course.name}</Card.Title>
                     </Card>
