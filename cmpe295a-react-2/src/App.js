@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./components/home";
 import Register from "./components/register";
 import Dashboard from "./components/dashboard";
+import Enroll from "./components/enroll";
 import NotFound from "./components/not-found";
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/enroll" element={<Enroll />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

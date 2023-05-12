@@ -1,9 +1,76 @@
-import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Button from "react-bootstrap/Button";
+import Card from "react-bootstrap/Card";
+import books from "../images/books.jpg";
 
 export default function Dashboard() {
-  const state = useLocation();
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  console.log(state);
+  useEffect(() => {
+    if (location.state === null) {
+      navigate("/");
+    }
+  }, []);
 
-  return <h1>Dashboard</h1>;
+  if (location.state === null) {
+    return;
+  }
+
+  const user = location.state.user;
+
+  const logout = () => {
+    navigate("/");
+  };
+
+  const enroll = () => {
+    navigate("/enroll", { state: { user: user } });
+  };
+
+  const clickCourse = (course) => {
+    console.log(course);
+  };
+
+  return (
+    <Container className="p-5" fluid>
+      <Row className="justify-content-center">
+        <Col xs={12} sm={10}>
+          <div className="p-5 shadow rounded">
+            <div className="text-center">
+              <h2>
+                Welcome, {user.firstName} {user.lastName}!
+              </h2>
+              <h4>
+                {user.email} | {user.role}
+              </h4>
+              <Button variant="primary" type="button" onClick={logout} className="width-200 mt-1">
+                Logout
+              </Button>
+              <hr className="m-4" />
+              <h2>Courses</h2>
+              {user.role === "student" && (
+                <Button variant="primary" type="button" onClick={enroll} className="width-200 mt-1">
+                  Enroll
+                </Button>
+              )}
+              <Row>
+                {user.courses.map((course) => (
+                  <Col xs={12} md={6} lg={4} key={course._id} className="mt-3">
+                    <Card onClick={() => clickCourse(course)} className="cursor-pointer h-100">
+                      <Card.Img variant="top" src={books} className="max-height-200" />
+                      <Card.Title className="p-3">{course.name}</Card.Title>
+                    </Card>
+                  </Col>
+                ))}
+              </Row>
+            </div>
+          </div>
+        </Col>
+      </Row>
+    </Container>
+  );
 }

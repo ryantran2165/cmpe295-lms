@@ -49,7 +49,7 @@ export default function Register() {
     <Container className="p-5">
       <Row className="justify-content-center">
         <Col xs={12} sm={10} md={8} lg={6}>
-          <div className="p-5 shadow">
+          <div className="p-5 shadow rounded">
             <div className="text-center">
               <Link to="/">
                 <Image src={books} className="max-height-200" rounded fluid />
