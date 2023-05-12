@@ -72,7 +72,7 @@ export default function Quizzes() {
         <Col xs={12} sm={10}>
           <div className="p-5 shadow rounded">
             <div className="text-center">
-              <h2>Quizzes</h2>
+              <h2>{course.name} Quizzes</h2>
               <Button variant="primary" type="button" onClick={toCourse} className="width-200 mt-1">
                 Course
               </Button>
