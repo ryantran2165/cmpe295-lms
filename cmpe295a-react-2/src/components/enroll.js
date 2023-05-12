@@ -70,7 +70,7 @@ export default function Enroll() {
         <Col xs={12} sm={10}>
           <div className="p-5 shadow rounded">
             <div className="text-center">
-              <h2>Course Enrollment</h2>
+              <h1>Course Enrollment</h1>
               <Button
                 variant="primary"
                 type="button"

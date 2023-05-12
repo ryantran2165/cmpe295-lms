@@ -41,9 +41,9 @@ export default function Dashboard() {
         <Col xs={12} sm={10}>
           <div className="p-5 shadow rounded">
             <div className="text-center">
-              <h2>
+              <h1>
                 Welcome, {user.firstName} {user.lastName}!
-              </h2>
+              </h1>
               <h4>
                 {user.email} | {user.role}
               </h4>

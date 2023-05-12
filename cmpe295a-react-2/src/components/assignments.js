@@ -72,7 +72,7 @@ export default function Assignments() {
         <Col xs={12} sm={10}>
           <div className="p-5 shadow rounded">
             <div className="text-center">
-              <h2>{course.name} Assignments</h2>
+              <h1>{course.name} Assignments</h1>
               <Button variant="primary" type="button" onClick={toCourse} className="width-200 mt-1">
                 Course
               </Button>

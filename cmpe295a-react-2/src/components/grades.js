@@ -108,9 +108,9 @@ export default function Grades() {
         <Col xs={12} sm={10}>
           <div className="p-5 shadow rounded">
             <div className="text-center">
-              <h2>
+              <h1>
                 {course.name} Grades for {user.firstName} {user.lastName}
-              </h2>
+              </h1>
               <Button variant="primary" type="button" onClick={toCourse} className="width-200 mt-1">
                 Course
               </Button>
@@ -130,9 +130,9 @@ export default function Grades() {
               </tbody>
             </Table>
             {totalPoints > 0 && (
-              <h3 className="text-center">
+              <h2 className="text-center">
                 Total: {totalScore}/{totalPoints} ({((totalScore / totalPoints) * 100).toFixed(2)}%)
-              </h3>
+              </h2>
             )}
           </div>
         </Col>

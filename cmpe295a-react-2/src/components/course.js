@@ -55,7 +55,7 @@ export default function Course() {
         <Col xs={12} sm={10}>
           <div className="p-5 shadow rounded">
             <div className="text-center">
-              <h2>{course.name}</h2>
+              <h1>{course.name}</h1>
               <h4>
                 by{" "}
                 {instructor === null ? (

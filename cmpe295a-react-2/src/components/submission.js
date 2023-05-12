@@ -51,7 +51,7 @@ export default function Submission() {
             {question.points} points)
           </h2>
           <h4>{question.description}</h4>
-          {finalAnswer === null && <h5>No answer</h5>}
+          {(finalAnswer === null || !("fileURL" in finalAnswer)) && <h5>No answer</h5>}
           {finalAnswer !== null && (
             <a href={finalAnswer.fileURL}>
               <Image src={finalAnswer.fileURL} className="max-height-200 mt-1" rounded fluid />
@@ -68,7 +68,7 @@ export default function Submission() {
         <Col xs={12} sm={10}>
           <div className="p-5 shadow rounded">
             <div className="text-center">
-              <h2>{assignmentQuiz.name} Submission</h2>
+              <h1>{assignmentQuiz.name} Submission</h1>
               <h4>
                 submitted {submission.dateSubmitted} | {submission.score}/
                 {assignmentQuiz.totalPoints} points

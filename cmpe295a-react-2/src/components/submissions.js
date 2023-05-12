@@ -64,7 +64,7 @@ export default function Submissions() {
         <Col xs={12} sm={10}>
           <div className="p-5 shadow rounded">
             <div className="text-center">
-              <h2>{assignmentQuiz.name} Submissions</h2>
+              <h1>{assignmentQuiz.name} Submissions</h1>
               <h4>
                 due {assignmentQuiz.dueDate} | {assignmentQuiz.totalPoints} points
               </h4>
