@@ -31,6 +31,10 @@ export default function Dashboard() {
     navigate("/enroll", { state: { user: user } });
   };
 
+  const createCourse = () => {
+    navigate("/create-course", { state: { user: user } });
+  };
+
   const toCourse = (course) => {
     navigate("/course", { state: { user: user, course: course } });
   };
@@ -55,6 +59,16 @@ export default function Dashboard() {
               {user.role === "student" && (
                 <Button variant="primary" type="button" onClick={enroll} className="width-200 mt-1">
                   Enroll
+                </Button>
+              )}
+              {user.role === "teacher" && (
+                <Button
+                  variant="primary"
+                  type="button"
+                  onClick={createCourse}
+                  className="width-200 mt-1"
+                >
+                  Create
                 </Button>
               )}
               <Row>
