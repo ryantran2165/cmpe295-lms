@@ -13,6 +13,9 @@ import Submissions from "./components/submissions";
 import Submission from "./components/submission";
 import CreateCourse from "./components/create-course";
 import CreateAssignmentQuiz from "./components/create-assignment-quiz";
+import GradeAssignmentQuiz from "./components/grade-assignment-quiz";
+import GradeSubmission from "./components/grade-submission";
+import GradeQuestion from "./components/grade-question";
 import NotFound from "./components/not-found";
 
 function App() {
@@ -32,6 +35,9 @@ function App() {
         <Route path="/submission" element={<Submission />} />
         <Route path="/create-course" element={<CreateCourse />} />
         <Route path="/create-assignment-quiz" element={<CreateAssignmentQuiz />} />
+        <Route path="/grade-assignment-quiz" element={<GradeAssignmentQuiz />} />
+        <Route path="/grade-submission" element={<GradeSubmission />} />
+        <Route path="/grade-question" element={<GradeQuestion />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

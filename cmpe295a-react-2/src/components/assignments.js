@@ -72,6 +72,16 @@ export default function Assignments() {
     });
   };
 
+  const toGradeAssignmentQuiz = (assignment) => {
+    navigate("/grade-assignment-quiz", {
+      state: {
+        user: user,
+        course: course,
+        assignmentQuiz: assignment,
+      },
+    });
+  };
+
   return (
     <Container className="p-5" fluid>
       <Row className="justify-content-center">
@@ -111,7 +121,8 @@ export default function Assignments() {
                   <th>Assignment</th>
                   <th>Due Date</th>
                   <th>Points</th>
-                  <th>Attempt/Submissions</th>
+                  {user.role === "student" && <th>Attempt/Submissions</th>}
+                  {user.role === "teacher" && <th>Grade</th>}
                 </tr>
               </thead>
               <tbody>
@@ -124,28 +135,44 @@ export default function Assignments() {
                     </td>
                     <td>{assignment.totalPoints}</td>
                     <td>
-                      <Row>
-                        <Col xs="auto">
-                          <Button
-                            variant="primary"
-                            type="button"
-                            onClick={() => toAttempt(assignment)}
-                            className="width-100"
-                          >
-                            Attempt
-                          </Button>
-                        </Col>
-                        <Col xs="auto">
-                          <Button
-                            variant="primary"
-                            type="button"
-                            onClick={() => toSubmissions(assignment)}
-                            className="width-150"
-                          >
-                            Submissions
-                          </Button>
-                        </Col>
-                      </Row>
+                      {user.role === "student" && (
+                        <Row>
+                          <Col xs="auto">
+                            <Button
+                              variant="primary"
+                              type="button"
+                              onClick={() => toAttempt(assignment)}
+                              className="width-100"
+                            >
+                              Attempt
+                            </Button>
+                          </Col>
+                          <Col xs="auto">
+                            <Button
+                              variant="primary"
+                              type="button"
+                              onClick={() => toSubmissions(assignment)}
+                              className="width-150"
+                            >
+                              Submissions
+                            </Button>
+                          </Col>
+                        </Row>
+                      )}
+                      {user.role === "teacher" && (
+                        <Row>
+                          <Col xs="auto">
+                            <Button
+                              variant="primary"
+                              type="button"
+                              onClick={() => toGradeAssignmentQuiz(assignment)}
+                              className="width-100"
+                            >
+                              Grade
+                            </Button>
+                          </Col>
+                        </Row>
+                      )}
                     </td>
                   </tr>
                 ))}
