@@ -7,9 +7,11 @@ import requests
 import torch
 from fairseq.models.transformer import TransformerModel
 from flask import Flask, request
+from flask_cors import CORS
 from torch import nn
 
 app = Flask(__name__)
+CORS(app)
 
 bifi_model = None
 bifi_vocab = set()

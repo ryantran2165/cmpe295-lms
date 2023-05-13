@@ -45,7 +45,13 @@ export default function CreateAssignmentQuiz() {
 
     for (const question of questions) {
       question.points = parseInt(question.points);
+
+      for (const testCase of question.testCases) {
+        testCase.input = JSON.parse(testCase.input);
+        testCase.output = JSON.parse(testCase.output);
+      }
     }
+
     axios
       .post("http://localhost:3001/api/v1/assgs/", {
         course: course._id,
@@ -203,7 +209,7 @@ export default function CreateAssignmentQuiz() {
                     <Form.Group className="mt-3">
                       <Form.Label>Solution</Form.Label>
                       <Form.Control
-                        type="text"
+                        as="textarea"
                         value={question.solution}
                         onChange={(e) => setQuestionProperty(question, "solution", e)}
                       />
@@ -221,7 +227,7 @@ export default function CreateAssignmentQuiz() {
                           />
                         </Form.Group>
                         <Form.Group className="mt-3">
-                          <Form.Label>Ouput</Form.Label>
+                          <Form.Label>Output</Form.Label>
                           <Form.Control
                             type="text"
                             value={testCase.output}

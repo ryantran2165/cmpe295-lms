@@ -10,6 +10,8 @@ import axios from "axios";
 
 export default function GradeQuestion() {
   const [points, setPoints] = useState(0);
+  const [code, setCode] = useState("");
+  const [results, setResults] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -53,6 +55,47 @@ export default function GradeQuestion() {
       });
   };
 
+  const parse = () => {
+    axios
+      .post("http://localhost:5000/parse", {
+        url: answer.fileURL,
+      })
+      .then(function (response) {
+        setCode(response.data);
+      })
+      .catch(function (e) {
+        console.log(e);
+      });
+  };
+
+  const repair = () => {
+    axios
+      .post("http://localhost:5000/repair", {
+        code: code,
+      })
+      .then(function (response) {
+        setCode(response.data);
+      })
+      .catch(function (e) {
+        console.log(e);
+      });
+  };
+
+  const grade = () => {
+    axios
+      .post("http://localhost:5000/grade", {
+        funcDef: question.funcDef,
+        code: code,
+        testCases: question.testCases,
+      })
+      .then(function (response) {
+        setResults(response.data);
+      })
+      .catch(function (e) {
+        console.log(e);
+      });
+  };
+
   const toGradeSubmission = () => {
     navigate(`/grade-submission`, {
       state: {
@@ -79,13 +122,20 @@ export default function GradeQuestion() {
               >
                 Grade Submission
               </Button>
+              <Form.Control
+                as="textarea"
+                value={question.solution}
+                readOnly={true}
+                className="mt-3"
+              />
               <hr className="m-4" />
               <h2>
                 {i + 1}. {question.name} ({answer.points}/{question.points} points)
               </h2>
               <h4>{question.description}</h4>
+              <Form.Control type="text" value={question.funcDef} readOnly={true} />
               <a href={answer.fileURL}>
-                <Image src={answer.fileURL} className="max-height-200 mt-1" rounded fluid />
+                <Image src={answer.fileURL} className="max-height-200 mt-3" rounded fluid />
               </a>
             </div>
             <Form onSubmit={gradeQuestion}>
@@ -105,6 +155,51 @@ export default function GradeQuestion() {
                 Save
               </Button>
             </Form>
+            <hr className="m-4" />
+            <h2 className="text-center">Automated Grading</h2>
+            <Row className="justify-content-center">
+              <Col xs="auto">
+                <Button variant="primary" type="button" className="width-200 mt-1" onClick={parse}>
+                  Parse
+                </Button>
+              </Col>
+              <Col xs="auto">
+                <Button variant="primary" type="button" className="width-200 mt-1" onClick={repair}>
+                  Repair
+                </Button>
+              </Col>
+              <Col xs="auto">
+                <Button variant="primary" type="button" className="width-200 mt-1" onClick={grade}>
+                  Grade
+                </Button>
+              </Col>
+            </Row>
+            <Form.Control
+              as="textarea"
+              rows={5}
+              className="mt-3"
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+            />
+            {results !== null && (
+              <div className="mt-3">
+                <h3>
+                  Test Cases Passed: {results.passed} (
+                  {((results.passed / (results.passed + results.failed)) * 100).toFixed(2)}%)
+                </h3>
+                <h3>
+                  Test Cases Failed: {results.failed} (
+                  {((results.failed / (results.passed + results.failed)) * 100).toFixed(2)}%)
+                </h3>
+                <Form.Control
+                  as="textarea"
+                  rows={5}
+                  className="mt-3"
+                  value={JSON.stringify(results)}
+                  readOnly={true}
+                />
+              </div>
+            )}
           </div>
         </Col>
       </Row>

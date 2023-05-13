@@ -100,7 +100,8 @@ export default function Attempt() {
             {i + 1}. {question.name} ({question.points} points)
           </h2>
           <h4>{question.description}</h4>
-          <Form>
+          <Form.Control type="text" value={question.funcDef} readOnly={true} />
+          <Form className="mt-2">
             <Form.Check
               type="radio"
               id={`${question._id}-upload`}

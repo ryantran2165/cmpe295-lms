@@ -5,6 +5,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Image from "react-bootstrap/Image";
+import Form from "react-bootstrap/Form";
 
 export default function GradeSubmission() {
   const location = useLocation();
@@ -58,20 +59,21 @@ export default function GradeSubmission() {
       }
     }
     return (
-      <Row key={question._id} className={(i > 0 ? "mt-5" : "") + "justify-content-center"}>
+      <Row key={question._id} className={(i > 0 ? "mt-5" : "") + " justify-content-center"}>
         <Col>
           <h2>
             {i + 1}. {question.name} ({answer === null ? 0 : answer.points}/{question.points}{" "}
             points)
           </h2>
           <h4>{question.description}</h4>
-          {(answer === null || !("fileURL" in answer)) && <h5>No answer</h5>}
+          <Form.Control type="text" value={question.funcDef} readOnly={true} />
+          {(answer === null || !("fileURL" in answer)) && <h5 className="mt-3">No answer</h5>}
           {answer !== null && (
             <>
               <Row>
                 <Col>
                   <a href={answer.fileURL}>
-                    <Image src={answer.fileURL} className="max-height-200 mt-1" rounded fluid />
+                    <Image src={answer.fileURL} className="max-height-200 mt-3" rounded fluid />
                   </a>
                 </Col>
               </Row>

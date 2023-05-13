@@ -5,6 +5,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Image from "react-bootstrap/Image";
+import Form from "react-bootstrap/Form";
 
 export default function Submission() {
   const location = useLocation();
@@ -51,10 +52,13 @@ export default function Submission() {
             {question.points} points)
           </h2>
           <h4>{question.description}</h4>
-          {(finalAnswer === null || !("fileURL" in finalAnswer)) && <h5>No answer</h5>}
+          <Form.Control type="text" value={question.funcDef} readOnly={true} />
+          {(finalAnswer === null || !("fileURL" in finalAnswer)) && (
+            <h5 className="mt-3">No answer</h5>
+          )}
           {finalAnswer !== null && (
             <a href={finalAnswer.fileURL}>
-              <Image src={finalAnswer.fileURL} className="max-height-200 mt-1" rounded fluid />
+              <Image src={finalAnswer.fileURL} className="max-height-200 mt-3" rounded fluid />
             </a>
           )}
         </Col>
