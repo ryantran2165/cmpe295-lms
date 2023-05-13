@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -7,10 +7,12 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { format } from "date-fns";
 import axios from "axios";
+import { ReactSketchCanvas } from "react-sketch-canvas";
 
 export default function Attempt() {
   const [submissionTypes, setSubmissionTypes] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const canvasRefs = useRef([]);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -30,6 +32,8 @@ export default function Attempt() {
       files.push(null);
     }
     setSelectedFiles(files);
+
+    canvasRefs.current = canvasRefs.current.slice(0, assignmentQuiz.questions.length);
   }, []);
 
   if (location.state === null) {
@@ -51,18 +55,38 @@ export default function Attempt() {
     setSelectedFiles([...selectedFiles]);
   };
 
-  const submit = () => {
+  const submit = async () => {
     const submitFormData = new FormData();
     submitFormData.append("student", user._id);
     submitFormData.append("dateSubmitted", format(new Date(), "MM-dd-yyyy"));
-    for (const file of selectedFiles) {
+
+    for (let i = 0; i < submissionTypes.length; i++) {
+      const submissionType = submissionTypes[i];
+      let file = null;
+      if (submissionType === "upload") {
+        file = selectedFiles[i];
+      } else {
+        const canvasRef = canvasRefs.current[i];
+        const data = await canvasRef.exportImage("png");
+        const decodedString = atob(data.split(",")[1]);
+        const byteArray = new Uint8Array(decodedString.length);
+        for (let j = 0; j < decodedString.length; j++) {
+          byteArray[j] = decodedString.charCodeAt(j);
+        }
+        const blob = new Blob([byteArray], { type: "image/png" });
+        file = new File([blob], `${user._id}_${course._id}_${assignmentQuiz._id}_.png`, {
+          type: "image/png",
+        });
+      }
       submitFormData.append("fileURL", file);
     }
+
     const answers = [];
     for (const question of assignmentQuiz.questions) {
       answers.push({ question: question._id });
     }
     submitFormData.append("answers", JSON.stringify(answers));
+
     axios
       .post(`http://localhost:3001/api/v1/assgs/submit/${assignmentQuiz._id}`, submitFormData)
       .then(function (response) {
@@ -78,8 +102,8 @@ export default function Attempt() {
           alert("Submission failed!");
         }
       })
-      .catch(function (error) {
-        console.log(error.response);
+      .catch(function (e) {
+        console.log(e.response);
       });
   };
 
@@ -124,7 +148,27 @@ export default function Attempt() {
           {submissionTypes[i] === "upload" && (
             <Form.Control type="file" className="mt-3" onChange={(e) => selectFile(e, i)} />
           )}
-          {submissionTypes[i] === "canvas" && <h1>CANVAS</h1>}
+          {submissionTypes[i] === "canvas" && (
+            <Row>
+              <Col>
+                <div className="mt-3 height-500">
+                  <ReactSketchCanvas
+                    ref={(el) => (canvasRefs.current[i] = el)}
+                    strokeColor="black"
+                    strokeWidth={8}
+                  />
+                </div>
+                <Button
+                  variant="primary"
+                  type="button"
+                  onClick={() => canvasRefs.current[i].clearCanvas()}
+                  className="width-200 mt-3"
+                >
+                  Clear
+                </Button>
+              </Col>
+            </Row>
+          )}
         </Col>
       </Row>
     );
