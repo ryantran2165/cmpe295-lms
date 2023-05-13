@@ -32,7 +32,7 @@ export default function Enroll() {
   }
 
   const user = location.state.user;
-  const enrolled = user.courses.map((course) => course._id);
+  const enrolled = location.state.enrolled.map((course) => course._id);
 
   const toDashboard = () => {
     navigate("/dashboard", {
@@ -49,12 +49,7 @@ export default function Enroll() {
       })
       .then(function (response) {
         if (response.data.status === true) {
-          user.courses.push(course);
-          navigate("/dashboard", {
-            state: {
-              user: user,
-            },
-          });
+          toDashboard();
         } else {
           alert("Course enrollment failed!");
         }

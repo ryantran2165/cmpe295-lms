@@ -37,6 +37,12 @@ export default function Quizzes() {
   const user = location.state.user;
   const course = location.state.course;
 
+  const createQuiz = () => {
+    navigate("/create-assignment-quiz", {
+      state: { user: user, course: course, type: "quiz" },
+    });
+  };
+
   const toCourse = () => {
     navigate("/course", {
       state: {
@@ -73,9 +79,30 @@ export default function Quizzes() {
           <div className="p-5 shadow rounded">
             <div className="text-center">
               <h1>{course.name} Quizzes</h1>
-              <Button variant="primary" type="button" onClick={toCourse} className="width-200 mt-1">
-                Course
-              </Button>
+              <Row className="justify-content-center">
+                <Col xs="auto">
+                  <Button
+                    variant="primary"
+                    type="button"
+                    onClick={toCourse}
+                    className="width-200 mt-1"
+                  >
+                    Course
+                  </Button>
+                </Col>
+                {user.role === "teacher" && (
+                  <Col xs="auto">
+                    <Button
+                      variant="primary"
+                      type="button"
+                      onClick={createQuiz}
+                      className="width-200 mt-1"
+                    >
+                      Create Quiz
+                    </Button>
+                  </Col>
+                )}
+              </Row>
             </div>
             <hr className="m-4" />
             <Table striped bordered hover>

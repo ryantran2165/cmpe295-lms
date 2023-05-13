@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -6,8 +6,10 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import books from "../images/books.jpg";
+import axios from "axios";
 
 export default function Dashboard() {
+  const [courses, setCourses] = useState([]);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -15,6 +17,19 @@ export default function Dashboard() {
     if (location.state === null) {
       navigate("/");
     }
+
+    axios
+      .get(
+        `http://localhost:3001/api/v1/courses/by${
+          user.role === "student" ? "student" : "instructor"
+        }/${user._id}`
+      )
+      .then(function (response) {
+        setCourses(response.data);
+      })
+      .catch(function (e) {
+        console.log(e);
+      });
   }, []);
 
   if (location.state === null) {
@@ -28,7 +43,7 @@ export default function Dashboard() {
   };
 
   const enroll = () => {
-    navigate("/enroll", { state: { user: user } });
+    navigate("/enroll", { state: { user: user, enrolled: courses } });
   };
 
   const createCourse = () => {
@@ -72,7 +87,7 @@ export default function Dashboard() {
                 </Button>
               )}
               <Row>
-                {user.courses.map((course) => (
+                {courses.map((course) => (
                   <Col xs={12} md={6} lg={4} key={course._id} className="mt-3">
                     <Card onClick={() => toCourse(course)} className="cursor-pointer h-100">
                       <Card.Img variant="top" src={books} className="max-height-200" />

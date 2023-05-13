@@ -36,12 +36,7 @@ export default function CreateCourse() {
       })
       .then(function (response) {
         if (response.data.status === true) {
-          user.courses.push(response.data.payload);
-          navigate("/dashboard", {
-            state: {
-              user: user,
-            },
-          });
+          toDashboard();
         } else {
           alert("Course creation failed! ");
         }

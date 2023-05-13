@@ -12,6 +12,7 @@ import Attempt from "./components/attempt";
 import Submissions from "./components/submissions";
 import Submission from "./components/submission";
 import CreateCourse from "./components/create-course";
+import CreateAssignmentQuiz from "./components/create-assignment-quiz";
 import NotFound from "./components/not-found";
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
         <Route path="/submissions" element={<Submissions />} />
         <Route path="/submission" element={<Submission />} />
         <Route path="/create-course" element={<CreateCourse />} />
+        <Route path="/create-assignment-quiz" element={<CreateAssignmentQuiz />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

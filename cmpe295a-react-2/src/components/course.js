@@ -1,29 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import axios from "axios";
 
 export default function Course() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [instructor, setInstructor] = useState(null);
 
   useEffect(() => {
     if (location.state === null) {
       navigate("/");
     }
-
-    axios
-      .get(`http://localhost:3001/api/v1/courses/byinstructor/${course.instructor}`)
-      .then(function (response) {
-        setInstructor(response.data[0].instructor);
-      })
-      .catch(function (e) {
-        console.log(e);
-      });
   }, []);
 
   if (location.state === null) {
@@ -58,11 +47,12 @@ export default function Course() {
               <h1>{course.name}</h1>
               <h4>
                 by{" "}
-                {instructor === null ? (
+                {course.instructor === null ? (
                   <span>TBD</span>
                 ) : (
                   <span>
-                    {instructor.firstName} {instructor.lastName} | {instructor.email}
+                    {course.instructor.firstName} {course.instructor.lastName} |{" "}
+                    {course.instructor.email}
                   </span>
                 )}
               </h4>
