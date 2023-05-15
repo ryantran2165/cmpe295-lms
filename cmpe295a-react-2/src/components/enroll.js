@@ -18,7 +18,7 @@ export default function Enroll() {
     }
 
     axios
-      .get("http://localhost:3001/api/v1/courses/")
+      .get("api/v1/courses/")
       .then(function (response) {
         setCourses(response.data);
       })
@@ -44,7 +44,7 @@ export default function Enroll() {
 
   const enroll = (course) => {
     axios
-      .put(`http://localhost:3001/api/v1/courses/enroll/${course._id}`, {
+      .put(`api/v1/courses/enroll/${course._id}`, {
         student: user._id,
       })
       .then(function (response) {

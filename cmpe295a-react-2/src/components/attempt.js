@@ -88,7 +88,7 @@ export default function Attempt() {
     submitFormData.append("answers", JSON.stringify(answers));
 
     axios
-      .post(`http://localhost:3001/api/v1/assgs/submit/${assignmentQuiz._id}`, submitFormData)
+      .post(`api/v1/assgs/submit/${assignmentQuiz._id}`, submitFormData)
       .then(function (response) {
         if (response.status === 200) {
           navigate("/submissions", {

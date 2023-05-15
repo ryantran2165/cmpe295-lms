@@ -18,7 +18,7 @@ export default function Assignments() {
     }
 
     axios
-      .get(`http://localhost:3001/api/v1/assgs/courseassignments/${course._id}`)
+      .get(`api/v1/assgs/courseassignments/${course._id}`)
       .then(function (response) {
         response.data.sort((a, b) => {
           return new Date(a.dueDate) - new Date(b.dueDate);

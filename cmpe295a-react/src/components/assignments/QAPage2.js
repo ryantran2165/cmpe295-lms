@@ -59,7 +59,7 @@ const QAPage2 = () => {
         document.getElementsByClassName("upload-box")[0].appendChild(img);
         const formData = new FormData();
         formData.append("fileUpload", answerFile);
-        axios.post('http://localhost:3001/api/v1/upload/upload', formData)
+        axios.post('api/v1/upload/upload', formData)
         .then(function (response) {
           if(response.data.status === 200){
           alert("answer submitted successfully");

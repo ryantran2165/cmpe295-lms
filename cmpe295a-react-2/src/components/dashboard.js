@@ -20,7 +20,7 @@ export default function Dashboard() {
 
     axios
       .get(
-        `http://localhost:3001/api/v1/courses/by${
+        `api/v1/courses/by${
           user.role === "student" ? "student" : "instructor"
         }/${user._id}`
       )

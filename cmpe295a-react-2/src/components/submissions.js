@@ -18,7 +18,7 @@ export default function Submissions() {
     }
 
     axios
-      .get(`http://localhost:3001/api/v1/assgs/stusubmission/${assignmentQuiz._id}/${user._id}`)
+      .get(`api/v1/assgs/stusubmission/${assignmentQuiz._id}/${user._id}`)
       .then(function (response) {
         response.data.sort((a, b) => {
           return new Date(a.dateSubmitted) - new Date(b.dateSubmitted);

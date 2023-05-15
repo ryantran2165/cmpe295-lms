@@ -145,7 +145,7 @@ const QAPage = () => {
         console.log(typeof submittedDate);
         formData.append('answers', JSON.stringify(newAnswers));
         for (var x of formData) console.log(x);
-        axios.post(`http://localhost:3001/api/v1/assgs/submit/${assignment.assignmentId}`, formData)
+        axios.post(`api/v1/assgs/submit/${assignment.assignmentId}`, formData)
         .then(function (response) {
           console.log(response.status);
           if(response.status === 200){

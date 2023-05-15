@@ -36,7 +36,7 @@ function UserDashBoard() {
 
     const getCourses = () =>{
         if(user.role ==='teacher'){
-        axios.get(`http://localhost:3001/api/v1/courses/byinstructor/${user.userId}`)
+        axios.get(`api/v1/courses/byinstructor/${user.userId}`)
         .then(function (response) {
             setCurrentCourseList(response.data);
             getCoursesButton.current.style.display = 'none';
@@ -48,7 +48,7 @@ function UserDashBoard() {
           });
         }
         else{
-        axios.get(`http://localhost:3001/api/v1/courses/bystudent/${user.userId}`)
+        axios.get(`api/v1/courses/bystudent/${user.userId}`)
         .then(function (response) {
             setCurrentCourseList(response.data);
             getCoursesButton.current.style.display = 'none';
@@ -76,7 +76,7 @@ function UserDashBoard() {
     }
 
     const verifyEnrollemnt = async() =>{
-        await axios.get(`http://localhost:3001/api/v1/courses/bystudent/${user.userId}`)
+        await axios.get(`api/v1/courses/bystudent/${user.userId}`)
         .then(function (response) {
             checkCurrentCourseList = response.data;
         })
@@ -90,7 +90,7 @@ function UserDashBoard() {
     }
 
     const showEnrollCourseForm = () =>{
-        axios.get('http://localhost:3001/api/v1/courses/')
+        axios.get('api/v1/courses/')
         .then(function (response) {
             setAvailableCourses(response.data);
           })
@@ -112,7 +112,7 @@ function UserDashBoard() {
           alert("One or more form fields are empty, please fill out !");
         }
         else{
-            axios.post('http://localhost:3001/api/v1/courses/', {
+            axios.post('api/v1/courses/', {
               name: cname,
               instructor: user.userId,
               description: cdes
@@ -141,7 +141,7 @@ function UserDashBoard() {
             if(dummy.indexOf(course)>-1)
              alert("You have already enrolled for this course!");
             else{
-            axios.put(`http://localhost:3001/api/v1/courses/enroll/${course}`, {
+            axios.put(`api/v1/courses/enroll/${course}`, {
               student: user.userId
             })
             .then(function (response) {

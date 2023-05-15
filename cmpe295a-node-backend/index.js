@@ -23,6 +23,15 @@ app.use("/api/v1/assgs", assgQuizRoute);
 app.use("/api/v1/courses", courseRoute);
 
 
+// Serving frontend
+app.use(express.static(path.join('/home/ec2-user/cmpe295a-project/cmpe295a-react-2/build/')));
+
+
+app.get('/*', (req, res) => {
+  res.sendFile(path.join('/home/ec2-user/cmpe295a-project/cmpe295a-react-2/build/','index.html'));
+});
+
+
 // Backend runs on Port 3001
 const port = process.env.PORT || 3001;
 

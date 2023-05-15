@@ -46,7 +46,7 @@ export default function GradeQuestion() {
     submission.score = score;
 
     axios
-      .put(`http://localhost:3001/api/v1/assgs/grade/${submission._id}`, submission)
+      .put(`api/v1/assgs/grade/${submission._id}`, submission)
       .then(function (response) {
         toGradeSubmission();
       })

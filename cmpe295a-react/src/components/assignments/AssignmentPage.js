@@ -210,7 +210,7 @@ var removeTestcase = (index1, index2) => {
 
 
   const getAssignments = () =>{
-    axios.get(`http://localhost:3001/api/v1/assgs/courseassignments/${course.cid}`)
+    axios.get(`api/v1/assgs/courseassignments/${course.cid}`)
     .then(function (response) {
         setAssignmentList(response.data);
         var past = [];
@@ -250,7 +250,7 @@ const createAssignment = async(event) =>{
       alert("One or more form fields are empty, please fill out !");
     }
     else{
-        axios.post('http://localhost:3001/api/v1/assgs/', {
+        axios.post('api/v1/assgs/', {
           course: course.cid,
           type: 'assignment',
           name: name,
@@ -348,7 +348,7 @@ const openSubmissionDetails = async(event,quizId) =>{
   event.preventDefault();
   event.stopPropagation();
   if(user.role === 'teacher'){
-     await axios.get(`http://localhost:3001/api/v1/assgs/submissions/${quizId}`)
+     await axios.get(`api/v1/assgs/submissions/${quizId}`)
       .then(function (response) {
         setAllSubmissionDetails(response.data);
           getAssignmentsButton.current.style.display = 'none';
@@ -364,7 +364,7 @@ const openSubmissionDetails = async(event,quizId) =>{
   }
 
   else{
-    await axios.get(`http://localhost:3001/api/v1/assgs/stusubmission/${quizId}/${user.userId}`)
+    await axios.get(`api/v1/assgs/stusubmission/${quizId}/${user.userId}`)
     .then(function (response) {
       console.log("submission details");
       console.log(response);

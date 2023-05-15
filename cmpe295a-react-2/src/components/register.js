@@ -24,7 +24,7 @@ export default function Register() {
     e.preventDefault();
 
     axios
-      .post("http://localhost:3001/api/v1/users/signup", {
+      .post("api/v1/users/signup", {
         firstName: firstName,
         lastName: lastName,
         email: email,

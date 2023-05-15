@@ -241,7 +241,7 @@ const arrangeQuizzes = () => {
 }
 
   const getAssignments = () =>{
-    axios.get(`http://localhost:3001/api/v1/assgs/coursequizzes/${course.cid}`)
+    axios.get(`api/v1/assgs/coursequizzes/${course.cid}`)
     .then(function (response) {
         setQuizList(response.data);
         var past = [];
@@ -288,7 +288,7 @@ const createAssignment = async(event) =>{
       alert("Quiz should have atleast one question!");
     }
     else{
-        axios.post('http://localhost:3001/api/v1/assgs/', {
+        axios.post('api/v1/assgs/', {
           course: course.cid,
           type: 'quiz',
           name: name,
@@ -344,7 +344,7 @@ const createAssignment = async(event) =>{
     event.preventDefault();
     event.stopPropagation();
     if(user.role === 'teacher'){
-        axios.get(`http://localhost:3001/api/v1/assgs/submissions/${quizId}`)
+        axios.get(`api/v1/assgs/submissions/${quizId}`)
         .then(function (response) {
           setAllSubmissionDetails(response.data);
             getAssignmentsButton.current.style.display = 'none';
@@ -360,7 +360,7 @@ const createAssignment = async(event) =>{
     }
 
     if(user.role === 'student'){
-      axios.get(`http://localhost:3001/api/v1/assgs/stusubmission/${quizId}/${user.userId}`)
+      axios.get(`api/v1/assgs/stusubmission/${quizId}/${user.userId}`)
       .then(function (response) {
         setStudentSubmissionDetails(response.data);
           getAssignmentsButton.current.style.display = 'none';

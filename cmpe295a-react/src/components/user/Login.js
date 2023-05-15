@@ -19,7 +19,7 @@ function LoginForm() {
       alert("One or more form fields are empty, please fill out !");
     }
     else{
-        axios.post('http://localhost:3001/api/v1/users/login', {
+        axios.post('api/v1/users/login', {
           username: username,
           password: password
         })

@@ -29,7 +29,7 @@ export default function CreateCourse() {
     e.preventDefault();
 
     axios
-      .post("http://localhost:3001/api/v1/courses", {
+      .post("api/v1/courses", {
         name: courseName,
         description: courseDescription,
         instructor: user._id,

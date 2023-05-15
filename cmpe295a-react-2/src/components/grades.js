@@ -20,7 +20,7 @@ export default function Grades() {
     }
 
     axios
-      .get(`http://localhost:3001/api/v1/assgs/course/${course._id}`)
+      .get(`api/v1/assgs/course/${course._id}`)
       .then(function (response) {
         const assignmentsQuizzes = response.data;
         assignmentsQuizzes.sort((a, b) => {
@@ -31,7 +31,7 @@ export default function Grades() {
         for (const assignmentQuiz of assignmentsQuizzes) {
           const promise = axios
             .get(
-              `http://localhost:3001/api/v1/assgs/stusubmission/${assignmentQuiz._id}/${user._id}`
+              `api/v1/assgs/stusubmission/${assignmentQuiz._id}/${user._id}`
             )
             .then(function (response) {
               const submissions = response.data;

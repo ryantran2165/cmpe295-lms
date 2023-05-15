@@ -21,7 +21,7 @@ export default function ToGradeAssignmentQuiz() {
     for (const student of course.students) {
       const promise = axios
         .get(
-          `http://localhost:3001/api/v1/assgs/stusubmission/${assignmentQuiz._id}/${student._id}`
+          `api/v1/assgs/stusubmission/${assignmentQuiz._id}/${student._id}`
         )
         .then(function (response) {
           const submissions = response.data;

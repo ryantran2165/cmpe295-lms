@@ -53,7 +53,7 @@ export default function CreateAssignmentQuiz() {
     }
 
     axios
-      .post("http://localhost:3001/api/v1/assgs/", {
+      .post("api/v1/assgs/", {
         course: course._id,
         type: type,
         name: name,

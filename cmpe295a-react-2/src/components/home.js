@@ -20,7 +20,7 @@ export default function Home() {
     e.preventDefault();
 
     axios
-      .post("http://localhost:3001/api/v1/users/login", {
+      .post("api/v1/users/login", {
         username: username,
         password: password,
       })

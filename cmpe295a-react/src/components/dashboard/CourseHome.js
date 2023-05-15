@@ -76,7 +76,7 @@ function CourseHome() {
     }
 
     const getQuizzes = () =>{
-        axios.get(`http://localhost:3001/api/v1/assgs/coursequizzes/${course.cid}`)
+        axios.get(`api/v1/assgs/coursequizzes/${course.cid}`)
         .then(function (response) {
             setQuizList(response.data);
           })
@@ -88,7 +88,7 @@ function CourseHome() {
     const getAssignments = () =>{
         console.log("user: ",user);
         console.log("course: ", course);
-        axios.get(`http://localhost:3001/api/v1/assgs/courseassignments/${course.cid}`)
+        axios.get(`api/v1/assgs/courseassignments/${course.cid}`)
         .then(function (response) {
             setAssignmentList(response.data);
           })
