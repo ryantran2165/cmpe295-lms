@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const path = require('path');
 
 app.use(cors());
 app.use(bodyParser.urlencoded({extended: false}));
